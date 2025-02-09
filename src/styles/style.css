@@ -1,0 +1,454 @@
+@font-face {
+  font-family: 'Game-Of-Squids';
+  src: url('../assets/fonts/Game-Of-Squids.ttf');
+}
+
+.pl-1 {
+  padding-left: 1rem;
+}
+
+.pl-2 {
+  padding-left: 2rem;
+}
+
+.pl-3 {
+  padding-left: 3rem;
+}
+
+.pl-4 {
+  padding-left: 4rem;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.pl-5 {
+  padding-left: 5rem;
+}
+
+.pr-1 {
+  padding-right: 1rem;
+}
+
+.pr-2 {
+  padding-right: 2rem;
+}
+
+.pr-3 {
+  padding-right: 3rem;
+}
+
+.pr-4 {
+  padding-right: 4rem;
+}
+
+.pr-5 {
+  padding-right: 5rem;
+}
+
+.pb-1 {
+  padding-bottom: 1rem;
+}
+
+.pb-2 {
+  padding-bottom: 2rem;
+}
+
+.pb-3 {
+  padding-bottom: 3rem;
+}
+
+.pb-4 {
+  padding-bottom: 4rem;
+}
+
+.pb-5 {
+  padding-bottom: 5rem;
+}
+
+.pt-1 {
+  padding-top: 1rem;
+}
+
+.pt-2 {
+  padding-top: 2rem;
+}
+
+.pt-3 {
+  padding-top: 3rem;
+}
+
+.pt-4 {
+  padding-top: 4rem;
+}
+
+.pt-5 {
+  padding-top: 5rem;
+}
+
+.pt-100 {
+  padding-top: 10rem;
+}
+
+.ml-1 {
+  margin-left: 1rem;
+}
+
+.ml-2 {
+  margin-left: 2rem;
+}
+
+.ml-3 {
+  margin-left: 3rem;
+}
+
+.ml-4 {
+  margin-left: 4rem;
+}
+
+.ml-5 {
+  margin-left: 5rem;
+}
+
+.mr-1 {
+  margin-right: 1rem;
+}
+
+.mr-2 {
+  margin-right: 2rem;
+}
+
+.mr-3 {
+  margin-right: 3rem;
+}
+
+.mr-4 {
+  margin-right: 4rem;
+}
+
+.mr-5 {
+  margin-right: 5rem;
+}
+
+.mb-1 {
+  margin-bottom: 1rem;
+}
+
+.mb-2 {
+  margin-bottom: 2rem;
+}
+
+.mb-3 {
+  margin-bottom: 3rem;
+}
+
+.mb-4 {
+  margin-bottom: 4rem;
+}
+
+.mb-5 {
+  margin-bottom: 5rem;
+}
+
+.mt-1 {
+  margin-top: 1rem;
+}
+
+.mt-2 {
+  margin-top: 2rem;
+}
+
+.mt-3 {
+  margin-top: 3rem;
+}
+
+.mt-4 {
+  margin-top: 4rem;
+}
+
+.mt-5 {
+  margin-top: 5rem;
+}
+
+.mt-100 {
+  margin-top: 10rem;
+}
+
+.mw-650 {
+  max-width: 650px;
+}
+
+a {
+  font-weight: 500;
+  color: var(--primary-color);
+  text-decoration: inherit;
+}
+
+a:hover {
+  color: var(--primary-hover-color);
+}
+
+.main-container {
+  width: 100%;
+  padding: 1rem;
+  max-width: 2000px;
+  padding-bottom: 10rem;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (max-width: 780px) {
+  .main-container {
+    padding-top: 4rem;
+    width: 100vw;
+  }
+}
+
+body {
+  width: 100%;
+  margin: 0;
+  place-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 3em;
+  line-height: 1.1;
+  font-family: 'Game Of Squids';
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background: var(--primary-color);
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+button:hover {
+  border-color: var(--primary-color);
+  background: var(--primary-hover-color);
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+button:disabled,
+button:disabled:hover {
+  cursor: default;
+  border-color: var(--primary-color);
+  background: #5f5f5f;
+}
+
+.card {
+  padding: 2em;
+}
+
+#app {
+  margin: 0;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.viewport-container {
+  height: 100%;
+}
+
+.app-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.view-lateral-bar {
+  height: 100%;
+  padding: 0;
+  padding-top: 1rem;
+  padding-right: .5rem;
+}
+
+@media (max-width: 780px) {
+  .view-lateral-bar {
+    display: none;
+  }
+}
+
+.w-full {
+  width: 100%;
+}
+
+.router-view {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  overflow: auto;
+  align-items: center;
+  flex-direction: column;
+  border-top-left-radius: 2rem;
+  background: linear-gradient(168deg, #171717 20%, var(--primary-color) 120%);
+  background-attachment: fixed;
+}
+
+.secondary-button {
+  border: solid grey 1px;
+  padding-top: .3rem;
+  padding-bottom: .3rem;
+  background-color: transparent;
+}
+
+.secondary-button:hover {
+  background-color: grey;
+}
+
+@media (max-width: 780px) {
+  .router-view {
+    margin-top: 4rem;
+  }
+}
+
+ul {
+  text-decoration: none;
+  list-style: none;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.just-cent {
+  justify-content: center;
+}
+
+.align-cent {
+  align-items: center;
+}
+
+.fd-col {
+  flex-direction: column;
+}
+
+.logo,
+.profile-pic {
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.logo:hover .profile-pic {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+
+  a:hover {
+    color: #747bff;
+  }
+
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 100%;
+}
+
+::-webkit-scrollbar-track {
+  background: linear-gradient(168deg, rgb(72, 72, 72) 20%, var(--primary-color) 120%);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(168deg, rgb(65, 65, 65) 20%, var(--primary-color) 120%);
+  border-radius: 1px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(168deg, rgb(0, 0, 0) 20%, var(--primary-hover-color) 120%);
+}
+
+input[type="text"] {
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+}
+
+.logo-container,
+.profile-pic-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+input:disabled {
+  border: none;
+  border-color: transparent;
+}
+
+.no-bg {
+  background: none;
+}
+
+.vertical-separator {
+  width: 2px;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.61), var(--primary-hover-color), transparent);
+}
+
+.separator {
+  width: 100%;
+  height: 2px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.61), var(--primary-color), transparent);
+  background-repeat: no-repeat;
+}
+
+.principal-button {
+  background-color: var(--primary-color);
+  padding-top: .3rem;
+  padding-bottom: .3rem;
+}
+
+.principal-button:hover {
+  background-color: var(--primary-hover-color);
+}
+
+.loader {
+  width: 100%;
+  font-weight: bold;
+  font-family: sans-serif;
+  font-size: 30px;
+  padding-bottom: 8px;
+  background: linear-gradient(currentColor 0 0) 0 100%/0% 3px no-repeat;
+  animation: l2 2s linear infinite;
+}
+
+.loader:before {
+  content: "Cargando..."
+}
+
+@keyframes l2 {
+  to {
+    background-size: 100% 3px
+  }
+}

@@ -1,0 +1,43 @@
+.list-container {
+  width: 500px;
+  height: 300px;
+  background-color: var(--primary-background-color);
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  border-radius: 5px;
+  span {
+    text-align: left;
+    border-bottom: solid;
+    border-width: 1px;
+    padding: 5px;
+    padding-bottom: 10px;
+  }
+}
+
+.account-container {
+  background-color: rgb(59, 59, 59);
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 5px;
+  &:hover {
+    background-color: rgb(73, 73, 73);
+    cursor: pointer;
+  }
+  .profilepic-container {
+    border-radius: 100%;
+    overflow: hidden;
+    width: 50px;
+    height: 50px;
+    img {
+      width: 100%;
+    }
+  }
+  .data {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-left: 10px;
+  }
+}

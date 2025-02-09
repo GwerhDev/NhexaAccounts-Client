@@ -1,0 +1,98 @@
+.form-container {
+  width: 300px;
+  padding: 5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.ul-form {
+  padding: 0;
+}
+
+.li-form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.input-form {
+  padding: 8px;
+  border-radius: 5px;
+}
+
+input:active, input:hover, input:focus-visible {
+  border-color: var(--primary-color);
+}
+
+.submit-button {
+  width: 100%;
+}
+
+.google-button {
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  justify-content: center;
+  padding: .7rem;
+  border-radius: 5px;
+  color: black;
+}
+.separator-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 2rem;
+}
+.separator {
+  width: 100%;
+  background-color: white;
+  height: 1px;
+  position: relative;
+}
+
+.profile-pic-container {
+  width: 100%;
+  height: 100%;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 100%;
+  background-color: var(--primary-background-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: solid 3px var(--primary-color);
+}
+
+.profile-pic {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: none;
+}
+
+.edit-buttons-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cancel-button {
+  background: rgb(71, 71, 71);
+}
+
+.logout-button {
+  border: solid grey 1px;
+  width: 100%;
+  margin-top: 1rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: .3rem;
+  padding-bottom: .3rem;
+  border-radius: 5px;
+  &:hover {
+    background-color: grey;
+  }
+}

@@ -1,0 +1,26 @@
+.container-menu-mobile {
+  overflow-y: auto;
+}
+
+.lateral-menu-link {
+  width: 100%;
+  padding: 1rem;
+  padding-inline: 0;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-wrap: nowrap;
+
+  &:hover {
+    background-color: var(--primary-hover-color);
+  }
+}
+
+.ul-menu-mobile {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}

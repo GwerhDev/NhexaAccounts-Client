@@ -1,0 +1,68 @@
+.app-menu-container {
+  margin: 0;
+  padding: 0;
+  gap: .5rem;
+  top: 80px;
+  right: 1rem;
+  width: 100%;
+  max-width: 300px;
+  padding: 1rem;
+  border-radius: 8px;
+  display: none;
+  position: absolute;
+  flex-direction: column;
+  background-color: var(--components-background);
+  backdrop-filter: blur(100px);
+  box-shadow: 0 0 3px rgba(63, 54, 66, 0.555);
+  z-index: 2;
+
+  .app-card-container {
+    width: 100%;
+    height: 50px;
+    background-color: var(--components-background);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+
+    &:hover {
+      cursor: pointer;
+      outline: solid 2px var(--primary-color);
+    }
+  }
+ 
+  li {
+    margin: 0;
+    padding: 0;  
+    width: 100%;
+    display: flex;
+    list-style: none;
+    justify-content: center;
+
+    .menu-text {
+      color: white;
+      width: 100%;
+      border-radius: 5px;
+    }
+  }
+}
+
+.current-user-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 50px;
+    border-radius: 50%;
+  }
+}
+
+@media (max-width: 1080px) {
+  .app-menu-container {
+    right: 80px;
+    top: 75px;
+  }
+}

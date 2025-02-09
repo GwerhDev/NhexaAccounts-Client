@@ -1,0 +1,135 @@
+.nav-menu-ul {
+  margin: 0;
+  padding: 0;
+  background-color: var(--components-background);
+  backdrop-filter: blur(200px);
+  width: 100%;
+  display: none;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-inline: 1rem;
+  padding: 1rem;
+  padding-inline: 2rem;
+}
+
+.logo {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  p {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+input {
+  height: 1.6rem;
+}
+
+.search-button {
+  background-color: var(--primary-color);
+  transition-duration: .4s;
+}
+
+.search-button:hover {
+  background-color: var(--primary-hover-color);
+}
+
+.burger-menu-container {
+  display: none;
+  padding: 0;
+  justify-content: flex-start;
+  align-items: center;
+
+  img {
+    cursor: pointer;
+    display: none;
+  }
+}
+
+.close-menu-container {
+  margin: 0;
+  padding: 0;
+  display: none;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 23.5px;
+
+  img:hover {
+    cursor: pointer;
+  }
+}
+
+.logo-cont {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.logo-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.user-button {
+  gap: 1rem;
+  display: flex;
+  align-items: center;
+
+  img:hover {
+    cursor: pointer;
+  }
+}
+
+.profile-pic{
+  width: 100%;
+  border: solid;
+  border-width: 2px;
+  border-color: var(--primary-color);
+  border-radius: 100%;
+  height: 40px;
+  width: 40px;
+
+}
+
+@media (max-width: 780px) {
+  .nav-menu-ul {
+    padding-inline: 2rem;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .menu-container {
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .searcher-container {
+    display: none;
+  }
+
+  .burger-menu-container {
+    display: flex;
+    align-items: center;
+
+    img {
+      display: block;
+    }
+  }
+}

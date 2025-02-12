@@ -28,6 +28,11 @@ input:active, input:hover, input:focus-visible {
 
 .submit-button {
   width: 100%;
+  background-color: var(--button-primary-color);
+
+  &:hover {
+    background-color: var(--button-primary-hover-color);
+  }
 }
 
 .google-button {

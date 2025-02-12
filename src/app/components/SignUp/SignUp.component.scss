@@ -22,12 +22,19 @@
   border-radius: 5px;
 }
 
-input:active, input:hover, input:focus-visible {
+input:active,
+input:hover,
+input:focus-visible {
   border-color: var(--primary-color);
 }
 
 .submit-button {
   width: 100%;
+  background-color: var(--button-primary-color);
+
+  &:hover {
+    background-color: var(--button-primary-hover-color);
+  }
 }
 
 .google-button {
@@ -38,12 +45,14 @@ input:active, input:hover, input:focus-visible {
   padding: .7rem;
   border-radius: 5px;
   color: black;
+
   img {
     width: 25px;
     height: 25px;
     margin-right: 1rem;
   }
 }
+
 .separator-container {
   display: flex;
   justify-content: center;

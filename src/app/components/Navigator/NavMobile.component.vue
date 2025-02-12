@@ -10,6 +10,7 @@ import appmenuIcon from '../../../assets/svg/appmenu-icon.svg';
 
 const store: any = useStore();
 const currentUser: any = computed(() => store.currentUser);
+const logged: any = computed(() => currentUser.value.logged);
 
 </script>
 
@@ -17,11 +18,11 @@ const currentUser: any = computed(() => store.currentUser);
   <ul class="nav-menu-ul">
     <div class="d-flex align-cent logo-container">
       <div class="d-flex align-cent logo-cont">
-        <div class="burger-menu-container">
+        <div v-if="logged" class="burger-menu-container">
           <img src="../../../assets/svg/icon-burger-menu.svg" @click="openMenu()" alt="">
         </div>
         <div class="close-menu-container" alt="">
-          <img src="../../../assets/svg/close-icon.svg" @click="closeMenu()" alt="">
+          <img v-if="logged" src="../../../assets/svg/close-icon.svg" @click="closeMenu()" alt="">
         </div>
         <Logo :width="'40'" />
       </div>

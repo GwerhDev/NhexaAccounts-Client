@@ -21,15 +21,31 @@ let profilePic: any = computed(() => currentUser.value.userData?.profilePic ?? d
       <div>
         <img class="profile-pic" :src="profilePic" width="150" alt="">
       </div>
-      <span class="welcome-message"><h1>¡Hola, {{ username }}!</h1></span>
+      <span class="welcome-message">
+        <h1>¡Hola, {{ username }}!</h1>
+      </span>
       <p>Administra tu información y las opciones de privacidad y seguridad a fin de que NHEXA sea más relevante para
         ti.</p>
     </div>
+
     <div class="presentation" v-else>
       <LogoHeader />
-      <p>Bienvenido a la plataforma de administración de <strong>NHEXA</strong>. Aquí encontrarás:</p>
+      <span class="buttons-container w-full mt-1 mb-1" v-if="!logged">
+        <router-link class="w-full" to='/login'>
+          <button class="w-full principal-button">
+            Iniciar sesión
+          </button>
+        </router-link>
+        <router-link class="w-full" to='/register'>
+          <button class="w-full secondary-button">
+            Registrarse
+          </button>
+        </router-link>
+      </span>
+      <h2>Aquí encontrarás:</h2>
     </div>
     <LogoHeader v-if="logged" />
+
     <div class="services">
       <div class="section">
         <img :src="appIcon" alt="" width="25">
@@ -60,18 +76,6 @@ let profilePic: any = computed(() => currentUser.value.userData?.profilePic ?? d
         <p>Puedes comunicarte con nuestro equipo para solucionar problemas y despejar dudas.</p>
       </ul>
     </div>
-    <span class="buttons-container w-full" v-if="!logged">
-      <router-link class="w-full" to='/login'>
-        <button class="w-full principal-button">
-          Iniciar sesión
-        </button>
-      </router-link>
-      <router-link class="w-full" to='/register'>
-        <button class="w-full secondary-button">
-          Registrarse
-        </button>
-      </router-link>
-    </span>
   </section>
 
 

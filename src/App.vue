@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useStore } from './middlewares/store/index';
 import NavBar from './app/components/Navigator/NavBar.component.vue';
 import LateralBar from './app/components/Navigator/LateralBar.component.vue';
-import { useStore } from './middlewares/store/index';
 
 const store: any = useStore();
 const token: any = localStorage.getItem('userToken');
+const logged: any = computed(() => currentUser.value.logged);
 token && store.handleUserData(token);
 
 </script>
@@ -15,7 +17,7 @@ token && store.handleUserData(token);
       <nav-bar />
     </template>
     <div class="app-container">
-      <div class="view-lateral-bar">
+      <div v-if="logged" class="view-lateral-bar">
         <lateral-bar />
       </div>
       <div class="router-view">

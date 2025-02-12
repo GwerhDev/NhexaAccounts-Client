@@ -6,6 +6,7 @@ import LateralBar from './app/components/Navigator/LateralBar.component.vue';
 
 const store: any = useStore();
 const token: any = localStorage.getItem('userToken');
+const currentUser: any = computed(() => store.currentUser);
 const logged: any = computed(() => currentUser.value.logged);
 token && store.handleUserData(token);
 

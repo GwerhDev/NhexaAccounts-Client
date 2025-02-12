@@ -1,4 +1,4 @@
-import { RouteRecordRaw, createRouter, createWebHistory  } from 'vue-router';
+import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router';
 import AuthPage from '../pages/AuthPage.vue';
 import LoginPage from '../pages/LoginPage.vue';
 import OAuthPage from '../pages/OAuthPage.vue';
@@ -26,10 +26,10 @@ const routes: RouteRecordRaw[] = [
     component: AuthErrorPage
   },
   {
-    path: '/auth/:token',
+    path: '/auth',
     name: 'AuthPage',
     component: AuthPage
-  },
+  },  
   {
     path: '/login',
     name: 'LoginPage',
@@ -58,7 +58,7 @@ const routes: RouteRecordRaw[] = [
 ]
 
 const router = createRouter({
-  history: createWebHistory (),
+  history: createWebHistory(),
   routes
 });
 

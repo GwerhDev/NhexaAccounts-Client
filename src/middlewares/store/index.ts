@@ -34,12 +34,12 @@ export const useStore = defineStore('store', {
       this.userToken = userToken;
       return url;
     },
-    async handleUserData(token: any) {
+    async handleUserData(token: any, router: any) {
       try {
-        console.log(token)
         setUserToken(token);
         this.userToken = token;
         this.currentUser = await getUserData(token);
+        router && router.push('/');
       } catch (error) {
         localStorage.clear();
         console.error(error);

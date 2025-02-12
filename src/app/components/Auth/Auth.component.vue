@@ -1,20 +1,21 @@
 <style scoped lang="scss" src="./Auth.component.scss" />
 <script setup lang="ts">
-
-import { useStore } from '../../../middlewares/store/index';
+import { onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useStore } from '../../../middlewares/store/index';
 
 const store: any = useStore();
 const route: any = useRoute();
 const router: any = useRouter();
-const token: any = route.params.token;
 
 onMounted(async () => {
-  token && store.handleUserData(token);
-  router.push("/");;
-})
+  const token: any = route.query.token;
 
-
+  if (token) {
+    await store.handleUserData(token, router);
+  }
+}
+)
 
 </script>
 

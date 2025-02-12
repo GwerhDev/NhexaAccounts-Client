@@ -22,12 +22,12 @@ let profilePic: any = computed(() => currentUser.value.userData?.profilePic ?? d
         <img class="profile-pic" :src="profilePic" width="150" alt="">
       </div>
       <span class="welcome-message"><h1>¡Hola, {{ username }}!</h1></span>
-      <p>Administra tu información y las opciones de privacidad y seguridad a fin de que CONHEXA sea más relevante para
+      <p>Administra tu información y las opciones de privacidad y seguridad a fin de que NHEXA sea más relevante para
         ti.</p>
     </div>
     <div class="presentation" v-else>
       <LogoHeader />
-      <p>Bienvenido a la plataforma de administración de <strong>CONHEXA</strong>. Aquí encontrarás:</p>
+      <p>Bienvenido a la plataforma de administración de <strong>NHEXA</strong>. Aquí encontrarás:</p>
     </div>
     <LogoHeader v-if="logged" />
     <div class="services">

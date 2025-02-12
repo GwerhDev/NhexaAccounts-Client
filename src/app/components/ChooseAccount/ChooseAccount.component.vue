@@ -31,7 +31,7 @@ onMounted(() => {
 
 <template>
   <div class="list-container">
-    <span>Iniciar sesión con La Ruina Hub</span>
+    <span>Iniciar sesión NHEXA</span>
     <div>
       <h2>Selecciona una cuenta</h2>
       <h3>para ir a <a :href="uri">{{ uri }}</a></h3>

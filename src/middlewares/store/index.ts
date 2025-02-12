@@ -22,7 +22,7 @@ export const useStore = defineStore('store', {
     async handleRegister(data: any) {
       const userToken = await signupInner(data);
       setUserToken(userToken);
-      const url = '/account/settings/' + userToken;
+      const url = '/auth/' + userToken;
       this.userToken = userToken;
       return url;
     },
@@ -36,6 +36,7 @@ export const useStore = defineStore('store', {
     },
     async handleUserData(token: any) {
       try {
+        console.log(token)
         setUserToken(token);
         this.userToken = token;
         this.currentUser = await getUserData(token);

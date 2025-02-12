@@ -1,4 +1,4 @@
-<style scoped lang="scss" src="./Auth.component.scss"/>
+<style scoped lang="scss" src="./Auth.component.scss" />
 <script setup lang="ts">
 
 import { useStore } from '../../../middlewares/store/index';
@@ -9,9 +9,12 @@ const route: any = useRoute();
 const router: any = useRouter();
 const token: any = route.params.token;
 
-token && await store.handleUserData(token);
+onMounted(async () => {
+  token && store.handleUserData(token);
+  router.push("/");;
+})
 
-router.push("/");
+
 
 </script>
 

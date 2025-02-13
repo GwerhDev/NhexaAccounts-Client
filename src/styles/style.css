@@ -209,18 +209,18 @@ a:hover {
 @media (max-width: 780px) {
   .main-container {
     padding-top: 4rem;
-    width: 100vw;
+    width: 100%;
   }
 }
 
 body {
-  width: 100%;
   margin: 0;
-  place-items: center;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  padding-bottom: 4rem;
 }
 
 h1 {
@@ -267,12 +267,6 @@ button:disabled:hover {
 #app {
   margin: 0;
   width: 100%;
-  min-height: 100vh;
-  display: flex;
-  text-align: center;
-  align-items: center;
-  flex-direction: column;
-  justify-content: flex-start;
 }
 
 .viewport-container {
@@ -286,9 +280,9 @@ button:disabled:hover {
 }
 
 .view-lateral-bar {
-  height: 100%;
+  display: flex;
+  height: 100vh;
   padding: 0;
-  padding-top: 1rem;
   padding-right: .5rem;
 }
 
@@ -310,7 +304,6 @@ button:disabled:hover {
   align-items: center;
   flex-direction: column;
   border-top-left-radius: 2rem;
-  background: linear-gradient(168deg, #171717 20%, var(--primary-color) 120%);
   background-attachment: fixed;
 }
 
@@ -319,6 +312,7 @@ button:disabled:hover {
   padding-top: .3rem;
   padding-bottom: .3rem;
   background-color: transparent;
+  text-align: center;
 }
 
 .secondary-button:hover {
@@ -378,21 +372,21 @@ ul {
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 8px;
   height: 100%;
 }
 
 ::-webkit-scrollbar-track {
-  background: linear-gradient(168deg, rgb(72, 72, 72) 20%, var(--primary-color) 120%);
+  background: linear-gradient(168deg, #e4e0e0 20%, var(--button-secondary-color) 120%);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(168deg, rgb(65, 65, 65) 20%, var(--primary-color) 120%);
-  border-radius: 1px;
+  background: linear-gradient(168deg, #414141 20%, var(--button-primary-color) 120%);
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(168deg, rgb(0, 0, 0) 20%, var(--primary-hover-color) 120%);
+  background: linear-gradient(168deg, #414141 20%, var(--button-primary-hover-color) 120%);
 }
 
 input[type="text"] {
@@ -432,10 +426,12 @@ input:disabled {
   background-color: var(--button-primary-color);
   padding-top: .3rem;
   padding-bottom: .3rem;
+  text-align: center;
 }
 
 .principal-button:hover {
   background-color: var(--button-primary-hover-color);
+  text-align: center;
 }
 
 .loader {

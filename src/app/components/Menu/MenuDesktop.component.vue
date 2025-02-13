@@ -10,6 +10,11 @@ import { closeMenu } from '../../../helpers/menu';
         Página principal
       </router-link>
     </li>
+  </ul>
+  
+  <div class="separator mt-1 mb-1"></div>
+
+  <ul class="lateral-menu-text">
     <li>
       <router-link class="lateral-menu-link" to="/" @click="closeMenu()">
         Información personal
@@ -31,7 +36,9 @@ import { closeMenu } from '../../../helpers/menu';
       </router-link>
     </li>
   </ul>
+
   <div class="separator mt-1 mb-1"></div>
+  
   <ul class="lateral-menu-text">
     <li>
       <router-link class="lateral-menu-link" to="/environment/apps" @click="closeMenu()">

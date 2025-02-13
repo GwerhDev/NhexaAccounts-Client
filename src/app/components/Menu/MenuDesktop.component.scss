@@ -3,10 +3,9 @@
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100%;
+  height: auto;
   transition-duration: .4s;
   display: flex;
-  overflow-y: auto;
   flex-direction: column;
 }
 
@@ -17,7 +16,6 @@
   width: 100%;
   transition-duration: .4s;
   display: none;
-  overflow-y: auto;
   flex-direction: column;
 }
 

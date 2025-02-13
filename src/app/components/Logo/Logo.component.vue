@@ -1,10 +1,11 @@
 <style scoped lang="scss" src="./Logo.component.scss" />
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch, ref, Ref } from 'vue';
 import { closeMenu } from '../../../helpers/menu';
 import { CLIENT_URL } from '../../../middlewares/misc/const';
 import { useStore } from '../../../middlewares/store/index';
 
+const nhexaUrl: Ref = ref('');
 const store: any = useStore();
 const userToken: any = computed(() => store.userToken);
 const currentUser: any = computed(() => store.currentUser);
@@ -14,7 +15,9 @@ defineProps({
   width: String
 });
 
-const nhexaUrl: string = logged ? `${CLIENT_URL}/auth?token=${userToken.value}` : CLIENT_URL;
+watch (() => {
+  nhexaUrl.value = userToken.value ? `${CLIENT_URL}/auth?token=${userToken.value}` : CLIENT_URL;
+})
 
 </script>
 

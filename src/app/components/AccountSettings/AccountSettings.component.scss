@@ -1,6 +1,5 @@
 .form-container {
   width: 300px;
-  padding: 5rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -52,24 +51,13 @@ input:active, input:hover, input:focus-visible {
   position: relative;
 }
 
-.profile-pic-container {
-  width: 100%;
-  height: 100%;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  border-radius: 100%;
-  background-color: var(--primary-background-color);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  outline: solid 3px var(--primary-color);
-}
-
 .profile-pic {
   width: 100%;
   height: 100%;
+  max-width: 150px;
   border-radius: 50%;
   border: none;
+  outline: solid 3px var(--primary-color);
 }
 
 .edit-buttons-container {

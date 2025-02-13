@@ -1,7 +1,7 @@
 import { $d } from "../utils/cssSelector";
 
 export function openMenu() {
-  $d(".nav-menu-ul").style.height="100%";
+  $d(".nav-menu-ul").style.height="100vh";
   $d(".menu-container").style.display="flex";
   $d(".close-menu-container").style.display="flex";
   $d(".burger-menu-container").style.display="none";

@@ -44,7 +44,6 @@ let profilePic: any = computed(() => currentUser.value.userData?.profilePic ?? d
       </span>
       <h2>Aquí encontrarás:</h2>
     </div>
-    <LogoHeader v-if="logged" />
 
     <div class="services">
       <div class="section">

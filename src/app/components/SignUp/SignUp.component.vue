@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { API_URL } from '../../../middlewares/misc/const';
 import { useStore } from '../../../middlewares/store/index';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { onMounted, computed, Ref, ref } from 'vue';
 import { getUserToken } from '../../../helpers';
 import googleIcon from '../../../assets/png/google-icon.png';
 import LogoHeader from '../Logo/LogoHeader.component.vue';
 
 const token: Ref = ref("");
+const apiUrl: Ref = ref("");
+const callback: Ref = ref("");
 const store: any = useStore();
+const route: any = useRoute();
 const router: any = useRouter();
-const apiUrl: string = API_URL + "/signup-google";
 const currentUser: any = computed(() => store.currentUser);
 
 let username = "";
@@ -19,6 +21,9 @@ let password = "";
 
 onMounted(() => {
   token.value = getUserToken();
+  callback.value = route.query.callback;
+  apiUrl.value = callback.value ? API_URL + "/login-google?callback=" + callback.value : API_URL + "/login-google";
+
   if (!currentUser?.value.error && token.value) {
     router.push('/');
   }
@@ -28,7 +33,7 @@ async function handleRegister(e: any) {
   e.preventDefault();
   const formData: any = { username, email, password };
   try {
-    const path: any = await store.handleRegister(formData);
+    const path: any = await store.handleRegister(formData, callback.value);
     router.push(path);
   } catch (error) {
     console.error(error)

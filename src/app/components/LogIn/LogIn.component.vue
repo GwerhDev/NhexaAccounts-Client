@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { onMounted, computed, Ref, ref } from 'vue';
 import { API_URL } from '../../../middlewares/misc/const';
 import { useStore } from '../../../middlewares/store/index';
@@ -8,17 +8,23 @@ import LogoHeader from '../Logo/LogoHeader.component.vue';
 import googleIcon from '../../../assets/png/google-icon.png';
 
 const token: Ref = ref("");
+const apiUrl: Ref = ref("");
+const callback: Ref = ref("");
 const store: any = useStore();
+const route: any = useRoute();
 const router: any = useRouter();
-const apiUrl: string = API_URL + "/login-google";
 const currentUser: any = computed(() => store.currentUser);
+
 let email = "";
 let password = "";
 
 onMounted(() => {
+  callback.value = route.query.callback;
   token.value = getUserToken();
+  apiUrl.value = callback.value ? API_URL + "/login-google?callback=" + callback.value : API_URL + "/login-google";
   if (!currentUser?.value.error && token.value) {
-    router.push('/');
+    const path = callback.value ? (callback.value + 'auth?token=' + token.value) : '/';
+    router.push(path);
   }
 });
 
@@ -26,10 +32,10 @@ async function handleLogin(e: any) {
   e.preventDefault();
   const formData: any = { email, password };
   try {
-    const path: any = await store.handleLogin(formData);
+    const path: any = await store.handleLogin(formData, callback.value);
     router.push(path);
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 }
 </script>

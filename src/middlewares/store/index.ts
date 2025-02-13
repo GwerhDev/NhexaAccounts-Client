@@ -19,18 +19,19 @@ export const useStore = defineStore('store', {
       this.currentUser = {};
       this.userToken = '';
     },
-    async handleRegister(data: any) {
+    async handleRegister(data: any, callback: any) {
       const userToken = await signupInner(data);
       setUserToken(userToken);
-      const url = '/auth/' + userToken;
+      const url = callback ? callback + '/auth?token=' + userToken : '/auth?token' + userToken;
       this.userToken = userToken;
       return url;
     },
-    async handleLogin(data: any) {
+    async handleLogin(data: any, callback: any) {
+      console.log(callback)
       const userToken = await loginInner(data);
-      if(userToken?.error) return "/auth/error";
+      if (userToken?.error) return "/auth/error?callback=" + callback;
       setUserToken(userToken);
-      const url = '/';
+      const url = callback ? callback + '/auth?token=' + userToken : '/';
       this.userToken = userToken;
       return url;
     },
@@ -52,5 +53,5 @@ export const useStore = defineStore('store', {
       setUserToken(token);
     },
   }
-  
+
 });

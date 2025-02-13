@@ -14,8 +14,7 @@ onMounted(async () => {
   if (token) {
     await store.handleUserData(token, router);
   }
-}
-)
+});
 
 </script>
 

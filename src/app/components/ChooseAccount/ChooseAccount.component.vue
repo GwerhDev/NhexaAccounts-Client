@@ -3,7 +3,6 @@ import { useRoute, useRouter } from 'vue-router';
 import { useStore } from '../../../middlewares/store';
 import { Ref, computed, ref, onMounted } from 'vue';
 import { getUserToken } from '../../../helpers';
-import userIcon from '../../../assets/png/user-icon.png'
 
 const store: any = useStore();
 const token: Ref = ref('');
@@ -38,7 +37,8 @@ onMounted(() => {
     </div>
     <div v-if="!logged && !token" class="account-container" @click="login">
       <div class="profilepic-container">
-        <img :src="userIcon">
+        <img v-if="currentUser?.userData?.profilePic" :src="currentUser?.userData?.profilePic" alt="">
+        <font-awesome-icon v-else icon="fa-solid fa-user" />
       </div>
       <div class="data">
         Iniciar sesión

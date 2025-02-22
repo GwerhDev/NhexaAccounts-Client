@@ -6,7 +6,7 @@
   font-weight: 500;
   font-family: inherit;
   background: linear-gradient(168deg, rgb(72, 72, 72) 20%, var(--primary-color) 120%);
-  color: white;
+  color: var(--nhexa-white);
   cursor: pointer;
   transition-duration: .4s;  
 }

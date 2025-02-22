@@ -46,7 +46,7 @@ input:active, input:hover, input:focus-visible {
 }
 .separator {
   width: 100%;
-  background-color: white;
+  background-color: var(--nhexa-white);
   height: 1px;
   position: relative;
 }
@@ -73,7 +73,7 @@ input:active, input:hover, input:focus-visible {
   border: solid grey 1px;
   width: 100%;
   margin-top: 1rem;
-  color: white;
+  color: var(--nhexa-white);
   display: flex;
   align-items: center;
   justify-content: center;

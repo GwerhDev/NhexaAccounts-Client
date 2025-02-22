@@ -5,12 +5,11 @@
   display: flex;
   flex-direction: column;
 
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
   background: linear-gradient(168deg, var(--secondary-background-color) 20%, var(--primary-background-color) 120%);
   background-attachment: fixed;
 
@@ -19,13 +18,19 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --nhexa-white: rgb(229, 229, 229);
   --primary-color: #8ffffabc;
   --primary-hover-color: #69b1b8;
   --primary-background-color: #8ffffabc;
   --secondary-background-color: #171717;
+  --secondary-semitransparent-background-color: #171717bc;
   --button-primary-color: #849ea4;
+  --menu-hover-color: #69b2b8b6;
   --button-primary-hover-color: #69b1b8;
   --components-background: #1b1b1bba;
+
+  color: var(--nhexa-white);
 }
 
 @media (max-width: 1080px) {

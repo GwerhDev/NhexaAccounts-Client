@@ -20,11 +20,12 @@
     width: 100%;
     height: 50px;
     background-color: var(--components-background);
+    border: solid 1px rgba(105, 105, 105, 0.705);
     border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: var(--nhexa-white);
 
     &:hover {
       cursor: pointer;
@@ -41,7 +42,7 @@
     justify-content: center;
 
     .menu-text {
-      color: white;
+      color: var(--nhexa-white);
       width: 100%;
       border-radius: 5px;
     }

@@ -8,7 +8,7 @@ const store = useStore();
 const currentUser: any = computed(() => store.currentUser);
 const token: any = computed(() => store.userToken);
 const logged: any = computed(() => currentUser.value.logged);
-const nhexapodUrl: Ref = ref("https://pod.nhexa.cl");
+const nhexapodUrl: Ref = ref("https://spell.nhexa.cl");
 const nhexamerchUrl: Ref = ref("https://merch.nhexa.cl");
 const nhexavisionUrl: Ref = ref("https://vision.nhexa.cl");
 
@@ -33,7 +33,7 @@ function select() {
     </a>
     <a :href="logged ? nhexapodUrl + '/auth?token=' + token : nhexapodUrl" class="app-card-container"
       @click="select">
-      Nhexa Pod
+      Nhexa Spell
     </a>
     <a :href="nhexamerchUrl" class="app-card-container" @click="select">
       Nhexa Merch

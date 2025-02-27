@@ -16,7 +16,7 @@ defineProps({
 });
 
 watch (() => {
-  nhexaUrl.value = userToken.value ? `${CLIENT_URL}/auth?token=${userToken.value}` : CLIENT_URL;
+  nhexaUrl.value = (logged  && userToken.value) ? `${CLIENT_URL}/auth?token=${userToken.value}` : CLIENT_URL;
 })
 
 </script>

@@ -1,6 +1,6 @@
 <style scoped lang="scss" src="./ConnectedApps.component.scss" />
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, Ref } from 'vue';
 import { useStore } from '../../../middlewares/store';
 import { getUserToken } from '../../../helpers';
 

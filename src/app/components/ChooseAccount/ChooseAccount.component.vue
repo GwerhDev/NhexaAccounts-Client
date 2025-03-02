@@ -16,8 +16,6 @@ const profilePic: any = computed(() => currentUser.value.userData.profilePic);
 const uri: any = decodeURIComponent(route.query.callback);
 const redirectUrl = uri + "/auth?token=" + getUserToken();
 
-console.log(redirectUrl)
-
 function selectAccount() { window.location.href = redirectUrl };
 
 function login() { router.push('/login') };

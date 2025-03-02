@@ -5,9 +5,9 @@ import { useStore } from '../../../middlewares/store';
 import { CanvasMenuFunction, closeAccountMenu, closeMenu } from '../../../helpers/menu';
 
 const store = useStore();
+const appList: Ref<any[]> = computed(() => store.appList);
 const currentUser: any = computed(() => store.currentUser);
 const token: any = computed(() => store.userToken);
-const appList: Ref<any[]> = computed(() => store.appList);
 const logged: any = computed(() => currentUser.value.logged);
 
 CanvasMenuFunction("#app-menu-container");

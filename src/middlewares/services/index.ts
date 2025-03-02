@@ -30,6 +30,12 @@ export const loginInner: any = async (formData: any) => {
   return response;
 }
 
+export const getAppList: any = async () => {
+  const response: any = await axios.get(API_URL + "/app-list")
+                                   .then(response => response.data)
+                                   .catch(() => { return { error: error.api.loadItemById } });
+  return response;
+}
 export const getUserData: any = async (token: any) => {
   const response: any = await axios.get(API_URL + "/auth", { headers: { Authorization: token }})
                                    .then(response => response.data)

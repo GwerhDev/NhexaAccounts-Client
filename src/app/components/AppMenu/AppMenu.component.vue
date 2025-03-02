@@ -1,16 +1,14 @@
 <style scoped lang="scss" src="./AppMenu.component.scss" />
 <script setup lang="ts">
-import { computed, Ref, ref } from 'vue';
+import { onMounted, computed, Ref } from 'vue';
 import { useStore } from '../../../middlewares/store';
 import { CanvasMenuFunction, closeAccountMenu, closeMenu } from '../../../helpers/menu';
 
 const store = useStore();
 const currentUser: any = computed(() => store.currentUser);
 const token: any = computed(() => store.userToken);
+const appList: Ref<any[]> = computed(() => store.appList);
 const logged: any = computed(() => currentUser.value.logged);
-const nhexapodUrl: Ref = ref("https://spell.nhexa.cl");
-const nhexamerchUrl: Ref = ref("https://merch.nhexa.cl");
-const nhexavisionUrl: Ref = ref("https://vision.nhexa.cl");
 
 CanvasMenuFunction("#app-menu-container");
 
@@ -18,6 +16,10 @@ function select() {
   closeAccountMenu();
   closeMenu();
 };
+
+onMounted(() => {
+  store.handleGetAppList();
+});
 
 </script>
 
@@ -28,15 +30,13 @@ function select() {
       <h4>Apps</h4>
     </li>
     <div class="separator"></div>
-    <a :href="logged ? nhexavisionUrl + '/auth?token=' + token : nhexavisionUrl" class="app-card-container" @click="select">
-      Nhexa Vision
-    </a>
-    <a :href="logged ? nhexapodUrl + '/auth?token=' + token : nhexapodUrl" class="app-card-container"
-      @click="select">
-      Nhexa Spell
-    </a>
-    <a :href="nhexamerchUrl" class="app-card-container" @click="select">
-      Nhexa Merch
-    </a>
+    <li v-if="appList.length" v-for="item in appList">
+      <a :href="logged ? item.url + '/auth?token=' + token : item.url" class="app-card-container" @click="select">
+        {{ item.label }}
+      </a>
+    </li>
+    <li v-else>
+      <div class="loader"></div>
+    </li>
   </ul>
 </template>

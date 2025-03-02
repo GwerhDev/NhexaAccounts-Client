@@ -46,7 +46,7 @@ const routes: RouteRecordRaw[] = [
     component: AccountPage
   },
   {
-    path: '/oauth/chooseaccount/:redirect_uri',
+    path: '/oauth/chooseaccount',
     name: 'OAuth',
     component: OAuthPage
   },

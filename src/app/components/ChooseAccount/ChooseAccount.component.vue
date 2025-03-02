@@ -13,8 +13,10 @@ const logged: any = computed(() => currentUser.value.logged);
 const email: any = computed(() => currentUser.value.userData.email);
 const username: any = computed(() => currentUser.value.userData.username);
 const profilePic: any = computed(() => currentUser.value.userData.profilePic);
-const uri: any = "https://" + route.params.redirect_uri;
+const uri: any = decodeURIComponent(route.query.callback);
 const redirectUrl = uri + "/auth?token=" + getUserToken();
+
+console.log(redirectUrl)
 
 function selectAccount() { window.location.href = redirectUrl };
 

@@ -9,8 +9,6 @@ const currentUser: any = computed(() => store.currentUser);
 const logged: any = computed(() => currentUser.value.logged);
 const appList: Ref<any[]> = computed(() => store.appList);
 
-console.log(appList.value);
-
 </script>
 
 <template>
@@ -19,7 +17,7 @@ console.log(appList.value);
       <h2>Visita nuestras aplicaciones</h2>
       <ul class="card-container">
         <li v-if="appList.length" class="app-card-li" v-for="item in appList">
-          <a class="app-card" :href="currentUser ? item.url + '/auth?token=' + getUserToken() : item.url"
+          <a class="app-card" :href="logged ? item.url + '/auth?token=' + getUserToken() : item.url"
             target="_blank">
             <h2>{{ item.label }}</h2>
           </a>

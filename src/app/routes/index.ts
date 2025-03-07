@@ -7,6 +7,7 @@ import AccountPage from '../pages/AccountPage.vue';
 import SupportPage from '../pages/SupportPage.vue';
 import RegisterPage from '../pages/RegisterPage.vue';
 import AuthErrorPage from '../pages/AuthErrorPage.vue';
+import EmbedSessionPage from '../pages/EmbedSessionPage.vue';
 import ConnectedAppsPage from '../pages/ConnectedAppsPage.vue';
 
 const routes: RouteRecordRaw[] = [
@@ -29,7 +30,12 @@ const routes: RouteRecordRaw[] = [
     path: '/auth',
     name: 'AuthPage',
     component: AuthPage
-  },  
+  },
+  {
+    path: '/embed-session',
+    name: 'EmbedSessionPage',
+    component: EmbedSessionPage
+  },
   {
     path: '/login',
     name: 'LoginPage',
@@ -41,7 +47,7 @@ const routes: RouteRecordRaw[] = [
     component: RegisterPage
   },
   {
-    path: '/account/settings/:token',
+    path: '/account/settings',
     name: 'AccountPage',
     component: AccountPage
   },

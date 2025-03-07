@@ -1,22 +1,19 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { useRoute } from 'vue-router';
 import { useStore } from '../../../middlewares/store/index';
 import { closeAccountMenu } from '../../../helpers/menu';
 import defaultImage from '../../../assets/svg/user-icon.svg';
 
 const store: any = useStore();
-const route: any = useRoute();
-const token: any = route.params.token;
-
-token && store.handleUserData(token);
-
 const currentUser: any = computed(() => store.currentUser);
+
 let logged: any = computed(() => currentUser.value.logged);
+let token: any = computed(() => currentUser.value.token);
 let id: any = computed(() => currentUser.value.userData?.id);
 let email: any = computed(() => currentUser.value.userData?.email);
 let username: any = computed(() => currentUser.value.userData?.username);
 let profilePic: any = computed(() => currentUser.value.userData?.profilePic ?? defaultImage);
+token && store.handleUserData(token);
 
 const editActive: any = ref(false);
 const showSaveCancelButtons: any = computed(() => editActive.value);

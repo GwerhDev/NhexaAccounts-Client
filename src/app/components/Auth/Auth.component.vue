@@ -10,9 +10,10 @@ const router: any = useRouter();
 
 onMounted(async () => {
   const token: any = route.query.token;
+  const callback: any = route.query.callback;
 
   if (token) {
-    await store.handleUserData(token, router);
+    await store.handleUserData(token, callback, router);
   }
 });
 

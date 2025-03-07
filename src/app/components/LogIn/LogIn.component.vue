@@ -18,12 +18,10 @@ const currentUser: any = computed(() => store.currentUser);
 let email = "";
 let password = "";
 
-onMounted(async () => {
+onMounted(() => {
   callback.value = route.query.callback;
-  token.value = await getUserToken();
+  token.value = getUserToken();
   apiUrl.value = callback.value ? API_URL + "/login-google?callback=" + callback.value : API_URL + "/login-google";
-  console.log("callback", callback.value);
-  console.log("token", token.value);
 
   if(token.value) {
     return router.push('/oauth/chooseaccount?callback=' + encodeURIComponent(callback.value));

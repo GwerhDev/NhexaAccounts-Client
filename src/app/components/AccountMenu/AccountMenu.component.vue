@@ -6,7 +6,6 @@ import { CanvasMenuFunction, closeAccountMenu, closeMenu } from '../../../helper
 
 const store = useStore();
 const currentUser: any = computed(() => store.currentUser);
-const userToken: any = computed(() => store.userToken);
 const logged: any = computed(() => currentUser.value.logged);
 const pathAccount: string = '/account/settings/';
 
@@ -45,7 +44,7 @@ function select() {
     </li>
     <div class="separator"></div>
     <li v-if="logged">
-      <router-link class="menu-text principal-button" :to="pathAccount + userToken" @click="select()">
+      <router-link class="menu-text principal-button" :to="pathAccount" @click="select()">
         Administrar cuenta
       </router-link>
     </li>

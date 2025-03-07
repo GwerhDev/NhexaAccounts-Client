@@ -38,12 +38,14 @@ export const useStore = defineStore('store', {
       this.userToken = userToken;
       return url;
     },
-    async handleUserData(token: any, router: any) {
+    async handleUserData(token: any, callback: any, router: any) {
       try {
         setUserToken(token);
         this.userToken = token;
         this.currentUser = await getUserData(token);
-        router && router.push('/');
+        if (router && !callback) return router.push('/');
+        else if(router && callback) return window.location.href = callback;
+        else return;
       } catch (error) {
         localStorage.clear();
         console.error(error);

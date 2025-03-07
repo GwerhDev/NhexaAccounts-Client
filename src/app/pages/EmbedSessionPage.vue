@@ -1,14 +1,21 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { getUserToken } from "../../helpers";
+import { allowedOrigins } from "../../middlewares/misc/const";
 
 const showLogin = ref(false);
 
 onMounted(async () => {
+
   try {
     const userToken: any = getUserToken();
-    window.parent.postMessage({ userToken }, "*");
+    const parentOrigin = document.referrer || "*";
 
+    if (allowedOrigins.includes(new URL(parentOrigin).origin)) {
+      window.parent.postMessage({ userToken }, parentOrigin);
+    } else {
+      console.warn("Origen no permitido:", parentOrigin);
+    }
   } catch (error) {
     console.error("Error al verificar sesión:", error);
     window.parent.postMessage({ loggedIn: false }, "*");

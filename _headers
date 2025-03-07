@@ -1,0 +1,4 @@
+
+/*
+  X-Frame-Options: ALLOW-FROM https://nhexa.cl https://laruina.cl https://elumbral.cl https://terminalcore.cl https://terminalkiller.cl https://spectra.nhexa.cl https://spellcast.nhexa.cl https://havenstore.nhexa.cl https://streamby.nhexa.cl
+  Content-Security-Policy: frame-ancestors https://nhexa.cl https://laruina.cl https://elumbral.cl https://terminalcore.cl https://terminalkiller.cl https://spectra.nhexa.cl https://spellcast.nhexa.cl https://havenstore.nhexa.cl https://streamby.nhexa.cl

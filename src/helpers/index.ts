@@ -1,6 +1,18 @@
-export const getUserToken = () => {
-  const match = document.cookie.match(/(^| )userToken=([^;]+)/);
-  return match ? match[2] : null;
+import { API_URL } from "../middlewares/misc/const";
+
+export const getUserToken = async () => {
+  try {
+    const res = await fetch(API_URL + "/session", {
+      credentials: "include"
+    });
+
+    const { userToken } = await res.json() || {};
+    return userToken;
+
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 };
 
 export const clearUserToken = () => {

@@ -11,7 +11,6 @@ const logged: any = computed(() => currentUser.value.logged);
 
 onMounted(async () => {
   const token: any = await getUserToken();
-  console.log('token', token);
   token && store.handleUserData(token);
 });
 

@@ -37,7 +37,7 @@ export const getAppList: any = async () => {
   return response;
 }
 export const getUserData: any = async (token: any) => {
-  const response: any = await axios.get(API_URL + "/auth", { headers: { Authorization: token }})
+  const response: any = await axios.get(API_URL + "/account", { headers: { Authorization: token }})
                                    .then(response => response.data)
   return response;
 }

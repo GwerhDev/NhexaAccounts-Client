@@ -16,10 +16,15 @@ export const getUserToken = async () => {
 };
 
 export const clearUserToken = async () => {
-  await fetch(API_URL + "/logout", {
-    method: "GET",
-    credentials: "include"
-  });
+  try {
+    await fetch(API_URL + "/logout", {
+      method: "GET",
+      credentials: "include"
+    });
+  } catch (error) {
+    console.log(error);
+    return;
+  }
 };
 
 export const options = () => {

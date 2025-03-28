@@ -8,8 +8,7 @@ const store: any = useStore();
 const currentUser: any = computed(() => store.currentUser);
 
 let logged: any = computed(() => currentUser.value.logged);
-let token: any = computed(() => currentUser.value.token);
-let id: any = computed(() => currentUser.value.userData?.id);
+let id: any = computed(() => currentUser.value.userData?._id);
 let email: any = computed(() => currentUser.value.userData?.email);
 let username: any = computed(() => currentUser.value.userData?.username);
 let profilePic: any = computed(() => currentUser.value.userData?.profilePic ?? defaultImage);
@@ -31,7 +30,7 @@ async function handleUpdate(e: any) {
   const formData: any = { username, email, profilePic };
 
   try {
-    await store.handleUpdateUserData(formData, id.value, token);
+    await store.handleUpdateUserData(formData, id.value);
     editActive.value = !editActive.value;
     if (!profilePic) profilePic = defaultImage;
   } catch (error) {

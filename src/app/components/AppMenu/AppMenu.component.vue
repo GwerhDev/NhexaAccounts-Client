@@ -23,7 +23,7 @@ onMounted(() => {
 <template>
   <ul class="app-menu-container" id="app-menu-container">
     <li class="current-user-data">
-      <font-awesome-icon :icon="['fas', 'layer-group']" />
+      <font-awesome-icon icon="fa-solid fa-layer-group" />
       <h4>Apps</h4>
     </li>
     <div class="separator"></div>

@@ -48,10 +48,10 @@ export const useStore = defineStore('store', {
         console.error(error);
       }
     },
-    async handleUpdateUserData(formData: any, id: any, token: any) {
-      await updateUserData(formData, id, token);
-      this.currentUser = await getUserData(token);
-      this.userToken = token;
+    async handleUpdateUserData(formData: any, id: any) {
+      await updateUserData(formData, id, this.userToken);
+      this.currentUser = await getUserData(this.userToken);
+      this.userToken = this.userToken;
     },
     async handleGetAppList() {
       this.appList = await getAppList();

@@ -47,7 +47,7 @@ const routes: RouteRecordRaw[] = [
     component: RegisterPage
   },
   {
-    path: '/account/settings',
+    path: '/personal-info',
     name: 'AccountPage',
     component: AccountPage
   },

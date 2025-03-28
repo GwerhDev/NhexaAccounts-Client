@@ -1,12 +1,14 @@
+import { API_URL } from "../middlewares/misc/const";
+
 export const getUserToken = async () => {
   try {
-    const res = await fetch("https://accounts.nhexa.cl/session", {
+    const res = await fetch(API_URL + "/session", {
       method: "GET",
       credentials: "include"
     });
 
-    const data = await res.json();
-    return data.token || null;
+    const { userToken } = await res.json() || {};
+    return userToken;
   } catch (error) {
     console.error("Error al obtener el token:", error);
     return null;

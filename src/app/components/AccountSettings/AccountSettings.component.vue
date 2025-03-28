@@ -37,19 +37,6 @@ async function handleUpdate(e: any) {
   }
 }
 
-function handleFileUpload(e: any) {
-  const file: any = e.target.files[0];
-  const reader: any = new FileReader();
-  reader.onloadend = (e: any) => {
-    const pic: any = e.target.result;
-    const imageSrc: any = pic;
-    profilePic = imageSrc;
-  }
-
-  reader.readAsDataURL(file);
-}
-
-
 </script>
 
 <template>

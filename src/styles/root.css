@@ -31,6 +31,7 @@
   --button-primary-color: #5086b0;
   --button-primary-hover-color: #699fb8;
   --components-background: #2d3337ba;
+  --components-background-alt: #2d33378f;
 }
 
 @media (max-width: 1080px) {

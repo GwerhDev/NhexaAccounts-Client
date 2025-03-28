@@ -50,39 +50,39 @@ function handleFileUpload(e: any) {
   reader.readAsDataURL(file);
 }
 
-function logout() { 
-  store.logout(); 
-  closeAccountMenu();
-};
 
 </script>
 
 <template>
-  <div class="form-container">
-    <div class="profile-pic-container">
-      <img class="profile-pic" :src="profilePic" alt="" width="150">
-    </div>
-    <input v-if="editActive" @input="handleFileUpload" type="file" />
-    <h2>Datos del usuario</h2>
-    <div v-if="!logged" class="loader"></div>
-    <form class="ul-form" v-if="logged">
-      <li class="li-form">
-        <label>Nombre de usuario</label>
-        <input v-model="username" class="input-form" type="text" :disabled="!editActive" />
-      </li>
-      <li class="li-form">
-        <label>Correo electrónico</label>
-        <input v-model="email" class="input-form" type="email" :disabled="!editActive" />
-      </li>
-      <button v-if="!editActive" class="submit-button" @click="activeEdit">Editar mi información</button>
-      <div v-show="showSaveCancelButtons" class="edit-buttons-container">
-        <button @click="handleUpdate">Guardar cambios</button>
-        <button class="cancel-button" @click="activeEdit">Cancelar</button>
+  <div class="container-default">
+    <div class="form-container">
+      <div class="title-section">
+        <h2>Datos del usuario</h2>
+        <span>
+          <button v-if="!editActive" class="edit-button" @click="activeEdit">
+            <font-awesome-icon icon="fa-solid fa-edit" />
+            Actualizar
+          </button>
+        </span>
       </div>
-    </form>
-    <router-link class="logout-button" to='/' @click="logout">
-      Cerrar sesión
-    </router-link>
+      <div class="personal-data-container">
+        <div v-if="!logged" class="loader"></div>
+        <form class="ul-form" v-if="logged">
+          <li>
+            <label>Nombre de usuario</label>
+            <input v-model="username" class="input-form" type="text" :disabled="!editActive" />
+          </li>
+          <li>
+            <label>Correo electrónico</label>
+            <input v-model="email" class="input-form" type="email" :disabled="!editActive" />
+          </li>
+          <div v-show="showSaveCancelButtons" class="edit-buttons-container">
+            <button @click="handleUpdate">Guardar cambios</button>
+            <button class="cancel-button" @click="activeEdit">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 

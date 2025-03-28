@@ -1,28 +1,52 @@
 .form-container {
-  width: 300px;
+  width: 100%;
+  margin-inline: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  border-radius: 5px;
   text-align: left;
+  border-radius: .5rem;
+  overflow: hidden;
+  background-color: var(--components-background-alt);
+  backdrop-filter: blur(10px);
+}
+
+.title-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 1rem;
+  background-color: var(--components-background);
+  backdrop-filter: blur(10px);
+}
+
+.personal-data-container {
+  width: 100%;
+  padding: 1rem;
+  gap: 2rem;
+  display: flex;
 }
 
 .ul-form {
   padding: 0;
-}
-
-.li-form {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1rem;
+  li {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
 }
+
 
 .input-form {
   padding: 8px;
   border-radius: 5px;
 }
 
-input:active, input:hover, input:focus-visible {
+input:active,
+input:hover,
+input:focus-visible {
   border-color: var(--primary-color);
 }
 
@@ -38,12 +62,14 @@ input:active, input:hover, input:focus-visible {
   border-radius: 5px;
   color: black;
 }
+
 .separator-container {
   display: flex;
   justify-content: center;
   align-items: center;
   padding-top: 2rem;
 }
+
 .separator {
   width: 100%;
   background-color: var(--nhexa-white);
@@ -51,17 +77,27 @@ input:active, input:hover, input:focus-visible {
   position: relative;
 }
 
+.profile-pic-container {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+}
+
 .profile-pic {
-  width: 100%;
-  height: 100%;
-  max-width: 150px;
+  display: flex;
+  align-items: center;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   border: none;
-  outline: solid 3px var(--primary-color);
+  outline: solid 5px var(--primary-color);
 }
 
 .edit-buttons-container {
   display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  gap: 2rem;
   justify-content: space-between;
 }
 
@@ -80,6 +116,7 @@ input:active, input:hover, input:focus-visible {
   padding-top: .3rem;
   padding-bottom: .3rem;
   border-radius: 5px;
+
   &:hover {
     background-color: grey;
   }

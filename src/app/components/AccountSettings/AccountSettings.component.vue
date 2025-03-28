@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, ref, computed, toRef } from 'vue';
+import { watch, ref, computed } from 'vue';
 import { useStore } from '../../../middlewares/store/index';
 import ActionTable from '../Tables/ActionTable.component.vue';
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router';
-import { onMounted, computed, Ref, ref } from 'vue';
+import { onMounted, Ref, ref } from 'vue';
 import { API_URL } from '../../../middlewares/misc/const';
 import { useStore } from '../../../middlewares/store/index';
 import { getUserToken } from '../../../helpers';
@@ -22,8 +22,6 @@ onMounted(() => {
   token.value = getUserToken();
   apiUrl.value = callback.value ? API_URL + "/login-google?callback=" + callback.value : API_URL + "/login-google";
 });
-
-console.log(token)
 
 async function handleLogin(e: any) {
   e.preventDefault();

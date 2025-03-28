@@ -6,9 +6,6 @@ import { CanvasMenuFunction, closeAccountMenu, closeMenu } from '../../../helper
 
 const store = useStore();
 const appList: Ref<any[]> = computed(() => store.appList);
-const currentUser: any = computed(() => store.currentUser);
-const token: any = computed(() => store.userToken);
-const logged: any = computed(() => currentUser.value.logged);
 
 CanvasMenuFunction("#app-menu-container");
 
@@ -31,7 +28,7 @@ onMounted(() => {
     </li>
     <div class="separator"></div>
     <li v-if="appList.length" v-for="item in appList">
-      <a :href="logged ? item.url + '/auth?token=' + token : item.url" class="app-card-container" @click="select">
+      <a :href="item.url" class="app-card-container" @click="select">
         {{ item.label }}
       </a>
     </li>

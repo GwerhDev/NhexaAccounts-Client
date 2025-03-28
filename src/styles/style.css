@@ -289,6 +289,7 @@ button:disabled:hover {
 }
 
 .viewport-container {
+  width: 100vw;
   height: 100%;
 }
 
@@ -296,16 +297,35 @@ button:disabled:hover {
   font-weight: bold;
 }
 
-.container-default {
-  width: 100%;
-  padding-inline: 2rem;
-  display: flex;
-}
-
 .app-container {
   width: 100%;
   height: 100%;
   display: flex;
+}
+
+.section-container {
+  width: 100%;
+  display: flex;
+}
+
+.inner-container {
+  width: 100%;
+  max-width: 2000px;
+  padding-inline: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-container {
+  gap: 1rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.card-container li {
+  width: 100%;
 }
 
 .view-lateral-bar {

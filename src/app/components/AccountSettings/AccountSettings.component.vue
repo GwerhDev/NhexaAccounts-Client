@@ -1,75 +1,70 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { watch, ref, computed, toRef } from 'vue';
 import { useStore } from '../../../middlewares/store/index';
-import defaultImage from '../../../assets/svg/user-icon.svg';
+import ActionTable from '../Tables/ActionTable.component.vue';
 
-const store: any = useStore();
-const currentUser: any = computed(() => store.currentUser);
+// ✅ Props
+const props = defineProps<{
+  fields: {
+    key: string;
+    title: string;
+    label: string;
+    type?: string;
+    value: string;
+  }[];
+}>();
 
-let logged: any = computed(() => currentUser.value.logged);
-let id: any = computed(() => currentUser.value.userData?._id);
-let email: any = computed(() => currentUser.value.userData?.email);
-let username: any = computed(() => currentUser.value.userData?.username);
-let profilePic: any = computed(() => currentUser.value.userData?.profilePic ?? defaultImage);
+const store = useStore();
+const isReady = ref(false);
+const id = computed(() => store.currentUser?.userData?._id);
 
-const editActive: any = ref(false);
-const showSaveCancelButtons: any = computed(() => editActive.value);
+// ✅ Convertimos la prop `fields` a un ref local para poder mutarlo
+const localFields = ref([...props.fields]);
 
-function activeEdit(e: any) {
-  e.preventDefault();
-  editActive.value = !editActive.value;
-  email = currentUser.value.userData?.email;
-  username = currentUser.value.userData?.username;
-  profilePic = currentUser.value.userData?.profilePic ?? defaultImage;
-}
+// ✅ Sincronizar con datos del store
+watch(
+  () => store.currentUser,
+  (value) => {
+    if (value?.userData) {
+      localFields.value.forEach((field) => {
+        field.value = value.userData[field.key] || '';
+      });
+      isReady.value = true;
+    }
+  },
+  { immediate: true }
+);
 
-async function handleUpdate(e: any) {
-  e.preventDefault();
-  if (profilePic === defaultImage) { profilePic = null };
-  const formData: any = { username, email, profilePic };
-
-  try {
-    await store.handleUpdateUserData(formData, id.value);
-    editActive.value = !editActive.value;
-    if (!profilePic) profilePic = defaultImage;
-  } catch (error) {
-    console.error(error)
-  }
-}
-
+// ✅ Acción dinámica para cada campo
+const getAction = (fieldKey: string) => {
+  return async () => {
+    try {
+      const field = localFields.value.find((f) => f.key === fieldKey);
+      if (!field) return;
+      await store.handleUpdateUserData({ [field.key]: field.value }, id.value);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
 </script>
 
 <template>
-  <div class="container-default">
-    <div class="form-container">
-      <div class="title-section">
-        <h2>Datos del usuario</h2>
-        <span>
-          <button v-if="!editActive" class="edit-button" @click="activeEdit">
-            <font-awesome-icon icon="fa-solid fa-edit" />
-            Actualizar
-          </button>
-        </span>
-      </div>
-      <div class="personal-data-container">
-        <div v-if="!logged" class="loader"></div>
-        <form class="ul-form" v-if="logged">
-          <li>
-            <label>Nombre de usuario</label>
-            <input v-model="username" class="input-form" type="text" :disabled="!editActive" />
-          </li>
-          <li>
-            <label>Correo electrónico</label>
-            <input v-model="email" class="input-form" type="email" :disabled="!editActive" />
-          </li>
-          <div v-show="showSaveCancelButtons" class="edit-buttons-container">
-            <button @click="handleUpdate">Guardar cambios</button>
-            <button class="cancel-button" @click="activeEdit">Cancelar</button>
-          </div>
-        </form>
-      </div>
+  <section class="section-container">
+    <div class="inner-container">
+      <ul class="card-container" v-if="isReady">
+        <li v-for="field in localFields" :key="field.key">
+          <ActionTable
+            :title="field.title"
+            :field="field"
+            :action="getAction(field.key)"
+          />
+        </li>
+      </ul>
+      <p v-else class="loading-message">Cargando datos del usuario...</p>
     </div>
-  </div>
+  </section>
+  <router-view />
 </template>
 
 <style scoped lang="scss" src="./AccountSettings.component.scss"></style>

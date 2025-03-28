@@ -23,19 +23,19 @@ import { closeMenu } from '../../../helpers/menu';
       </router-link>
     </li>
     <li>
-      <router-link class="lateral-menu-link" to="/" @click="closeMenu()">
+      <router-link class="lateral-menu-link" to="/privacy" @click="closeMenu()">
         <font-awesome-icon icon="fa-solid fa-toggle-on" />
         Datos y privacidad
       </router-link>
     </li>
     <li>
-      <router-link class="lateral-menu-link" to="/" @click="closeMenu()">
+      <router-link class="lateral-menu-link" to="/security" @click="closeMenu()">
         <font-awesome-icon icon="fa-solid fa-shield-halved" />
         Seguridad
       </router-link>
     </li>
     <li>
-      <router-link class="lateral-menu-link" to="/" @click="closeMenu()">
+      <router-link class="lateral-menu-link" to="/billing" @click="closeMenu()">
         <font-awesome-icon icon="fa-solid fa-credit-card" />
         Pagos y suscripciones
       </router-link>

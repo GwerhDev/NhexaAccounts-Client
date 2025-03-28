@@ -5,12 +5,13 @@
 .lateral-menu-link {
   width: 100%;
   padding: 1rem;
-  padding-inline: 0;
+  padding-inline: 1rem;
   color: var(--nhexa-white);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   text-wrap: nowrap;
+  gap: 1rem;
 
   &:hover {
     background-color: var(--primary-hover-color);

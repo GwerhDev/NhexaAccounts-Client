@@ -15,8 +15,11 @@ export const getUserToken = async () => {
   }
 };
 
-export const clearUserToken = () => {
-  document.cookie = "userToken=; path=/; Secure; SameSite=None; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+export const clearUserToken = async () => {
+  await fetch(API_URL + "/logout", {
+    method: "GET",
+    credentials: "include"
+  });
 };
 
 export const options = () => {

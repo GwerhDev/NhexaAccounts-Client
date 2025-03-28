@@ -13,7 +13,6 @@ const callback: Ref = ref("");
 const store: any = useStore();
 const route: any = useRoute();
 const router: any = useRouter();
-const currentUser: any = computed(() => store.currentUser);
 
 let email = "";
 let password = "";
@@ -22,16 +21,9 @@ onMounted(() => {
   callback.value = route.query.callback;
   token.value = getUserToken();
   apiUrl.value = callback.value ? API_URL + "/login-google?callback=" + callback.value : API_URL + "/login-google";
-
-  if(token.value) {
-    return router.push('/oauth/chooseaccount?callback=' + encodeURIComponent(callback.value));
-  }
-
-  if (!currentUser?.value.error && token.value) {
-    const path = callback.value ? (callback.value + 'auth?token=' + token.value) : '/';
-    router.push(path);
-  }
 });
+
+console.log(token)
 
 async function handleLogin(e: any) {
   e.preventDefault();

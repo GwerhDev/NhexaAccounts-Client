@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { getAppList, getUserData, loginInner, signupInner, updateUserData } from '../services';
-import { setUserToken } from '../../helpers';
+import { clearUserToken } from '../../helpers';
 
 interface storeState {
   currentUser: any,
@@ -19,13 +19,12 @@ export const useStore = defineStore('store', {
 
   actions: {
     logout() {
-      localStorage.clear();
+      clearUserToken();
       this.currentUser = {};
       this.userToken = '';
     },
     async handleRegister(data: any) {
       const userToken = await signupInner(data);
-      setUserToken(userToken);
       const url = '/auth/' + userToken;
       this.userToken = userToken;
       return url;
@@ -33,14 +32,12 @@ export const useStore = defineStore('store', {
     async handleLogin(data: any) {
       const userToken = await loginInner(data);
       if (userToken?.error) return "/auth/error";
-      setUserToken(userToken);
       const url = '/';
       this.userToken = userToken;
       return url;
     },
     async handleUserData(token: any, callback: any, router: any) {
       try {
-        setUserToken(token);
         this.userToken = token;
         this.currentUser = await getUserData(token);
         if (router && !callback) return router.push('/');
@@ -55,7 +52,6 @@ export const useStore = defineStore('store', {
       await updateUserData(formData, id, token);
       this.currentUser = await getUserData(token);
       this.userToken = token;
-      setUserToken(token);
     },
     async handleGetAppList() {
       this.appList = await getAppList();

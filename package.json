@@ -5,10 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && node generate-headers.cjs && vite build",
+    "build": "vue-tsc && vite build",
     "preview": "vite preview",
-    "test": "vitest",
-    "generate-headers": "node generate-headers.cjs"
+    "test": "vitest"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",

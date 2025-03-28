@@ -18,8 +18,8 @@ export const useStore = defineStore('store', {
   }),
 
   actions: {
-    logout() {
-      clearUserToken();
+    async logout() {
+      await clearUserToken();
       this.currentUser = {};
       this.userToken = '';
     },
@@ -41,7 +41,7 @@ export const useStore = defineStore('store', {
         this.userToken = token;
         this.currentUser = await getUserData(token);
         if (router && !callback) return router.push('/');
-        else if(router && callback) return window.location.href = callback;
+        else if (router && callback) return window.location.href = callback;
         else return;
       } catch (error) {
         localStorage.clear();

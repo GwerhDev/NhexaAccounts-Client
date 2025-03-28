@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useStore } from '../../../middlewares/store/index';
-import { closeAccountMenu } from '../../../helpers/menu';
 import defaultImage from '../../../assets/svg/user-icon.svg';
 
 const store: any = useStore();

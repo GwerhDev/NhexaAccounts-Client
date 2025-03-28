@@ -13,7 +13,6 @@ let id: any = computed(() => currentUser.value.userData?.id);
 let email: any = computed(() => currentUser.value.userData?.email);
 let username: any = computed(() => currentUser.value.userData?.username);
 let profilePic: any = computed(() => currentUser.value.userData?.profilePic ?? defaultImage);
-token && store.handleUserData(token);
 
 const editActive: any = ref(false);
 const showSaveCancelButtons: any = computed(() => editActive.value);

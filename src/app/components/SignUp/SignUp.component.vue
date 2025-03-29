@@ -1,19 +1,20 @@
 <script setup lang="ts">
+import { useRouter, useRoute } from 'vue-router';
+import { onMounted, computed, ref, watch } from 'vue';
 import { API_URL } from '../../../middlewares/misc/const';
 import { useStore } from '../../../middlewares/store/index';
-import { useRouter, useRoute } from 'vue-router';
-import { onMounted, computed, ref } from 'vue';
 import { getUserToken } from '../../../helpers';
-import googleIcon from '../../../assets/png/google-icon.png';
 import LogoHeader from '../Logo/LogoHeader.component.vue';
+import googleIcon from '../../../assets/png/google-icon.png';
 
-const token = ref('');
 const apiUrl = ref('');
 const callback = ref('');
 const store = useStore();
 const route = useRoute();
 const router = useRouter();
+
 const currentUser = computed(() => store.currentUser);
+const logged = computed(() => currentUser.value.logged);
 
 const username = ref('');
 const email = ref('');
@@ -23,12 +24,24 @@ const isDisabled = computed(() => {
   return !username.value || !email.value || !password.value;
 });
 
+const redirectIfLogged = () => {
+  if (logged.value) {
+    const to = route.query.callback || '/';
+    router.push(to as string);
+  }
+};
+
 onMounted(() => {
   callback.value = route.query.callback;
-  token.value = getUserToken();
   apiUrl.value = callback.value
     ? `${API_URL}/signup-google?callback=${callback.value}`
     : `${API_URL}/signup-google`;
+
+  redirectIfLogged();
+});
+
+watch(logged, (newVal) => {
+  if (newVal) redirectIfLogged();
 });
 
 const handleRegister = async (e: Event) => {
@@ -45,6 +58,7 @@ const handleRegister = async (e: Event) => {
     console.error(error);
   }
 };
+
 </script>
 
 <template>

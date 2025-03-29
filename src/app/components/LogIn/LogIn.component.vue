@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router';
-import { onMounted, computed, Ref, ref } from 'vue';
+import { onMounted, computed, ref, watch } from 'vue';
 import { API_URL } from '../../../middlewares/misc/const';
 import { useStore } from '../../../middlewares/store/index';
 import { getUserToken } from '../../../helpers';
 import LogoHeader from '../Logo/LogoHeader.component.vue';
 import googleIcon from '../../../assets/png/google-icon.png';
 
-const token: Ref = ref("");
-const apiUrl: Ref = ref("");
-const callback: Ref = ref("");
-const store: any = useStore();
-const route: any = useRoute();
-const router: any = useRouter();
+const apiUrl = ref('');
+const callback = ref('');
+const store = useStore();
+const route = useRoute();
+const router = useRouter();
+
+const currentUser = computed(() => store.currentUser);
+const logged = computed(() => currentUser.value.logged);
 
 const email = ref('');
 const password = ref('');
@@ -21,17 +23,34 @@ const isDisabled = computed(() => {
   return !email.value || !password.value;
 });
 
+const redirectIfLogged = () => {
+  if (logged.value) {
+    const to = route.query.callback || '/';
+    router.push(to as string);
+  }
+};
+
 onMounted(() => {
   callback.value = route.query.callback;
-  token.value = getUserToken();
-  apiUrl.value = callback.value ? API_URL + "/login-google?callback=" + callback.value : API_URL + "/login-google";
+  apiUrl.value = callback.value
+    ? `${API_URL}/login-google?callback=${callback.value}`
+    : `${API_URL}/login-google`;
+
+  redirectIfLogged();
 });
 
-async function handleLogin(e: any) {
+watch(logged, (newVal) => {
+  if (newVal) redirectIfLogged();
+});
+
+async function handleLogin(e: Event) {
   e.preventDefault();
-  const formData: any = { email, password };
+  const formData = {
+    email: email.value,
+    password: password.value,
+  };
   try {
-    const path: any = await store.handleLogin(formData, callback.value);
+    const path = await store.handleLogin(formData, callback.value);
     router.push(path);
   } catch (error) {
     console.error(error);

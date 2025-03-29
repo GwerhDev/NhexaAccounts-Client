@@ -20,13 +20,9 @@ let email = "";
 let password = "";
 
 onMounted(() => {
-  token.value = getUserToken();
   callback.value = route.query.callback;
-  apiUrl.value = callback.value ? API_URL + "/login-google?callback=" + callback.value : API_URL + "/login-google";
-
-  if (!currentUser?.value.error && token.value) {
-    router.push('/');
-  }
+  token.value = getUserToken();
+  apiUrl.value = callback.value ? API_URL + "/signup-google?callback=" + callback.value : API_URL + "/signup-google";
 });
 
 async function handleRegister(e: any) {

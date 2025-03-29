@@ -11,6 +11,12 @@ import AuthErrorPage from '../pages/AuthErrorPage.vue';
 import PersonalInfoPage from '../pages/PersonalInfoPage.vue';
 import EmbedSessionPage from '../pages/EmbedSessionPage.vue';
 import ConnectedAppsPage from '../pages/ConnectedAppsPage.vue';
+import RegisterVerifyPage from '../pages/RegisterVerifyPage.vue';
+import RegisterSuccessPage from '../pages/RegisterSuccessPage.vue';
+import AccountNotFoundPage from '../pages/AccountNotFoundPage.vue';
+import AccountAlreadyExistsPage from '../pages/AccountAlreadyExistsPage.vue';
+import RegisterFailedPage from '../pages/RegisterFailedPage.vue';
+import NotFoundPage from '../pages/NotFoundPage.vue';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -72,6 +78,36 @@ const routes: RouteRecordRaw[] = [
     path: '/support',
     name: 'SupportPage',
     component: SupportPage,
+  },
+  {
+    path: '/account/already-exists',
+    name: 'AccountAlreadyExistsPage',
+    component: AccountAlreadyExistsPage,
+  },
+  {
+    path: '/account/not-found',
+    name: 'AccountNotFoundPage',
+    component: AccountNotFoundPage,
+  },
+  {
+    path: '/register/verify',
+    name: 'RegisterVerifyPage',
+    component: RegisterVerifyPage,
+  },
+  {
+    path: '/register/success',
+    name: 'RegisterSuccessPage',
+    component: RegisterSuccessPage,
+  },
+  {
+    path: '/register/failed',
+    name: 'RegisterFailedPage',
+    component: RegisterFailedPage,
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFoundPage',
+    component: NotFoundPage,
   },
 ]
 

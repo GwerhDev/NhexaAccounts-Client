@@ -19,7 +19,7 @@ let profilePic: any = computed(() => currentUser.value.userData?.profilePic ?? d
   <section>
     <div v-if="logged" class="presentation">
       <div>
-        <img class="profile-pic" :src="profilePic" width="150" alt="">
+        <img class="profile-pic" :src="profilePic" alt="">
       </div>
       <span class="welcome-message">
         <h1>¡Hola, {{ username }}!</h1>

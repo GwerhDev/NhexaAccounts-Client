@@ -3,6 +3,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useStore } from '../../../middlewares/store';
 import { Ref, computed, ref, onMounted } from 'vue';
 import { getUserToken } from '../../../helpers';
+import Loader from '../Loader/Loader.component.vue';
 
 const store: any = useStore();
 const token: Ref = ref('');
@@ -53,7 +54,9 @@ onMounted(() => {
         {{ email }}
       </div>
     </div>
-    <div v-if="!logged && token" class="loader"></div>
+  </div>
+  <div v-if="!logged && token" class="loader-container">
+    <Loader />
   </div>
 </template>
 

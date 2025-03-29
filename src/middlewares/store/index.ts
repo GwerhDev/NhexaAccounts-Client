@@ -24,16 +24,15 @@ export const useStore = defineStore('store', {
       this.userToken = '';
     },
     async handleRegister(data: any) {
-      const userToken = await signupInner(data);
-      const url = '/auth/' + userToken;
-      this.userToken = userToken;
+      const { logged } = await signupInner(data) || null;
+      if (!logged) return "/register/failed";
+      const url = '/';
       return url;
     },
     async handleLogin(data: any) {
-      const userToken = await loginInner(data);
-      if (userToken?.error) return "/auth/error";
+      const { logged } = await loginInner(data) || null;
+      if (!logged) return "/login/failed";
       const url = '/';
-      this.userToken = userToken;
       return url;
     },
     async handleUserData(token: any, callback: any, router: any) {

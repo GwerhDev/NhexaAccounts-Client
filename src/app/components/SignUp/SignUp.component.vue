@@ -2,40 +2,49 @@
 import { API_URL } from '../../../middlewares/misc/const';
 import { useStore } from '../../../middlewares/store/index';
 import { useRouter, useRoute } from 'vue-router';
-import { onMounted, computed, Ref, ref } from 'vue';
+import { onMounted, computed, ref } from 'vue';
 import { getUserToken } from '../../../helpers';
 import googleIcon from '../../../assets/png/google-icon.png';
 import LogoHeader from '../Logo/LogoHeader.component.vue';
 
-const token: Ref = ref("");
-const apiUrl: Ref = ref("");
-const callback: Ref = ref("");
-const store: any = useStore();
-const route: any = useRoute();
-const router: any = useRouter();
-const currentUser: any = computed(() => store.currentUser);
+const token = ref('');
+const apiUrl = ref('');
+const callback = ref('');
+const store = useStore();
+const route = useRoute();
+const router = useRouter();
+const currentUser = computed(() => store.currentUser);
 
-let username = "";
-let email = "";
-let password = "";
+const username = ref('');
+const email = ref('');
+const password = ref('');
+
+const isDisabled = computed(() => {
+  return !username.value || !email.value || !password.value;
+});
 
 onMounted(() => {
   callback.value = route.query.callback;
   token.value = getUserToken();
-  apiUrl.value = callback.value ? API_URL + "/signup-google?callback=" + callback.value : API_URL + "/signup-google";
+  apiUrl.value = callback.value
+    ? `${API_URL}/signup-google?callback=${callback.value}`
+    : `${API_URL}/signup-google`;
 });
 
-async function handleRegister(e: any) {
+const handleRegister = async (e: Event) => {
   e.preventDefault();
-  const formData: any = { username, email, password };
+  const formData = {
+    username: username.value,
+    email: email.value,
+    password: password.value,
+  };
   try {
-    const path: any = await store.handleRegister(formData, callback.value);
+    const path = await store.handleRegister(formData, callback.value);
     router.push(path);
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
-
+};
 </script>
 
 <template>
@@ -45,17 +54,19 @@ async function handleRegister(e: any) {
     <form class="ul-form">
       <li class="li-form">
         <label>Nombre de usuario</label>
-        <input v-model="username" class="input-form" type="text" />
+        <input required v-model="username" class="input-form" type="text" />
       </li>
       <li class="li-form">
         <label>Correo electrónico</label>
-        <input v-model="email" class="input-form" type="email" />
+        <input required v-model="email" class="input-form" type="email" />
       </li>
       <li class="li-form">
         <label>Contraseña</label>
-        <input v-model="password" class="input-form" type="password" />
+        <input required v-model="password" class="input-form" type="password" />
       </li>
-      <button class="submit-button" @click="handleRegister">Registrarse</button>
+      <button :disabled="isDisabled" class="submit-button" @click="handleRegister">
+        Registrarse
+      </button>
     </form>
     <div class="separator-container">
       <div class="separator"></div>
@@ -65,11 +76,16 @@ async function handleRegister(e: any) {
     <p>puedes crear una cuenta mediante:</p>
     <a :href="apiUrl">
       <div class="google-button">
-        <img :src="googleIcon" alt="">
+        <img :src="googleIcon" alt="" />
         Google
       </div>
     </a>
   </div>
+  <span class="flex gap-1 items-center">
+    <p>¿Ya tienes una cuenta?</p>
+    <router-link to="/login">Inicia sesión</router-link>
+  </span>
 </template>
+
 
 <style scoped lang="scss" src="./SignUp.component.scss"></style>

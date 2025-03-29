@@ -7,7 +7,6 @@ import SupportPage from '../pages/SupportPage.vue';
 import PrivacyPage from '../pages/PrivacyPage.vue';
 import SecurityPage from '../pages/SecurityPage.vue';
 import RegisterPage from '../pages/RegisterPage.vue';
-import AuthErrorPage from '../pages/AuthErrorPage.vue';
 import PersonalInfoPage from '../pages/PersonalInfoPage.vue';
 import EmbedSessionPage from '../pages/EmbedSessionPage.vue';
 import ConnectedAppsPage from '../pages/ConnectedAppsPage.vue';
@@ -17,6 +16,7 @@ import AccountNotFoundPage from '../pages/AccountNotFoundPage.vue';
 import AccountAlreadyExistsPage from '../pages/AccountAlreadyExistsPage.vue';
 import RegisterFailedPage from '../pages/RegisterFailedPage.vue';
 import NotFoundPage from '../pages/NotFoundPage.vue';
+import LoginFailedPage from '../pages/LoginFailedPage.vue';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -30,11 +30,6 @@ const routes: RouteRecordRaw[] = [
     component: ConnectedAppsPage,
   },
   {
-    path: '/auth/error',
-    name: 'AuthErrorPage',
-    component: AuthErrorPage,
-  },
-  {
     path: '/embed-session',
     name: 'EmbedSessionPage',
     component: EmbedSessionPage,
@@ -43,6 +38,11 @@ const routes: RouteRecordRaw[] = [
     path: '/login',
     name: 'LoginPage',
     component: LoginPage,
+  },
+  {
+    path: '/login/failed',
+    name: 'LoginFailedPage',
+    component: LoginFailedPage,
   },
   {
     path: '/register',

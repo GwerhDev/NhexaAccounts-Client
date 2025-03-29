@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router';
-import { onMounted, Ref, ref } from 'vue';
+import { onMounted, computed, Ref, ref } from 'vue';
 import { API_URL } from '../../../middlewares/misc/const';
 import { useStore } from '../../../middlewares/store/index';
 import { getUserToken } from '../../../helpers';
@@ -14,8 +14,12 @@ const store: any = useStore();
 const route: any = useRoute();
 const router: any = useRouter();
 
-let email = "";
-let password = "";
+const email = ref('');
+const password = ref('');
+
+const isDisabled = computed(() => {
+  return !email.value || !password.value;
+});
 
 onMounted(() => {
   callback.value = route.query.callback;
@@ -42,13 +46,13 @@ async function handleLogin(e: any) {
     <form class="ul-form">
       <li class="li-form">
         <label>Correo electrónico</label>
-        <input v-model="email" class="input-form" type="email" />
+        <input required v-model="email" class="input-form" type="email" />
       </li>
       <li class="li-form">
         <label>Contraseña</label>
-        <input v-model="password" class="input-form" type="password" />
+        <input required v-model="password" class="input-form" type="password" />
       </li>
-      <button class="submit-button" @click="handleLogin">Iniciar Sesión</button>
+      <button :disabled="isDisabled" class="submit-button" @click="handleLogin">Iniciar Sesión</button>
     </form>
     <div class="separator-container">
       <div class="separator"></div>
@@ -63,6 +67,10 @@ async function handleLogin(e: any) {
       </div>
     </a>
   </div>
+  <span class="flex gap-1 items-center">
+    <p>¿Aun no tienes una cuenta?</p>
+    <router-link to="/register">Registrarse</router-link>
+  </span>
 </template>
 
 <style scoped lang="scss" src="./LogIn.component.scss" />

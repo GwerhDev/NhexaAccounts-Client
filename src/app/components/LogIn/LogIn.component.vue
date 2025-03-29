@@ -3,7 +3,6 @@ import { useRouter, useRoute } from 'vue-router';
 import { onMounted, computed, ref, watch } from 'vue';
 import { API_URL } from '../../../middlewares/misc/const';
 import { useStore } from '../../../middlewares/store/index';
-import { getUserToken } from '../../../helpers';
 import LogoHeader from '../Logo/LogoHeader.component.vue';
 import googleIcon from '../../../assets/png/google-icon.png';
 

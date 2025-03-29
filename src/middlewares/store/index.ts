@@ -29,9 +29,10 @@ export const useStore = defineStore('store', {
       const url = '/';
       return url;
     },
-    async handleLogin(data: any) {
+    async handleLogin(data: any, callback: string) {
       const { logged } = await loginInner(data) || null;
       if (!logged) return "/login/failed";
+      if (callback) return window.location.href = callback;
       const url = '/';
       return url;
     },

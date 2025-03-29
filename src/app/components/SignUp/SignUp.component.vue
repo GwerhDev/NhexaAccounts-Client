@@ -47,13 +47,15 @@ watch(logged, (newVal) => {
 
 const handleRegister = async (e: Event) => {
   e.preventDefault();
-  const formData = {
-    username: username.value,
-    email: email.value,
-    password: password.value,
-  };
+
   try {
-    const path = await store.handleRegister(formData, callback.value);
+    const formData = {
+      username: username.value,
+      email: email.value,
+      password: password.value,
+    };
+
+    const path = await store.handleRegister(formData);
     router.push(path);
   } catch (error) {
     console.error(error);

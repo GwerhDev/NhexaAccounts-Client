@@ -18,17 +18,24 @@
   backdrop-filter: blur(10px);
 }
 
-.personal-data-container {
+.label-input {
+  max-width: 200px;
+}
+
+.body-container {
   width: 100%;
-  padding: 1rem;
   gap: 2rem;
-  display: flex;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .ul-form {
+  margin: 0;
   padding: 0;
+  margin-inline: 1rem;
   display: flex;
   flex-direction: column;
+
   li {
     display: flex;
     flex-direction: column;

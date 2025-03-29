@@ -30,10 +30,10 @@ const handleAction = () => {
         </button>
       </span>
     </div>
-    <div class="personal-data-container">
+    <div class="body-container">
       <form class="ul-form" @submit.prevent="handleAction">
         <li>
-          <label>{{ props.field.label }}</label>
+          <label class="label-input">{{ props.field.label }}</label>
           <input
             v-model="props.field.value"
             class="input-form"

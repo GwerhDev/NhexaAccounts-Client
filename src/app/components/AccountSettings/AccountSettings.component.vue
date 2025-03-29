@@ -18,10 +18,8 @@ const store = useStore();
 const isReady = ref(false);
 const id = computed(() => store.currentUser?.userData?._id);
 
-// ✅ Convertimos la prop `fields` a un ref local para poder mutarlo
 const localFields = ref([...props.fields]);
 
-// ✅ Sincronizar con datos del store
 watch(
   () => store.currentUser,
   (value) => {
@@ -35,7 +33,6 @@ watch(
   { immediate: true }
 );
 
-// ✅ Acción dinámica para cada campo
 const getAction = (fieldKey: string) => {
   return async () => {
     try {

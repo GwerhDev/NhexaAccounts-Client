@@ -22,21 +22,23 @@ const isDisabled = computed(() => {
   return !email.value || !password.value;
 });
 
-const redirectIfLogged = () => {
-  if (logged.value) {
-    const to = route.query.callback || '/';
-    router.push(to as string);
-  }
-};
-
 onMounted(() => {
-  callback.value = route.query.callback;
+  const rawCallback = route.query.callback;
+  callback.value = typeof rawCallback === 'string' ? rawCallback : '';
   apiUrl.value = callback.value
     ? `${API_URL}/login-google?callback=${callback.value}`
     : `${API_URL}/login-google`;
 
   redirectIfLogged();
 });
+
+const redirectIfLogged = () => {
+  if (logged.value) {
+    const rawCallback = route.query.callback;
+    const target = typeof rawCallback === 'string' ? rawCallback : '/';
+    router.push(target);
+  }
+};
 
 watch(logged, (newVal) => {
   if (newVal) redirectIfLogged();

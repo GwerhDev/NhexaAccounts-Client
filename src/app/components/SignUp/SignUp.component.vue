@@ -23,21 +23,23 @@ const isDisabled = computed(() => {
   return !username.value || !email.value || !password.value;
 });
 
-const redirectIfLogged = () => {
-  if (logged.value) {
-    const to = route.query.callback || '/';
-    router.push(to as string);
-  }
-};
-
 onMounted(() => {
-  callback.value = route.query.callback;
+  const rawCallback = route.query.callback;
+  callback.value = typeof rawCallback === 'string' ? rawCallback : '';
   apiUrl.value = callback.value
     ? `${API_URL}/signup-google?callback=${callback.value}`
     : `${API_URL}/signup-google`;
 
   redirectIfLogged();
 });
+
+const redirectIfLogged = () => {
+  if (logged.value) {
+    const rawCallback = route.query.callback;
+    const target = typeof rawCallback === 'string' ? rawCallback : '/';
+    router.push(target);
+  }
+};
 
 watch(logged, (newVal) => {
   if (newVal) redirectIfLogged();

@@ -395,18 +395,6 @@ button:disabled:hover {
   background-attachment: fixed;
 }
 
-.secondary-button {
-  border: solid grey 1px;
-  padding-top: .3rem;
-  padding-bottom: .3rem;
-  background-color: transparent;
-  text-align: center;
-}
-
-.secondary-button:hover {
-  background-color: grey;
-}
-
 @media (max-width: 1080px) {
   .router-view {
     margin-top: 4rem;
@@ -550,3 +538,22 @@ input:focus {
   color: var(--nhexa-white);
 }
 
+.secondary-button {
+  border: solid grey 1px;
+  padding-top: .3rem;
+  padding-bottom: .3rem;
+  background-color: transparent;
+  text-align: center;
+  color: var(--nhexa-white);
+  padding-inline: 2rem;
+  border-radius: .5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.secondary-button:hover {
+  background-color: grey;
+  text-align: center;
+  color: var(--nhexa-white);
+}

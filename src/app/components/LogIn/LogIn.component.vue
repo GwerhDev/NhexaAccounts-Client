@@ -89,7 +89,10 @@ async function handleLogin(e: Event) {
   </div>
   <span class="flex gap-1 items-center">
     <p>¿Aun no tienes una cuenta?</p>
-    <router-link to="/register">Registrarse</router-link>
+    <router-link to="/register">
+      <font-awesome-icon icon="fa-solid fa-user-plus" />
+      Registrarse
+    </router-link>
   </span>
 </template>
 

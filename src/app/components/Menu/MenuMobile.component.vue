@@ -7,6 +7,17 @@ import { closeMenu } from '../../../helpers/menu';
   <div class="container-menu-mobile">
     <ul class="ul-menu-mobile">
       <li>
+        <router-link class="lateral-menu-link" to="/" @click="closeMenu()">
+          <font-awesome-icon icon="fa-solid fa-home" />
+          Página principal
+        </router-link>
+      </li>
+    </ul>
+
+    <div class="separator mt-1 mb-1"></div>
+
+    <ul class="ul-menu-mobile">
+      <li>
         <router-link class="lateral-menu-link" to="/personal-info" @click="closeMenu()">
           <font-awesome-icon icon="fa-solid fa-id-card" />
           Información personal

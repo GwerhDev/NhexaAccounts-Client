@@ -1,4 +1,4 @@
-import { API_URL } from "../middlewares/misc/const";
+import { API_URL } from "../misc/const";
 
 export const getUserToken = async () => {
   try {
@@ -24,13 +24,5 @@ export const clearUserToken = async () => {
   } catch (error) {
     console.log(error);
     return;
-  }
-};
-
-export const options = () => {
-  return {
-    headers: {
-      Authorization: getUserToken()
-    }
   }
 };

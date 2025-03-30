@@ -2,7 +2,7 @@
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from '../../../middlewares/store';
 import { Ref, computed, ref, onMounted } from 'vue';
-import { getUserToken } from '../../../helpers';
+import { getUserToken } from '../../../middlewares/services/token';
 import Loader from '../Loader/Loader.component.vue';
 
 const store: any = useStore();

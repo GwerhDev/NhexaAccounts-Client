@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { getUserToken } from "../../helpers";
+import { getUserToken } from "../../middlewares/services/token";
 import { allowedOrigins } from "../../middlewares/misc/const";
 
 const showLogin = ref(false);

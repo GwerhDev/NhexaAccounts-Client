@@ -1,10 +1,9 @@
 import { defineStore } from 'pinia';
 import { getAppList, getUserData, loginInner, signupInner, updateUserData } from '../services';
-import { clearUserToken } from '../../helpers';
+import { clearUserToken } from '../services/token';
 
 interface storeState {
   currentUser: any,
-  userToken: string,
   appList: Array<any>,
   menuList: Array<any>,
 }
@@ -12,7 +11,6 @@ interface storeState {
 export const useStore = defineStore('store', {
   state: (): storeState => ({
     currentUser: {},
-    userToken: '',
     appList: [],
     menuList: [],
   }),
@@ -21,7 +19,6 @@ export const useStore = defineStore('store', {
     async logout() {
       await clearUserToken();
       this.currentUser = {};
-      this.userToken = '';
     },
     async handleRegister(data: any) {
       const { logged } = await signupInner(data) || null;
@@ -36,22 +33,19 @@ export const useStore = defineStore('store', {
       const url = '/';
       return url;
     },
-    async handleUserData(token: any, callback: any, router: any) {
+    async handleUserData(callback: any, router: any) {
       try {
-        this.userToken = token;
-        this.currentUser = await getUserData(token);
+        this.currentUser = await getUserData();
         if (router && !callback) return router.push('/');
         else if (router && callback) return window.location.href = callback;
         else return;
       } catch (error) {
-        localStorage.clear();
         console.error(error);
       }
     },
     async handleUpdateUserData(formData: any, id: any) {
-      await updateUserData(formData, id, this.userToken);
-      this.currentUser = await getUserData(this.userToken);
-      this.userToken = this.userToken;
+      await updateUserData(formData, id);
+      this.currentUser = await getUserData();
     },
     async handleGetAppList() {
       this.appList = await getAppList();

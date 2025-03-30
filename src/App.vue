@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
 import { useStore } from './middlewares/store/index';
-import { getUserToken } from './helpers';
 import NavBar from './app/components/Navigator/NavBar.component.vue';
 import LateralBar from './app/components/Navigator/LateralBar.component.vue';
 
@@ -10,8 +9,7 @@ const currentUser: any = computed(() => store.currentUser);
 const logged: any = computed(() => currentUser.value.logged);
 
 onMounted(async () => {
-  const token: any = await getUserToken();
-  token && store.handleUserData(token);
+  store.handleUserData();
 });
 
 </script>

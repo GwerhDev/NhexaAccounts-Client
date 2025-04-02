@@ -14,6 +14,7 @@
   color-scheme: light dark;
 
   background: radial-gradient(circle at center top, var(--primary-background-color), var(--secondary-background-color) 75%);
+  background-repeat: no-repeat;
   background-attachment: fixed;
 
   font-synthesis: none;

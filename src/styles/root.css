@@ -15,9 +15,7 @@
 
   background: radial-gradient(circle at center top,
     var(--primary-background-color) 0%,
-    var(--primary-background-color) 50%,
-    var(--secondary-background-color) 75%,
-    var(--secondary-background-color) 100%
+    var(--secondary-background-color) 75%
   );
 
   background-repeat: no-repeat;

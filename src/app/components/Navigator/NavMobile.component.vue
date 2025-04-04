@@ -8,6 +8,9 @@ import MenuMobile from '../Menu/MenuMobile.component.vue';
 
 const store: any = useStore();
 const currentUser: any = computed(() => store.currentUser);
+const logged: any = computed(() => currentUser.value.logged);
+
+console.log(logged.value)
 
 </script>
 
@@ -15,7 +18,7 @@ const currentUser: any = computed(() => store.currentUser);
   <ul class="nav-menu-ul">
     <div class="d-flex align-cent logo-container">
       <div class="d-flex align-cent logo-cont">
-        <div class="burger-menu-container">
+        <div class="burger-menu-container" v-if="logged">
           <font-awesome-icon class="icon" :icon="['fas', 'bars']" @click="openMenu()" alt="" />
         </div>
         <div class="close-menu-container" alt="">

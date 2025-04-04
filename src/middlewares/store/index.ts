@@ -10,7 +10,9 @@ interface storeState {
 
 export const useStore = defineStore('store', {
   state: (): storeState => ({
-    currentUser: {},
+    currentUser: {
+      logged: false,
+    },
     appList: [],
     menuList: [],
   }),

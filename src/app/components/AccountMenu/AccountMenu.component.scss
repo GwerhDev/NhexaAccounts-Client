@@ -13,6 +13,7 @@
   background-color: var(--components-background);
   backdrop-filter: blur(100px);
   box-shadow: 0 0 3px rgba(63, 54, 66, 0.555);
+  border: solid 1px rgba(105, 105, 105, 0.705);
   z-index: 2;
  
   li {
@@ -43,7 +44,7 @@
   }
 }
 
-@media (max-width: 780px) {
+@media (max-width: 1080px) {
   .account-menu-container {
     right: 45px;
     top: 75px;

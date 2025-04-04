@@ -1,0 +1,18 @@
+.shining-component {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  background: linear-gradient(90deg, #5b5b5bfd, var(--components-background), #5b5b5bfd);
+  background-size: 200% 100%;
+  animation: shine 2s infinite alternate;
+}
+
+@keyframes shine {
+  0% {
+    background-position: -100%;
+  }
+
+  100% {
+    background-position: 200%;
+  }
+}

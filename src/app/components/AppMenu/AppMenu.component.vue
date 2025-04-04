@@ -3,7 +3,8 @@
 import { onMounted, computed, Ref } from 'vue';
 import { useStore } from '../../../middlewares/store';
 import { CanvasMenuFunction, closeAccountMenu, closeMenu } from '../../../helpers/menu';
-import Loader from '../Loader/Loader.component.vue';
+import Loader from '../Loaders/Loader.component.vue';
+import SkeletonLoader from '../Loaders/SkeletonLoader.component.vue';
 
 const store = useStore();
 const appList: Ref<any[]> = computed(() => store.appList);
@@ -33,8 +34,19 @@ onMounted(() => {
         {{ item.label }}
       </a>
     </li>
-    <li class="loader-container" v-else>
-      <Loader />
-    </li>
+    <ul class="loader-container" v-else>
+      <li>
+        <SkeletonLoader />
+      </li>
+      <li>
+        <SkeletonLoader />
+      </li>
+      <li>
+        <SkeletonLoader />
+      </li>
+      <li>
+        <Loader />
+      </li>
+    </ul>
   </ul>
 </template>

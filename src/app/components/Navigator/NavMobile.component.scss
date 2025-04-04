@@ -7,13 +7,6 @@
   display: none;
   justify-content: flex-start;
   align-items: flex-start;
-  padding-inline: 1rem;
-  padding: 1rem;
-  padding-inline: 2rem;
-}
-
-.icon {
-  cursor: pointer;
 }
 
 .logo {
@@ -42,15 +35,12 @@ input {
 }
 
 .burger-menu-container {
-  display: none;
+  margin: 0;
   padding: 0;
+  display: none;
   justify-content: flex-start;
   align-items: center;
-
-  img {
-    cursor: pointer;
-    display: none;
-  }
+  width: 15px;
 }
 
 .close-menu-container {
@@ -59,11 +49,7 @@ input {
   display: none;
   justify-content: flex-start;
   align-items: flex-start;
-  width: 23.5px;
-
-  img:hover {
-    cursor: pointer;
-  }
+  width: 15px;
 }
 
 .logo-cont {
@@ -78,7 +64,8 @@ input {
 
 .logo-container {
   margin: 0;
-  padding: 0;
+  padding: 1rem;
+  padding-inline: 1rem;
   width: 100%;
   display: flex;
   align-items: center;
@@ -102,26 +89,33 @@ input {
   border-radius: 100%;
   height: 40px;
   width: 40px;
-
 }
 
-@media (max-width: 780px) {
+.icon {
+  cursor: pointer;
+}
+
+@media (max-width: 1080px) {
   .nav-menu-ul {
-    padding-inline: 2rem;
     width: 100%;
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
+
+    .logo-cont,
+    .user-button {
+      padding-inline: 1rem;
+    }
   }
 
-  .menu-container {
+  .menu-mobile-container {
     width: 100%;
     height: 100%;
     display: none;
     flex-direction: column;
     padding: 1rem;
-
+    overflow: hidden;
   }
 
   .searcher-container {

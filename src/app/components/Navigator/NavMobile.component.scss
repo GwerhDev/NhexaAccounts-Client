@@ -1,26 +1,3 @@
-.nav-menu-ul {
-  margin: 0;
-  padding: 0;
-  background-color: var(--components-background);
-  backdrop-filter: blur(200px);
-  width: 100%;
-  display: none;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
-
-.logo {
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  p {
-    margin: 0;
-    padding: 0;
-  }
-}
-
 input {
   height: 1.6rem;
 }
@@ -81,23 +58,30 @@ input {
   }
 }
 
-.profile-pic{
-  width: 100%;
+.profile-pic {
+  width: 40px;
+  height: 40px;
   border: solid;
   border-width: 2px;
-  border-color: var(--primary-color);
   border-radius: 100%;
-  height: 40px;
-  width: 40px;
+  border-color: var(--primary-color);
 }
 
 .icon {
   cursor: pointer;
 }
 
+.nav-menu-ul {
+  display: none;
+}
+
 @media (max-width: 1080px) {
   .nav-menu-ul {
+    margin: 0;
+    padding: 0;
     width: 100%;
+    backdrop-filter: blur(200px);
+    background-color: var(--components-background);
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -113,9 +97,8 @@ input {
     width: 100%;
     height: 100%;
     display: none;
-    flex-direction: column;
-    padding: 1rem;
     overflow: hidden;
+    flex-direction: column;
   }
 
   .searcher-container {

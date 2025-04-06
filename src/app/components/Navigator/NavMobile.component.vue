@@ -10,8 +10,6 @@ const store: any = useStore();
 const currentUser: any = computed(() => store.currentUser);
 const logged: any = computed(() => currentUser.value.logged);
 
-console.log(logged.value)
-
 </script>
 
 <template>

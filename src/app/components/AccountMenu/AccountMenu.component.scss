@@ -34,8 +34,8 @@
 
 .current-user-data {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
 
   img {
@@ -46,7 +46,6 @@
 
 @media (max-width: 1080px) {
   .account-menu-container {
-    right: 45px;
     top: 75px;
   }
 }

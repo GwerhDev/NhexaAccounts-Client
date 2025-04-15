@@ -43,7 +43,7 @@ function select() {
     </li>
     <li class="current-user-data" v-if="logged">
       <h2>{{ currentUser?.userData?.username }}</h2>
-      <img v-if="currentUser?.userData?.profilePic" :src="currentUser?.userData?.profilePic" alt="">
+      <img v-if="currentUser?.userData?.profilePic" :src="currentUser?.userData?.profilePic" alt="Profile picture">
       <font-awesome-icon v-else icon="fa-solid fa-user" size="2x" />
       <p>{{ currentUser?.userData?.role }}</p>
     </li>

@@ -100,7 +100,7 @@ const handleRegister = async (e: Event) => {
   </div>
   <span class="flex gap-1 items-center">
     <p>¿Ya tienes una cuenta?</p>
-    <router-link to="/login">
+    <router-link :to="callback ? '/login?callback=' + encodeURIComponent(callback) : '/login'">
       <font-awesome-icon icon="fa-solid fa-user" />
       Inicia sesión
     </router-link>

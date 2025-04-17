@@ -63,6 +63,7 @@ async function handleLogin(e: Event) {
   <div class="form-container">
     <LogoHeader />
     <h2>Rellena los siguientes campos:</h2>
+    <p v-if="callback"><small>Al iniciar sesión, se te redireccionará a: <a :href="callback">{{ callback }}</a></small></p>
     <form class="ul-form">
       <li class="li-form">
         <label>Correo electrónico</label>
@@ -89,7 +90,7 @@ async function handleLogin(e: Event) {
   </div>
   <span class="flex gap-1 items-center">
     <p>¿Aun no tienes una cuenta?</p>
-    <router-link to="/register">
+    <router-link :to="callback ? '/register?callback=' + encodeURIComponent(callback) : '/register'">
       <font-awesome-icon icon="fa-solid fa-user-plus" />
       Registrarse
     </router-link>

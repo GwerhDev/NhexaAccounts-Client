@@ -31,7 +31,7 @@ export const loginInner: any = async (formData: any) => {
 };
 
 export const getAppList: any = async () => {
-  const response: any = await axios.get(API_URL + "/app-list")
+  const response: any = await axios.get(API_URL + "/app-list", { withCredentials: true })
     .then(response => response.data)
     .catch(() => { return { error: error.api.loadItemById } });
   return response;

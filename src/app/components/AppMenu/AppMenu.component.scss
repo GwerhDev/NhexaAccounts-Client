@@ -5,7 +5,7 @@
   top: 80px;
   right: 2.7rem;
   width: 100%;
-  max-width: 300px;
+  max-width: 200px;
   padding: 1rem;
   border-radius: 8px;
   display: none;
@@ -33,21 +33,6 @@
       outline: solid 2px var(--primary-color);
     }
   }
-
-  li {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    display: flex;
-    list-style: none;
-    justify-content: center;
-
-    .menu-text {
-      color: var(--nhexa-white);
-      width: 100%;
-      border-radius: 5px;
-    }
-  }
 }
 
 .current-user-data {
@@ -65,10 +50,23 @@
 
 .loader-container {
   gap: .5rem;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
 
   li {
-    height: 40px;
+    .app-card-container {
+      color: var(--nhexa-white);
+      border-radius: 5px;
+      font-size: 9px;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+      gap: .2rem;
+
+      img {
+        width: 25px;
+      }
+    }
   }
 }

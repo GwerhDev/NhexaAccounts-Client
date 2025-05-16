@@ -23,30 +23,32 @@ onMounted(() => {
 </script>
 
 <template>
-  <ul class="app-menu-container" id="app-menu-container">
+  <div class="app-menu-container" id="app-menu-container">
     <li class="current-user-data">
       <font-awesome-icon icon="fa-solid fa-layer-group" size="2x" />
       <h4>Apps</h4>
     </li>
     <div class="separator"></div>
-    <li v-if="appList.length" v-for="item in appList">
-      <a :href="item.url" class="app-card-container" @click="select">
-        {{ item.label }}
-      </a>
-    </li>
-    <ul class="loader-container" v-else>
-      <li>
-        <SkeletonLoader />
-      </li>
-      <li>
-        <SkeletonLoader />
-      </li>
-      <li>
-        <SkeletonLoader />
-      </li>
-      <li>
-        <Loader />
+    <ul class="loader-container" v-if="appList.length">
+      <li v-for="item in appList">
+        <a :href="item.url" class="app-card-container" @click="select">
+          <img :src="item.icon" alt="">
+          {{ item.label }}
+        </a>
       </li>
     </ul>
-  </ul>
+    <div v-else>
+      <ul class="loader-container">
+        <li>
+          <SkeletonLoader />
+        </li>
+        <li>
+          <SkeletonLoader />
+        </li>
+        <li>
+          <SkeletonLoader />
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>

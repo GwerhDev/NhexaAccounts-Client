@@ -3,7 +3,6 @@
 import { onMounted, computed, Ref } from 'vue';
 import { useStore } from '../../../middlewares/store';
 import { CanvasMenuFunction, closeAccountMenu, closeMenu } from '../../../helpers/menu';
-import Loader from '../Loaders/Loader.component.vue';
 import SkeletonLoader from '../Loaders/SkeletonLoader.component.vue';
 
 const store = useStore();

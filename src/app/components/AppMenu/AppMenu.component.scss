@@ -54,6 +54,8 @@
   grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
 
   li {
+    min-height: 40px;
+
     .app-card-container {
       color: var(--nhexa-white);
       border-radius: 5px;

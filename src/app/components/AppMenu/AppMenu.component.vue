@@ -28,7 +28,7 @@ onMounted(() => {
       <h4>Apps</h4>
     </li>
     <div class="separator"></div>
-    <ul class="loader-container" v-if="appList.length">
+    <ul class="loader-container" v-if="appList?.length">
       <li v-for="item in appList">
         <a :href="item.url" class="app-card-container" @click="select">
           <img :src="item.icon" alt="">
@@ -36,18 +36,16 @@ onMounted(() => {
         </a>
       </li>
     </ul>
-    <div v-else>
-      <ul class="loader-container">
-        <li>
-          <SkeletonLoader />
-        </li>
-        <li>
-          <SkeletonLoader />
-        </li>
-        <li>
-          <SkeletonLoader />
-        </li>
-      </ul>
-    </div>
+    <ul v-else class="loader-container">
+      <li>
+        <SkeletonLoader />
+      </li>
+      <li>
+        <SkeletonLoader />
+      </li>
+      <li>
+        <SkeletonLoader />
+      </li>
+    </ul>
   </div>
 </template>

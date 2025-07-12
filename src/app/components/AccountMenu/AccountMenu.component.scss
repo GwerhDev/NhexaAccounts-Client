@@ -45,6 +45,12 @@
   }
 }
 
+.role-functions {
+  gap: .5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(24px, 1fr));
+}
+
 @media (max-width: 1080px) {
   .account-menu-container {
     top: 75px;

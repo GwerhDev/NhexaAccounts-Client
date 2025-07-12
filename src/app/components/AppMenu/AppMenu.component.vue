@@ -6,7 +6,7 @@ import { CanvasMenuFunction, closeAccountMenu, closeMenu } from '../../../helper
 import SkeletonLoader from '../Loaders/SkeletonLoader.component.vue';
 
 const store = useStore();
-const appList: Ref<any[]> = computed(() => store.appList);
+const appList: Ref<any[]> = computed(() => store.appList.user);
 
 CanvasMenuFunction("#app-menu-container");
 

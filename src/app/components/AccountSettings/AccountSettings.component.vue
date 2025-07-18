@@ -16,7 +16,7 @@ const props = defineProps<{
 
 const store = useStore();
 const isReady = ref(false);
-const id = computed(() => store.currentUser?.userData?._id);
+const id = computed(() => store.currentUser?.userData?.id);
 
 const localFields = ref([...props.fields]);
 

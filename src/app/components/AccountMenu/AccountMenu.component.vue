@@ -48,7 +48,7 @@ function select() {
       <font-awesome-icon v-else icon="fa-solid fa-user" size="2x" />
       <p>{{ currentUser?.userData?.role }}</p>
     </li>
-    <div class="role-functions" v-if="appList?.length">
+    <div class="role-functions" v-if="logged && appList?.length">
       <li v-for="item in appList" :key="item.label">
         <a :href="item.url" @click="select">
           <img :src="item.icon" alt="" width="24" height="24">

@@ -3,7 +3,9 @@ import logo from '../../../assets/svg/nhexa-logo.svg'
 </script>
 
 <template>
-  <img :src="logo" alt="" class="splash">
+  <div class="splash-container">
+    <img :src="logo" alt="" class="splash">
+  </div>
 </template>
 
 <style scoped lang="scss" src="./SplashLoader.scss"></style>

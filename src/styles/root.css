@@ -14,9 +14,8 @@
   color-scheme: light dark;
 
   background: radial-gradient(circle at center top,
-    var(--primary-background-color) 0%,
-    var(--secondary-background-color) 75%
-  );
+      var(--primary-background-color) 0%,
+      var(--secondary-background-color) 75%);
 
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -36,6 +35,7 @@
   --button-primary-color: #5086b0;
   --button-primary-hover-color: #699fb8;
   --components-background: #2d3337ba;
+  --components-background-solid: #2d3337;
   --components-background-alt: #2d33378f;
 }
 

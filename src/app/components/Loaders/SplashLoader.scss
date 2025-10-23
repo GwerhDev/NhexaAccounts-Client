@@ -1,0 +1,18 @@
+.splash {
+  height: 50%;
+  animation: splash 5s ease-in-out infinite;
+}
+
+@keyframes splash {
+  from {
+    opacity: .5;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: .5;
+  }
+}

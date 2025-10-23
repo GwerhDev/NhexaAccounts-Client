@@ -3,7 +3,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useStore } from '../../../middlewares/store';
 import { Ref, computed, ref, onMounted } from 'vue';
 import { getUserToken } from '../../../middlewares/services/token';
-import Loader from '../Loaders/Loader.component.vue';
+import Loader from '../Loaders/SplashLoader.vue';
 
 const store: any = useStore();
 const token: Ref = ref('');

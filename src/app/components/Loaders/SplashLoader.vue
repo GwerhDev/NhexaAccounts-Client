@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import logo from '../../../assets/svg/nhexa-logo.svg'
+import LogoHeaderComponent from '../Logo/LogoHeader.component.vue';
 </script>
 
 <template>
   <div class="splash-container">
-    <img :src="logo" alt="" class="splash">
-    <h1 class="splash">NHEXA</h1>
+    <LogoHeaderComponent />
   </div>
 </template>
 

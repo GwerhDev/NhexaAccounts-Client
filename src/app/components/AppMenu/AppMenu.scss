@@ -1,17 +1,24 @@
+.app-menu-button {
+  position: relative;
+
+  .icon {
+    cursor: pointer;
+  }
+}
+
 .app-menu-container {
   margin: 0;
   padding: 0;
   gap: .5rem;
-  top: 80px;
-  right: 2.7rem;
-  width: 100%;
-  max-width: 200px;
+  top: 2.5rem;
+  right: 0;
+  width: 200px;
   padding: 1rem;
   border-radius: 8px;
-  display: none;
+  display: flex;
   position: absolute;
   flex-direction: column;
-  background-color: var(--components-background);
+  background-color: var(--components-background-solid);
   backdrop-filter: blur(100px);
   box-shadow: 0 0 3px rgba(63, 54, 66, 0.555);
   border: solid 1px rgba(105, 105, 105, 0.705);
@@ -35,17 +42,11 @@
   }
 }
 
-.current-user-data {
+.header {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-@media (max-width: 1080px) {
-  .app-menu-container {
-    top: 75px;
-  }
 }
 
 .loader-container {

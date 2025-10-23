@@ -2,9 +2,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useStore } from '../../../middlewares/store';
-import { openMenu, closeMenu, openAccountMenu, openAppMenu } from '../../../helpers/menu';
+import { openMenu, closeMenu } from '../../../helpers/menu';
 import Logo from '../Logo/Logo.component.vue';
 import MenuMobile from '../Menu/MenuMobile.component.vue';
+import AppMenu from '../AppMenu/AppMenu.vue';
+import AccMenu from '../AccMenu/AccMenu.vue';
 
 const store: any = useStore();
 const currentUser: any = computed(() => store.currentUser);
@@ -22,15 +24,12 @@ const logged: any = computed(() => currentUser.value.logged);
         <div class="close-menu-container" alt="">
           <font-awesome-icon class="icon" :icon="['fas', 'xmark']" @click="closeMenu()" alt="" />
         </div>
-        <Logo :width="'40'"  @click="closeMenu()" />
+        <Logo :width="'40'" @click="closeMenu()" />
       </div>
 
       <div class="user-button">
-        <font-awesome-icon class="icon" :icon="['fas', 'layer-group']" @click="openAppMenu()" />
-        <font-awesome-icon class="icon" v-if="!currentUser?.userData?.profilePic" @click="openAccountMenu()"
-          icon="fa-solid fa-user" />
-        <img class="profile-pic" v-if="currentUser?.userData?.profilePic" :src="currentUser?.userData?.profilePic"
-          @click="openAccountMenu()" alt="">
+        <AppMenu />
+        <AccMenu />
       </div>
     </div>
     <div class="menu-mobile-container">

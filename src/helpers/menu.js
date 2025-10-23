@@ -13,23 +13,3 @@ export function closeMenu() {
   $d(".close-menu-container").style.display="none";
   $d(".burger-menu-container").style.display="flex";
 }
-
-export function openAccountMenu() {
-  $d("#account-menu-container").style.display="flex";
-};
-
-export function closeAccountMenu() {
-  $d("#account-menu-container").style.display="none";
-};
-
-export function openAppMenu() {
-  $d("#app-menu-container").style.display="flex";
-}
-
-export function CanvasMenuFunction(selector) {
-  document.addEventListener('mouseup', function (e) {
-      var container = $d(selector);
-      if (!container?.contains(e.target)) return $d(selector).style.display='none';
-      return;
-  });
-};

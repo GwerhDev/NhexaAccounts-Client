@@ -1,29 +1,37 @@
-.account-menu-container {
+.acc-menu-button {
+  position: relative;
+
+  .icon {
+    cursor: pointer;
+  }
+}
+
+.acc-menu-container {
   margin: 0;
   padding: 0;
   gap: .5rem;
-  top: 80px;
-  right: 1rem;
+  top: 2.5rem;
+  right: 0;
   width: 300px;
   padding: 1rem;
   border-radius: 8px;
-  display: none;
+  display: flex;
   position: absolute;
   flex-direction: column;
-  background-color: var(--components-background);
+  background-color: var(--components-background-solid);
   backdrop-filter: blur(100px);
   box-shadow: 0 0 3px rgba(63, 54, 66, 0.555);
   border: solid 1px rgba(105, 105, 105, 0.705);
   z-index: 2;
- 
+
   li {
     margin: 0;
-    padding: 0;  
+    padding: 0;
     width: 100%;
     display: flex;
     list-style: none;
     justify-content: center;
-    
+
     .menu-text {
       color: var(--nhexa-white);
       width: 100%;
@@ -49,10 +57,4 @@
   gap: .5rem;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(24px, 1fr));
-}
-
-@media (max-width: 1080px) {
-  .account-menu-container {
-    top: 75px;
-  }
 }

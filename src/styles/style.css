@@ -496,8 +496,7 @@ input:focus {
   border-bottom-right-radius: 5px;
 }
 
-.logo-container,
-.profile-pic-container {
+.logo-container {
   display: flex;
   justify-content: space-evenly;
 }

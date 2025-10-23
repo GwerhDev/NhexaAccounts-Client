@@ -53,8 +53,10 @@ onUnmounted(() => {
   <span class="acc-menu-button" ref="accMenuButton">
     <font-awesome-icon class="icon" v-if="!currentUser?.userData?.profilePic" icon="fa-solid fa-user"
       @click="toggleDropdown" />
-    <img class="profile-pic" v-if="currentUser?.userData?.profilePic" :src="currentUser?.userData?.profilePic"
-      @click="toggleDropdown" alt="">
+    <div class="profile-pic-container">
+      <img class="profile-pic" v-if="currentUser?.userData?.profilePic" :src="currentUser?.userData?.profilePic"
+        @click="toggleDropdown" alt="">
+    </div>
     <div class="dropdown" v-if="showDropdown">
       <ul class="acc-menu-container">
         <li class="current-user-data" v-if="!logged">

@@ -5,7 +5,7 @@ import logo from '../../../assets/svg/nhexa-logo.svg'
 <template>
   <div class="splash-container">
     <img :src="logo" alt="" class="splash">
-    <h1 class="type splash">NHEXA</h1>
+    <h1 class="splash">NHEXA</h1>
   </div>
 </template>
 

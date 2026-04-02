@@ -3,10 +3,12 @@ import { useRouter, useRoute } from 'vue-router';
 import { onMounted, computed, ref, watch } from 'vue';
 import { API_URL } from '../../../middlewares/misc/const';
 import { useStore } from '../../../middlewares/store/index';
+import LogoApp from '../Logo/LogoApp.component.vue';
 import LogoHeader from '../Logo/LogoHeader.component.vue';
 import googleIcon from '../../../assets/png/google-icon.png';
 
 const apiUrl = ref('');
+const appLogo = ref('');
 const callback = ref('');
 const store = useStore();
 const route = useRoute();
@@ -22,9 +24,14 @@ const isDisabled = computed(() => {
   return !email.value || !password.value;
 });
 
+
 onMounted(() => {
+  const rawAppId = route.query.appId;
   const rawCallback = route.query.callback;
+
   callback.value = typeof rawCallback === 'string' ? rawCallback : '';
+  appLogo.value = typeof rawAppId === 'string' ? "https://streamby.s3.amazonaws.com/" + rawAppId + "/project-image" : '';
+
   apiUrl.value = callback.value
     ? `${API_URL}/login-google?callback=${callback.value}`
     : `${API_URL}/login-google`;
@@ -61,9 +68,15 @@ async function handleLogin(e: Event) {
 
 <template>
   <div class="form-container">
-    <LogoHeader />
+    <LogoHeader v-if="!appLogo" />
+    <span v-else class="logo-container">
+      <LogoApp />
+      <font-awesome-icon icon="fa-solid fa-exchange" size="lg" />
+      <LogoApp :logo=appLogo />
+    </span>
     <h2>Rellena los siguientes campos:</h2>
-    <p v-if="callback"><small>Al iniciar sesión, se te redireccionará a: <a :href="callback">{{ callback }}</a></small></p>
+    <p v-if="callback"><small>Al iniciar sesión, se te redireccionará a: <a :href="callback">{{ callback }}</a></small>
+    </p>
     <form class="ul-form">
       <li class="li-form">
         <label>Correo electrónico</label>

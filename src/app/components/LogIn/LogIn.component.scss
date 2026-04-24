@@ -17,6 +17,11 @@
   margin-bottom: 1rem;
 }
 
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
 input:active, input:hover, input:focus-visible {
   border-color: var(--primary-color);
 }

@@ -1,20 +1,5 @@
 import { API_URL } from "../misc/const";
 
-export const getUserToken = async () => {
-  try {
-    const res = await fetch(API_URL + "/session", {
-      credentials: "include"
-    });
-
-    const { userToken } = await res.json() || {};
-    return userToken;
-
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-};
-
 export const clearUserToken = async () => {
   try {
     await fetch(API_URL + "/logout", {

@@ -8,7 +8,6 @@ import PrivacyPage from '../pages/PrivacyPage.vue';
 import SecurityPage from '../pages/SecurityPage.vue';
 import RegisterPage from '../pages/RegisterPage.vue';
 import PersonalInfoPage from '../pages/PersonalInfoPage.vue';
-import EmbedSessionPage from '../pages/EmbedSessionPage.vue';
 import ConnectedAppsPage from '../pages/ConnectedAppsPage.vue';
 import RegisterVerifyPage from '../pages/RegisterVerifyPage.vue';
 import RegisterSuccessPage from '../pages/RegisterSuccessPage.vue';
@@ -28,11 +27,6 @@ const routes: RouteRecordRaw[] = [
     path: '/environment/apps',
     name: 'ConnectedAppsPage',
     component: ConnectedAppsPage,
-  },
-  {
-    path: '/embed-session',
-    name: 'EmbedSessionPage',
-    component: EmbedSessionPage,
   },
   {
     path: '/login',

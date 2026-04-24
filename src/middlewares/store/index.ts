@@ -25,15 +25,16 @@ export const useStore = defineStore('store', {
     async handleRegister(data: any) {
       const { logged } = await signupInner(data) || null;
       if (!logged) return "/register/failed";
-      const url = '/';
-      return url;
+      return "/register/success";
     },
     async handleLogin(data: any, callback: string) {
-      const { logged } = await loginInner(data) || null;
-      if (!logged) return "/login/failed";
+      const result = await loginInner(data) || null;
+      if (!result?.logged) {
+        if (result?.verified === false) return "/register/verify";
+        return "/login/failed";
+      }
       if (callback) return window.location.href = callback;
-      const url = '/';
-      return url;
+      return '/';
     },
     async handleUserData(callback: any, router: any) {
       try {

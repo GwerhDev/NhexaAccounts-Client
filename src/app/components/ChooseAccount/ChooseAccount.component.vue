@@ -1,30 +1,28 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from '../../../middlewares/store';
-import { Ref, computed, ref, onMounted } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { getUserToken } from '../../../middlewares/services/token';
 import Loader from '../Loaders/SplashLoader.vue';
 
 const store: any = useStore();
-const token: Ref = ref('');
+const token = ref('');
 const route: any = useRoute();
 const router: any = useRouter();
 const currentUser: any = computed(() => store.currentUser);
 const logged: any = computed(() => currentUser.value.logged);
-const email: any = computed(() => currentUser.value.userData.email);
-const username: any = computed(() => currentUser.value.userData.username);
-const profilePic: any = computed(() => currentUser.value.userData.profilePic);
+const email: any = computed(() => currentUser.value.userData?.email);
+const username: any = computed(() => currentUser.value.userData?.username);
+const profilePic: any = computed(() => currentUser.value.userData?.profilePic);
 const uri: any = decodeURIComponent(route.query.callback);
-const redirectUrl = uri + "/auth?token=" + getUserToken();
+const redirectUrl = computed(() => uri + "/auth?token=" + token.value);
 
-function selectAccount() { window.location.href = redirectUrl };
+function selectAccount() { window.location.href = redirectUrl.value };
 
 function login() { router.push('/login') };
 
-onMounted(() => {
-  setInterval(() => {
-    token.value = getUserToken();
-  }, 5000);
+onMounted(async () => {
+  token.value = await getUserToken();
 });
 
 </script>

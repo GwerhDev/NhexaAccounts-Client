@@ -38,7 +38,6 @@ api.interceptors.response.use(
       return api(original);
     } catch (refreshError) {
       drainQueue(refreshError);
-      window.location.href = '/login';
       return Promise.reject(refreshError);
     } finally {
       isRefreshing = false;

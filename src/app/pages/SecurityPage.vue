@@ -1,52 +1,58 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
-import { useStore } from '../../middlewares/store';
+import { ref, onMounted } from 'vue';
+import { getPasswordStatus, updatePassword } from '../../middlewares/services';
 import LabeledForm from '../components/LabeledForm/LabeledForm.component.vue';
 import Devices from '../components/Devices/Devices.component.vue';
 
-const store = useStore();
-const id = computed(() => store.currentUser?.userData?.id);
-const hasPassword = computed(() => store.currentUser?.userData?.hasPassword);
+interface PasswordStatus {
+  hasPassword: boolean;
+}
 
+const passwordStatus = ref<PasswordStatus | null>(null);
 const password = ref('');
 const editPassword = ref(false);
 
-watch(() => store.currentUser?.userData, (u) => {
-  if (!u) return;
-  password.value = '';
-}, { immediate: true });
+onMounted(async () => {
+  passwordStatus.value = await getPasswordStatus();
+});
 
 const savePassword = async () => {
-  await store.handleUpdateUserData({ password: password.value }, id.value);
+  await updatePassword(password.value);
   password.value = '';
   editPassword.value = false;
+  passwordStatus.value = await getPasswordStatus();
 };
 </script>
 
 <template>
   <main class="main-container">
-    <section class="section-container" v-if="hasPassword">
+    <section class="section-container">
       <div class="inner-container">
         <ul class="card-container">
           <li>
             <LabeledForm title="Contraseña">
               <template #actions>
                 <button v-if="!editPassword" class="edit-button" @click="editPassword = true">
-                  <font-awesome-icon icon="fa-solid fa-edit" /> Actualizar
+                  <font-awesome-icon icon="fa-solid fa-edit" />
+                  {{ passwordStatus?.hasPassword ? 'Actualizar' : 'Configurar' }}
                 </button>
               </template>
               <form class="ul-form" @submit.prevent="savePassword">
-          <li>
-            <label class="label-input">Nueva contraseña</label>
-            <input v-model="password" class="input-form" type="password" :disabled="!editPassword" />
-          </li>
-
-          <div v-show="editPassword" class="edit-buttons-container">
-            <button type="submit">Guardar cambios</button>
-            <button type="button" class="cancel-button" @click="editPassword = false">Cancelar</button>
-          </div>
-          </form>
-          </LabeledForm>
+                <li v-if="!editPassword">
+                  <p class="status-msg">
+                    {{ passwordStatus?.hasPassword ? 'Contraseña configurada.' : 'No tienes contraseña configurada.' }}
+                  </p>
+                </li>
+                <li v-show="editPassword">
+                  <label class="label-input">Nueva contraseña</label>
+                  <input v-model="password" class="input-form" type="password" />
+                </li>
+                <div v-show="editPassword" class="edit-buttons-container">
+                  <button type="submit">Guardar cambios</button>
+                  <button type="button" class="cancel-button" @click="editPassword = false">Cancelar</button>
+                </div>
+              </form>
+            </LabeledForm>
           </li>
           <li>
             <Devices />

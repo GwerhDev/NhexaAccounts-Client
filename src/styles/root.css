@@ -27,6 +27,8 @@
   -webkit-text-size-adjust: 100%;
 
   --nhexa-white: rgb(229, 229, 229);
+  --danger-color: #632f2f;
+  --danger-color-accent: #e48484;
   --primary-color: #5086b0;
   --primary-hover-color: #699fb8;
   --primary-background-color: #416476bc;

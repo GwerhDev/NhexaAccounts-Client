@@ -297,18 +297,20 @@ const cancelPassword = () => {
 }
 
 .input-error {
-  border-color: #c0392b !important;
+  border-color: var(--danger-color-accent);
 }
 
 .field-error {
   margin-top: 0.25rem;
   font-size: 0.72rem;
-  color: #e74c3c;
+  color: var(--danger-color-accent);
 }
 
 .edit-button--danger {
-  color: #e74c3c !important;
-  &:hover { background: rgba(231, 76, 60, 0.12) !important; }
+  &:hover { 
+    background: var(--danger-color);
+    color: var(--nhexa-white);
+  }
 }
 
 .tfa-setup {
@@ -349,7 +351,7 @@ const cancelPassword = () => {
   padding: 0.3rem 0.5rem;
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.07);
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--nhexa-white);
   text-align: center;
 }
 </style>

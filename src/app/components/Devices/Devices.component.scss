@@ -53,8 +53,7 @@
   cursor: pointer;
 
   &:hover {
-    background: #c0392b;
-    border-color: transparent;
-    color: #fff;
+    border-color: var(--danger-color-accent);
+    color: var(--danger-color-accent);
   }
 }

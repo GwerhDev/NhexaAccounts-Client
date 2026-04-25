@@ -39,6 +39,16 @@
   --components-background-alt: #2d33378f;
 }
 
+ul {
+  gap: .2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+}
+
 @media (max-width: 1080px) {
   :root {
     padding: 0;

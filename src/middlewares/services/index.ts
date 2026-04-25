@@ -50,3 +50,31 @@ export const updateUserData: any = async (formData: any, id: any) => {
     .catch(() => { return { error: error.api.loadItemById } });
   return response;
 };
+
+export const linkEmail: any = async (password: string) => {
+  const response: any = await api.post("/account/link-email", { password })
+    .then(response => response.data)
+    .catch(() => { return { error: error.api.loadItemById } });
+  return response;
+};
+
+export const getDevices: any = async () => {
+  const response: any = await api.get("/devices")
+    .then(response => response.data)
+    .catch(() => { return { sessions: [] } });
+  return response;
+};
+
+export const revokeDevice: any = async (id: string) => {
+  const response: any = await api.delete("/devices/" + id)
+    .then(response => response.data)
+    .catch(() => { return { error: error.api.loadItemById } });
+  return response;
+};
+
+export const revokeAllDevices: any = async () => {
+  const response: any = await api.delete("/devices/all")
+    .then(response => response.data)
+    .catch(() => { return { error: error.api.loadItemById } });
+  return response;
+};

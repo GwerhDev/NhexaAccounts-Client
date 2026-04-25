@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import AccountSettings from "../components/AccountSettings/AccountSettings.component.vue";
-
-const fields = [
-  {
-    key: '',
-    title: '',
-    label: '',
-    type: '',
-    value: '',
-  },
-];
+import LabeledForm from '../components/LabeledForm/LabeledForm.component.vue';
 </script>
 
 <template>
   <main class="main-container">
-    <AccountSettings :fields="fields" />
+    <section class="section-container">
+      <div class="inner-container">
+        <ul class="card-container">
+          <li>
+            <LabeledForm title="Facturación">
+              <p class="ul-form">Próximamente.</p>
+            </LabeledForm>
+          </li>
+        </ul>
+      </div>
+    </section>
   </main>
 </template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router';
 import { onMounted, computed, ref, watch } from 'vue';
+import OtpInput from '../OtpInput/OtpInput.component.vue';
 import { API_URL } from '../../../middlewares/misc/const';
 import { useStore } from '../../../middlewares/store/index';
 import { verifyMfa, getUserData } from '../../../middlewares/services';
@@ -22,11 +23,10 @@ const email = ref('');
 const password = ref('');
 const step = ref<'credentials' | 'mfa'>('credentials');
 const mfaToken = ref('');
-const mfaCode = ref('');
 const mfaError = ref('');
+const otpLoginRef = ref<InstanceType<typeof OtpInput> | null>(null);
 
 const isDisabled = computed(() => !email.value || !password.value);
-const isMfaDisabled = computed(() => mfaCode.value.replace(/\s/g, '').length < 6);
 
 onMounted(() => {
   const rawAppId = route.query.appId;
@@ -67,11 +67,9 @@ async function handleLogin(e: Event) {
   }
 }
 
-async function handleMfa(e: Event) {
-  e.preventDefault();
+async function handleMfa(code: string) {
   mfaError.value = '';
   try {
-    const code = mfaCode.value.replace(/\s/g, '');
     const result = await verifyMfa(mfaToken.value, code);
     if (result?.logged) {
       if (callback.value) {
@@ -81,10 +79,11 @@ async function handleMfa(e: Event) {
       }
     } else {
       mfaError.value = result?.message ?? 'Código inválido.';
-      mfaCode.value = '';
+      otpLoginRef.value?.reset();
     }
   } catch {
     mfaError.value = 'Error al verificar el código.';
+    otpLoginRef.value?.reset();
   }
 }
 </script>
@@ -129,24 +128,13 @@ async function handleMfa(e: Event) {
     <template v-else>
       <h2>Verificación en dos pasos</h2>
       <p><small>Ingresa el código de 6 dígitos de tu app de autenticación.</small></p>
-      <form class="ul-form" @submit.prevent="handleMfa">
+      <div class="ul-form">
         <li class="li-form">
-          <label>Código de verificación</label>
-          <input
-            v-model="mfaCode"
-            class="input-form"
-            type="text"
-            inputmode="numeric"
-            autocomplete="one-time-code"
-            maxlength="6"
-            placeholder="000000"
-            autofocus
-          />
+          <OtpInput ref="otpLoginRef" @complete="handleMfa" />
           <span v-if="mfaError" class="field-error">{{ mfaError }}</span>
         </li>
-        <button :disabled="isMfaDisabled" class="submit-button" type="submit">Verificar</button>
-      </form>
-      <button class="cancel-button" style="margin-top: 0.75rem" @click="step = 'credentials'; mfaCode = ''; mfaError = ''">
+      </div>
+      <button class="cancel-button" style="margin-top: 0.75rem" @click="step = 'credentials'; mfaError = ''">
         Volver
       </button>
     </template>

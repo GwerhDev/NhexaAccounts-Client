@@ -10,6 +10,7 @@ import {
 } from '../../middlewares/services';
 import LabeledForm from '../components/LabeledForm/LabeledForm.component.vue';
 import Devices from '../components/Devices/Devices.component.vue';
+import OtpInput from '../components/OtpInput/OtpInput.component.vue';
 
 const store = useStore();
 const email = computed(() => store.currentUser?.userData?.email ?? '');
@@ -35,9 +36,56 @@ type TwoFactorStep = 'idle' | 'qr' | 'backup-codes' | 'disable-confirm';
 const tfaStep = ref<TwoFactorStep>('idle');
 const tfaSecret = ref('');
 const tfaQr = ref('');
-const tfaCode = ref('');
 const tfaBackupCodes = ref<string[]>([]);
 const tfaError = ref('');
+const otpEnableRef = ref<InstanceType<typeof OtpInput> | null>(null);
+const otpDisableRef = ref<InstanceType<typeof OtpInput> | null>(null);
+
+const startSetup2FA = async () => {
+  tfaError.value = '';
+  const data = await getTwoFactorSetup();
+  if (!data) return;
+  tfaSecret.value = data.secret;
+  tfaQr.value = data.qrDataUrl;
+  tfaStep.value = 'qr';
+};
+
+const confirmEnable2FA = async (code: string) => {
+  tfaError.value = '';
+  const result = await enableTwoFactor(tfaSecret.value, code);
+  if (result?.error || !result?.backupCodes) {
+    tfaError.value = result?.message ?? 'Código inválido.';
+    otpEnableRef.value?.reset();
+    return;
+  }
+  tfaBackupCodes.value = result.backupCodes;
+  tfaStep.value = 'backup-codes';
+  status.value = await getPasswordStatus();
+};
+
+const finishSetup2FA = () => {
+  tfaStep.value = 'idle';
+  tfaBackupCodes.value = [];
+  tfaSecret.value = '';
+  tfaQr.value = '';
+};
+
+const confirmDisable2FA = async (code: string) => {
+  tfaError.value = '';
+  const result = await disableTwoFactor(code);
+  if (result?.error || !result?.success) {
+    tfaError.value = result?.message ?? 'Código inválido.';
+    otpDisableRef.value?.reset();
+    return;
+  }
+  tfaStep.value = 'idle';
+  status.value = await getPasswordStatus();
+};
+
+const cancelTfa = () => {
+  tfaStep.value = 'idle';
+  tfaError.value = '';
+};
 
 const timeAgo = (iso: string): string => {
   const diff = Date.now() - new Date(iso).getTime();
@@ -79,53 +127,6 @@ const cancelPassword = () => {
   editPassword.value = false;
 };
 
-const startSetup2FA = async () => {
-  tfaError.value = '';
-  const data = await getTwoFactorSetup();
-  if (!data) return;
-  tfaSecret.value = data.secret;
-  tfaQr.value = data.qrDataUrl;
-  tfaCode.value = '';
-  tfaStep.value = 'qr';
-};
-
-const confirmEnable2FA = async () => {
-  tfaError.value = '';
-  const result = await enableTwoFactor(tfaSecret.value, tfaCode.value);
-  if (result?.error || !result?.backupCodes) {
-    tfaError.value = result?.message ?? 'Código inválido.';
-    return;
-  }
-  tfaBackupCodes.value = result.backupCodes;
-  tfaStep.value = 'backup-codes';
-  status.value = await getPasswordStatus();
-};
-
-const finishSetup2FA = () => {
-  tfaStep.value = 'idle';
-  tfaCode.value = '';
-  tfaBackupCodes.value = [];
-  tfaSecret.value = '';
-  tfaQr.value = '';
-};
-
-const confirmDisable2FA = async () => {
-  tfaError.value = '';
-  const result = await disableTwoFactor(tfaCode.value);
-  if (result?.error || !result?.success) {
-    tfaError.value = result?.message ?? 'Código inválido.';
-    return;
-  }
-  tfaStep.value = 'idle';
-  tfaCode.value = '';
-  status.value = await getPasswordStatus();
-};
-
-const cancelTfa = () => {
-  tfaStep.value = 'idle';
-  tfaCode.value = '';
-  tfaError.value = '';
-};
 </script>
 
 <template>
@@ -133,7 +134,9 @@ const cancelTfa = () => {
     <section class="section-container">
       <div class="inner-container">
         <ul class="card-container">
-          <li>
+
+          <!-- Columna izquierda: Contraseña + Dispositivos -->
+          <li class="card-column">
             <LabeledForm title="Contraseña" accordion>
               <template #actions>
                 <button v-if="!editPassword" class="edit-button" @click="editPassword = true">
@@ -177,9 +180,11 @@ const cancelTfa = () => {
                 </template>
               </form>
             </LabeledForm>
+            <Devices />
           </li>
 
-          <li>
+          <!-- Columna derecha: 2FA -->
+          <li class="card-column">
             <LabeledForm title="Verificación en dos pasos" accordion>
               <template #actions>
                 <button
@@ -193,14 +198,13 @@ const cancelTfa = () => {
                 <button
                   v-if="tfaStep === 'idle' && status.twoFactorEnabled"
                   class="edit-button edit-button--danger"
-                  @click="tfaStep = 'disable-confirm'; tfaCode = ''"
+                  @click="tfaStep = 'disable-confirm'"
                 >
                   <font-awesome-icon icon="fa-solid fa-shield-halved" />
                   Desactivar
                 </button>
               </template>
 
-              <!-- Idle: status summary -->
               <div v-if="tfaStep === 'idle'" class="ul-form">
                 <p class="status-msg">
                   <font-awesome-icon
@@ -211,23 +215,17 @@ const cancelTfa = () => {
                 </p>
               </div>
 
-              <!-- Setup: scan QR -->
               <div v-else-if="tfaStep === 'qr'" class="ul-form tfa-setup">
                 <p class="status-msg">Escanea el código QR con Google Authenticator o Authy, luego ingresa el código de 6 dígitos.</p>
                 <img :src="tfaQr" alt="QR 2FA" class="tfa-qr" />
                 <p class="tfa-secret-hint">Clave manual: <code>{{ tfaSecret }}</code></p>
-                <div class="field-group" style="max-width: 200px">
-                  <label class="label-input">Código de verificación</label>
-                  <input v-model="tfaCode" class="input-form" type="text" inputmode="numeric" maxlength="6" placeholder="000000" />
+                <div class="field-group">
+                  <OtpInput ref="otpEnableRef" @complete="confirmEnable2FA" />
                   <span v-if="tfaError" class="field-error">{{ tfaError }}</span>
                 </div>
-                <div class="edit-buttons-container">
-                  <button type="button" :disabled="tfaCode.length < 6" @click="confirmEnable2FA">Activar 2FA</button>
-                  <button type="button" class="cancel-button" @click="cancelTfa">Cancelar</button>
-                </div>
+                <button type="button" class="cancel-button" style="align-self: flex-start" @click="cancelTfa">Cancelar</button>
               </div>
 
-              <!-- Backup codes shown once -->
               <div v-else-if="tfaStep === 'backup-codes'" class="ul-form tfa-setup">
                 <p class="status-msg"><strong>2FA activado.</strong> Guarda estos códigos de respaldo en un lugar seguro. Solo se muestran una vez.</p>
                 <ul class="backup-codes-grid">
@@ -238,25 +236,17 @@ const cancelTfa = () => {
                 </div>
               </div>
 
-              <!-- Disable confirm -->
               <div v-else-if="tfaStep === 'disable-confirm'" class="ul-form tfa-setup">
                 <p class="status-msg">Ingresa tu código de autenticación o un código de respaldo para desactivar 2FA.</p>
-                <div class="field-group" style="max-width: 200px">
-                  <label class="label-input">Código</label>
-                  <input v-model="tfaCode" class="input-form" type="text" inputmode="numeric" maxlength="9" placeholder="000000" />
+                <div class="field-group">
+                  <OtpInput ref="otpDisableRef" @complete="confirmDisable2FA" />
                   <span v-if="tfaError" class="field-error">{{ tfaError }}</span>
                 </div>
-                <div class="edit-buttons-container">
-                  <button type="button" class="edit-button--danger" :disabled="tfaCode.length < 6" @click="confirmDisable2FA">Desactivar</button>
-                  <button type="button" class="cancel-button" @click="cancelTfa">Cancelar</button>
-                </div>
+                <button type="button" class="cancel-button" style="align-self: flex-start" @click="cancelTfa">Cancelar</button>
               </div>
             </LabeledForm>
           </li>
 
-          <li>
-            <Devices />
-          </li>
         </ul>
       </div>
     </section>

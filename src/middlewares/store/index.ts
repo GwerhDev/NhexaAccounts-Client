@@ -30,11 +30,13 @@ export const useStore = defineStore('store', {
     async handleLogin(data: any, callback: string) {
       const result = await loginInner(data) || null;
       if (!result?.logged) {
-        if (result?.verified === false) return "/register/verify";
         return "/login/failed";
       }
       if (callback) return window.location.href = callback;
-      return '/';
+      else {
+        this.currentUser = await getUserData();
+        return '/';
+      }
     },
     async handleUserData(callback: any, router: any) {
       try {

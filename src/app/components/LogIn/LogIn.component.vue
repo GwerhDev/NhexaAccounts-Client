@@ -24,7 +24,6 @@ const isDisabled = computed(() => {
   return !email.value || !password.value;
 });
 
-
 onMounted(() => {
   const rawAppId = route.query.appId;
   const rawCallback = route.query.callback;
@@ -58,8 +57,7 @@ async function handleLogin(e: Event) {
     password: password.value,
   };
   try {
-    const path = await store.handleLogin(formData, callback.value);
-    router.push(path);
+    await store.handleLogin(formData, callback.value);
   } catch (error) {
     console.error(error);
   }

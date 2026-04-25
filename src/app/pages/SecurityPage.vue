@@ -1,23 +1,43 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useStore } from '../../middlewares/store';
-import { getPasswordStatus, updatePassword } from '../../middlewares/services';
+import {
+  getPasswordStatus,
+  updatePassword,
+  getTwoFactorSetup,
+  enableTwoFactor,
+  disableTwoFactor,
+} from '../../middlewares/services';
 import LabeledForm from '../components/LabeledForm/LabeledForm.component.vue';
 import Devices from '../components/Devices/Devices.component.vue';
 
 const store = useStore();
 const email = computed(() => store.currentUser?.userData?.email ?? '');
 
-interface PasswordStatus {
+interface SecurityStatus {
   passwordSetAt: string | null;
+  twoFactorEnabled: boolean;
 }
 
-const passwordStatus = ref<PasswordStatus | null>(null);
+const status = ref<SecurityStatus>({ passwordSetAt: null, twoFactorEnabled: false });
+
+// Password
 const password = ref('');
 const confirm = ref('');
 const editPassword = ref(false);
 const showPassword = ref(false);
 const showConfirm = ref(false);
+const mismatch = computed(() => confirm.value.length > 0 && password.value !== confirm.value);
+const canSubmit = computed(() => password.value.length >= 8 && password.value === confirm.value);
+
+// 2FA
+type TwoFactorStep = 'idle' | 'qr' | 'backup-codes' | 'disable-confirm';
+const tfaStep = ref<TwoFactorStep>('idle');
+const tfaSecret = ref('');
+const tfaQr = ref('');
+const tfaCode = ref('');
+const tfaBackupCodes = ref<string[]>([]);
+const tfaError = ref('');
 
 const timeAgo = (iso: string): string => {
   const diff = Date.now() - new Date(iso).getTime();
@@ -36,11 +56,8 @@ const timeAgo = (iso: string): string => {
   return `hace ${years} ${years === 1 ? 'año' : 'años'}`;
 };
 
-const mismatch = computed(() => confirm.value.length > 0 && password.value !== confirm.value);
-const canSubmit = computed(() => password.value.length >= 8 && password.value === confirm.value);
-
 onMounted(async () => {
-  passwordStatus.value = await getPasswordStatus();
+  status.value = await getPasswordStatus();
 });
 
 const savePassword = async () => {
@@ -51,7 +68,7 @@ const savePassword = async () => {
   showPassword.value = false;
   showConfirm.value = false;
   editPassword.value = false;
-  passwordStatus.value = await getPasswordStatus();
+  status.value = await getPasswordStatus();
 };
 
 const cancelPassword = () => {
@@ -60,6 +77,54 @@ const cancelPassword = () => {
   showPassword.value = false;
   showConfirm.value = false;
   editPassword.value = false;
+};
+
+const startSetup2FA = async () => {
+  tfaError.value = '';
+  const data = await getTwoFactorSetup();
+  if (!data) return;
+  tfaSecret.value = data.secret;
+  tfaQr.value = data.qrDataUrl;
+  tfaCode.value = '';
+  tfaStep.value = 'qr';
+};
+
+const confirmEnable2FA = async () => {
+  tfaError.value = '';
+  const result = await enableTwoFactor(tfaSecret.value, tfaCode.value);
+  if (result?.error || !result?.backupCodes) {
+    tfaError.value = result?.message ?? 'Código inválido.';
+    return;
+  }
+  tfaBackupCodes.value = result.backupCodes;
+  tfaStep.value = 'backup-codes';
+  status.value = await getPasswordStatus();
+};
+
+const finishSetup2FA = () => {
+  tfaStep.value = 'idle';
+  tfaCode.value = '';
+  tfaBackupCodes.value = [];
+  tfaSecret.value = '';
+  tfaQr.value = '';
+};
+
+const confirmDisable2FA = async () => {
+  tfaError.value = '';
+  const result = await disableTwoFactor(tfaCode.value);
+  if (result?.error || !result?.success) {
+    tfaError.value = result?.message ?? 'Código inválido.';
+    return;
+  }
+  tfaStep.value = 'idle';
+  tfaCode.value = '';
+  status.value = await getPasswordStatus();
+};
+
+const cancelTfa = () => {
+  tfaStep.value = 'idle';
+  tfaCode.value = '';
+  tfaError.value = '';
 };
 </script>
 
@@ -73,13 +138,13 @@ const cancelPassword = () => {
               <template #actions>
                 <button v-if="!editPassword" class="edit-button" @click="editPassword = true">
                   <font-awesome-icon icon="fa-solid fa-edit" />
-                  {{ passwordStatus?.passwordSetAt ? 'Actualizar' : 'Configurar' }}
+                  {{ status.passwordSetAt ? 'Actualizar' : 'Configurar' }}
                 </button>
               </template>
               <form class="ul-form" @submit.prevent="savePassword">
                 <li v-if="!editPassword">
                   <p class="status-msg">
-                    {{ passwordStatus?.passwordSetAt ? `Contraseña configurada · Actualizada ${timeAgo(passwordStatus.passwordSetAt)}` : 'No tienes contraseña configurada.' }}
+                    {{ status.passwordSetAt ? `Contraseña configurada · Actualizada ${timeAgo(status.passwordSetAt)}` : 'No tienes contraseña configurada.' }}
                   </p>
                 </li>
                 <template v-if="editPassword">
@@ -113,6 +178,82 @@ const cancelPassword = () => {
               </form>
             </LabeledForm>
           </li>
+
+          <li>
+            <LabeledForm title="Verificación en dos pasos" accordion>
+              <template #actions>
+                <button
+                  v-if="tfaStep === 'idle' && !status.twoFactorEnabled"
+                  class="edit-button"
+                  @click="startSetup2FA"
+                >
+                  <font-awesome-icon icon="fa-solid fa-shield-halved" />
+                  Activar
+                </button>
+                <button
+                  v-if="tfaStep === 'idle' && status.twoFactorEnabled"
+                  class="edit-button edit-button--danger"
+                  @click="tfaStep = 'disable-confirm'; tfaCode = ''"
+                >
+                  <font-awesome-icon icon="fa-solid fa-shield-halved" />
+                  Desactivar
+                </button>
+              </template>
+
+              <!-- Idle: status summary -->
+              <div v-if="tfaStep === 'idle'" class="ul-form">
+                <p class="status-msg">
+                  <font-awesome-icon
+                    :icon="status.twoFactorEnabled ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-xmark'"
+                    :style="{ color: status.twoFactorEnabled ? 'var(--app-white)' : 'rgba(255,255,255,0.35)' }"
+                  />
+                  {{ status.twoFactorEnabled ? 'Habilitado · Tu cuenta tiene protección extra.' : 'Deshabilitado · Activa 2FA para mayor seguridad.' }}
+                </p>
+              </div>
+
+              <!-- Setup: scan QR -->
+              <div v-else-if="tfaStep === 'qr'" class="ul-form tfa-setup">
+                <p class="status-msg">Escanea el código QR con Google Authenticator o Authy, luego ingresa el código de 6 dígitos.</p>
+                <img :src="tfaQr" alt="QR 2FA" class="tfa-qr" />
+                <p class="tfa-secret-hint">Clave manual: <code>{{ tfaSecret }}</code></p>
+                <div class="field-group" style="max-width: 200px">
+                  <label class="label-input">Código de verificación</label>
+                  <input v-model="tfaCode" class="input-form" type="text" inputmode="numeric" maxlength="6" placeholder="000000" />
+                  <span v-if="tfaError" class="field-error">{{ tfaError }}</span>
+                </div>
+                <div class="edit-buttons-container">
+                  <button type="button" :disabled="tfaCode.length < 6" @click="confirmEnable2FA">Activar 2FA</button>
+                  <button type="button" class="cancel-button" @click="cancelTfa">Cancelar</button>
+                </div>
+              </div>
+
+              <!-- Backup codes shown once -->
+              <div v-else-if="tfaStep === 'backup-codes'" class="ul-form tfa-setup">
+                <p class="status-msg"><strong>2FA activado.</strong> Guarda estos códigos de respaldo en un lugar seguro. Solo se muestran una vez.</p>
+                <ul class="backup-codes-grid">
+                  <li v-for="code in tfaBackupCodes" :key="code" class="backup-code">{{ code }}</li>
+                </ul>
+                <div class="edit-buttons-container">
+                  <button type="button" @click="finishSetup2FA">Listo</button>
+                </div>
+              </div>
+
+              <!-- Disable confirm -->
+              <div v-else-if="tfaStep === 'disable-confirm'" class="ul-form tfa-setup">
+                <p class="status-msg">Ingresa tu código de autenticación o un código de respaldo para desactivar 2FA.</p>
+                <div class="field-group" style="max-width: 200px">
+                  <label class="label-input">Código</label>
+                  <input v-model="tfaCode" class="input-form" type="text" inputmode="numeric" maxlength="9" placeholder="000000" />
+                  <span v-if="tfaError" class="field-error">{{ tfaError }}</span>
+                </div>
+                <div class="edit-buttons-container">
+                  <button type="button" class="edit-button--danger" :disabled="tfaCode.length < 6" @click="confirmDisable2FA">Desactivar</button>
+                  <button type="button" class="cancel-button" @click="cancelTfa">Cancelar</button>
+                </div>
+              </div>
+            </LabeledForm>
+          </li>
+
           <li>
             <Devices />
           </li>
@@ -173,5 +314,52 @@ const cancelPassword = () => {
   margin-top: 0.25rem;
   font-size: 0.72rem;
   color: #e74c3c;
+}
+
+.edit-button--danger {
+  color: #e74c3c !important;
+  &:hover { background: rgba(231, 76, 60, 0.12) !important; }
+}
+
+.tfa-setup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tfa-qr {
+  width: 180px;
+  height: 180px;
+  border-radius: 8px;
+}
+
+.tfa-secret-hint {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+
+  code {
+    font-family: monospace;
+    color: rgba(255, 255, 255, 0.75);
+    letter-spacing: 0.04em;
+  }
+}
+
+.backup-codes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+}
+
+.backup-code {
+  font-family: monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
 }
 </style>

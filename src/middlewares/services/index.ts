@@ -106,3 +106,31 @@ export const updatePassword: any = async (password: string) => {
     .catch(() => { return { error: error.api.loadItemById } });
   return response;
 };
+
+export const getTwoFactorSetup: any = async () => {
+  const response: any = await api.get("/user/2fa/setup")
+    .then(response => response.data)
+    .catch(() => { return null });
+  return response;
+};
+
+export const enableTwoFactor: any = async (secret: string, code: string) => {
+  const response: any = await api.post("/user/2fa/enable", { secret, code })
+    .then(response => response.data)
+    .catch(() => { return { error: error.api.loadItemById } });
+  return response;
+};
+
+export const disableTwoFactor: any = async (code: string) => {
+  const response: any = await api.post("/user/2fa/disable", { code })
+    .then(response => response.data)
+    .catch(() => { return { error: error.api.loadItemById } });
+  return response;
+};
+
+export const verifyMfa: any = async (mfaToken: string, code: string) => {
+  const response: any = await axios.post(API_URL + "/login-inner/verify-2fa", { mfaToken, code }, { withCredentials: true })
+    .then(response => response.data)
+    .catch(() => { return { error: error.api.loadItemById } });
+  return response;
+};

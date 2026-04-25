@@ -3,6 +3,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { onMounted, computed, ref, watch } from 'vue';
 import { API_URL } from '../../../middlewares/misc/const';
 import { useStore } from '../../../middlewares/store/index';
+import { verifyMfa, getUserData } from '../../../middlewares/services';
 import LogoApp from '../Logo/LogoApp.component.vue';
 import LogoHeader from '../Logo/LogoHeader.component.vue';
 import googleIcon from '../../../assets/png/google-icon.png';
@@ -19,10 +20,13 @@ const logged = computed(() => currentUser.value.logged);
 
 const email = ref('');
 const password = ref('');
+const step = ref<'credentials' | 'mfa'>('credentials');
+const mfaToken = ref('');
+const mfaCode = ref('');
+const mfaError = ref('');
 
-const isDisabled = computed(() => {
-  return !email.value || !password.value;
-});
+const isDisabled = computed(() => !email.value || !password.value);
+const isMfaDisabled = computed(() => mfaCode.value.replace(/\s/g, '').length < 6);
 
 onMounted(() => {
   const rawAppId = route.query.appId;
@@ -52,14 +56,35 @@ watch(logged, (newVal) => {
 
 async function handleLogin(e: Event) {
   e.preventDefault();
-  const formData = {
-    email: email.value,
-    password: password.value,
-  };
   try {
-    await store.handleLogin(formData, callback.value);
+    const result = await store.handleLogin({ email: email.value, password: password.value }, callback.value);
+    if (result && typeof result === 'object' && result.mfaRequired) {
+      mfaToken.value = result.mfaToken;
+      step.value = 'mfa';
+    }
   } catch (error) {
     console.error(error);
+  }
+}
+
+async function handleMfa(e: Event) {
+  e.preventDefault();
+  mfaError.value = '';
+  try {
+    const code = mfaCode.value.replace(/\s/g, '');
+    const result = await verifyMfa(mfaToken.value, code);
+    if (result?.logged) {
+      if (callback.value) {
+        window.location.href = callback.value;
+      } else {
+        store.currentUser = await getUserData();
+      }
+    } else {
+      mfaError.value = result?.message ?? 'Código inválido.';
+      mfaCode.value = '';
+    }
+  } catch {
+    mfaError.value = 'Error al verificar el código.';
   }
 }
 </script>
@@ -72,34 +97,61 @@ async function handleLogin(e: Event) {
       <font-awesome-icon icon="fa-solid fa-exchange" size="lg" />
       <LogoApp :logo=appLogo />
     </span>
-    <h2>Rellena los siguientes campos:</h2>
-    <p v-if="callback"><small>Al iniciar sesión, se te redireccionará a: <a :href="callback">{{ callback }}</a></small>
-    </p>
-    <form class="ul-form">
-      <li class="li-form">
-        <label>Correo electrónico</label>
-        <input required v-model="email" class="input-form" type="email" />
-      </li>
-      <li class="li-form">
-        <label>Contraseña</label>
-        <input required v-model="password" class="input-form" type="password" />
-      </li>
-      <button :disabled="isDisabled" class="submit-button" @click="handleLogin">Iniciar Sesión</button>
-    </form>
-    <div class="separator-container">
-      <div class="separator"></div>
-      <span>O</span>
-      <div class="separator"></div>
-    </div>
-    <p>puedes iniciar sesión mediante:</p>
-    <a :href="apiUrl">
-      <div class="google-button">
-        <img :src="googleIcon" alt="">
-        Google
+
+    <template v-if="step === 'credentials'">
+      <h2>Rellena los siguientes campos:</h2>
+      <p v-if="callback"><small>Al iniciar sesión, se te redireccionará a: <a :href="callback">{{ callback }}</a></small></p>
+      <form class="ul-form">
+        <li class="li-form">
+          <label>Correo electrónico</label>
+          <input required v-model="email" class="input-form" type="email" />
+        </li>
+        <li class="li-form">
+          <label>Contraseña</label>
+          <input required v-model="password" class="input-form" type="password" />
+        </li>
+        <button :disabled="isDisabled" class="submit-button" @click="handleLogin">Iniciar Sesión</button>
+      </form>
+      <div class="separator-container">
+        <div class="separator"></div>
+        <span>O</span>
+        <div class="separator"></div>
       </div>
-    </a>
+      <p>puedes iniciar sesión mediante:</p>
+      <a :href="apiUrl">
+        <div class="google-button">
+          <img :src="googleIcon" alt="">
+          Google
+        </div>
+      </a>
+    </template>
+
+    <template v-else>
+      <h2>Verificación en dos pasos</h2>
+      <p><small>Ingresa el código de 6 dígitos de tu app de autenticación.</small></p>
+      <form class="ul-form" @submit.prevent="handleMfa">
+        <li class="li-form">
+          <label>Código de verificación</label>
+          <input
+            v-model="mfaCode"
+            class="input-form"
+            type="text"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            maxlength="6"
+            placeholder="000000"
+            autofocus
+          />
+          <span v-if="mfaError" class="field-error">{{ mfaError }}</span>
+        </li>
+        <button :disabled="isMfaDisabled" class="submit-button" type="submit">Verificar</button>
+      </form>
+      <button class="cancel-button" style="margin-top: 0.75rem" @click="step = 'credentials'; mfaCode = ''; mfaError = ''">
+        Volver
+      </button>
+    </template>
   </div>
-  <span class="flex gap-1 items-center">
+  <span v-if="step === 'credentials'" class="flex gap-1 items-center">
     <p>¿Aun no tienes una cuenta?</p>
     <router-link :to="callback ? '/register?callback=' + encodeURIComponent(callback) : '/register'">
       <font-awesome-icon icon="fa-solid fa-user-plus" />

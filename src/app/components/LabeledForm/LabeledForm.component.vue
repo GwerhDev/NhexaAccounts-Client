@@ -18,7 +18,9 @@ const open = ref(!props.accordion);
         />
         <h2>{{ title }}</h2>
       </div>
-      <slot name="actions" />
+      <div @click.stop="accordion && (open = true)">
+        <slot name="actions" />
+      </div>
     </div>
     <div v-if="open" class="body-container">
       <slot />

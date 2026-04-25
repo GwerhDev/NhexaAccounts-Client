@@ -29,6 +29,9 @@ export const useStore = defineStore('store', {
     },
     async handleLogin(data: any, callback: string) {
       const result = await loginInner(data) || null;
+      if (result?.mfaRequired) {
+        return { mfaRequired: true, mfaToken: result.mfaToken as string };
+      }
       if (!result?.logged) {
         return "/login/failed";
       }

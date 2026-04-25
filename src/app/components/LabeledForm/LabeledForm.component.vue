@@ -1,14 +1,26 @@
 <script setup lang="ts">
-defineProps<{ title: string }>();
+import { ref } from 'vue';
+
+const props = defineProps<{ title: string; accordion?: boolean }>();
+
+const open = ref(!props.accordion);
 </script>
 
 <template>
   <div class="form-container">
-    <div class="title-section">
-      <h2>{{ title }}</h2>
+    <div class="title-section" :class="{ 'title-accordion': accordion }" @click="accordion && (open = !open)">
+      <div class="title-left">
+        <font-awesome-icon
+          v-if="accordion"
+          class="accordion-chevron"
+          :class="{ 'accordion-chevron--open': open }"
+          icon="fa-solid fa-chevron-right"
+        />
+        <h2>{{ title }}</h2>
+      </div>
       <slot name="actions" />
     </div>
-    <div class="body-container">
+    <div v-if="open" class="body-container">
       <slot />
     </div>
   </div>
@@ -35,6 +47,31 @@ defineProps<{ title: string }>();
   backdrop-filter: blur(10px);
 }
 
+.title-accordion {
+  cursor: pointer;
+  user-select: none;
+
+  &:hover h2 {
+    opacity: 0.8;
+  }
+}
+
+.title-left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.accordion-chevron {
+  font-size: 0.75rem;
+  opacity: 0.6;
+  transition: transform 0.2s ease;
+
+  &--open {
+    transform: rotate(90deg);
+  }
+}
+
 .body-container {
   gap: 1rem;
   width: 100%;
@@ -51,7 +88,6 @@ defineProps<{ title: string }>();
   gap: 1rem;
   display: flex;
   flex-direction: column;
-
 
   li {
     display: flex;

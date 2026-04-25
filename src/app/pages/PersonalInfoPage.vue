@@ -80,9 +80,8 @@ const cancelDetail = () => {
     <section class="section-container">
       <div class="inner-container">
         <ul class="card-container">
-
           <li>
-            <LabeledForm title="Datos de la cuenta">
+            <LabeledForm title="Datos de la cuenta" accordion>
               <template #actions>
                 <button v-if="!editAccount" class="edit-button" @click="editAccount = true">
                   <font-awesome-icon icon="fa-solid fa-edit" /> Actualizar
@@ -112,7 +111,7 @@ const cancelDetail = () => {
           </li>
 
           <li>
-            <LabeledForm title="Información personal">
+            <LabeledForm title="Información personal" accordion>
               <template #actions>
                 <button v-if="!editDetail" class="edit-button" @click="editDetail = true">
                   <font-awesome-icon icon="fa-solid fa-edit" /> Actualizar

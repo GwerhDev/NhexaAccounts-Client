@@ -69,7 +69,7 @@ const cancelPassword = () => {
       <div class="inner-container">
         <ul class="card-container">
           <li>
-            <LabeledForm title="Contraseña">
+            <LabeledForm title="Contraseña" accordion>
               <template #actions>
                 <button v-if="!editPassword" class="edit-button" @click="editPassword = true">
                   <font-awesome-icon icon="fa-solid fa-edit" />

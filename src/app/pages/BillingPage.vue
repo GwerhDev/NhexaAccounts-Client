@@ -8,7 +8,7 @@ import LabeledForm from '../components/LabeledForm/LabeledForm.component.vue';
       <div class="inner-container">
         <ul class="card-container">
           <li>
-            <LabeledForm title="Facturación">
+            <LabeledForm title="Facturación" accordion>
               <p class="ul-form">Próximamente.</p>
             </LabeledForm>
           </li>

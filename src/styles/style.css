@@ -438,6 +438,20 @@ button:disabled:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
 
+.w-auto {
+  width: auto;
+  min-width: 60px;
+}
+
+.h-auto {
+  height: auto;
+  min-height: 0;
+}
+
+.no-wrap {
+  text-wrap: nowrap;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -479,8 +493,12 @@ input {
 }
 
 input:disabled {
-  border: none;
-  border-color: transparent;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input:read-only {
+  cursor: default;
 }
 
 input:focus {

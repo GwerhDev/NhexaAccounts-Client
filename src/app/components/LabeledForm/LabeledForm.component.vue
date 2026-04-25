@@ -48,6 +48,7 @@ defineProps<{ title: string }>();
   margin: 0;
   padding: 0;
   padding: 1rem;
+  gap: 1rem;
   display: flex;
   flex-direction: column;
 
@@ -60,10 +61,10 @@ defineProps<{ title: string }>();
 }
 
 .edit-buttons-container {
+  gap: 1rem;
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  gap: 1rem;
 }
 
 .cancel-button {

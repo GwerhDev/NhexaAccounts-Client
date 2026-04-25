@@ -79,10 +79,24 @@ export const revokeAllDevices: any = async () => {
   return response;
 };
 
+export const getUserDetail: any = async () => {
+  const response: any = await api.get("/user/detail")
+    .then(response => response.data)
+    .catch(() => { return null });
+  return response;
+};
+
+export const updateUserDetail: any = async (data: any) => {
+  const response: any = await api.patch("/user/detail", data)
+    .then(response => response.data)
+    .catch(() => { return { error: error.api.loadItemById } });
+  return response;
+};
+
 export const getPasswordStatus: any = async () => {
   const response: any = await api.get("/user/password")
     .then(response => response.data)
-    .catch(() => { return { hasPassword: false, updatedAt: null } });
+    .catch(() => { return { passwordSetAt: null } });
   return response;
 };
 

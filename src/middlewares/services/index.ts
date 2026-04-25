@@ -59,21 +59,21 @@ export const linkEmail: any = async (password: string) => {
 };
 
 export const getDevices: any = async () => {
-  const response: any = await api.get("/devices")
+  const response: any = await api.get("/user/device")
     .then(response => response.data)
     .catch(() => { return { sessions: [] } });
   return response;
 };
 
 export const revokeDevice: any = async (id: string) => {
-  const response: any = await api.delete("/devices/" + id)
+  const response: any = await api.delete("/user/device/" + id)
     .then(response => response.data)
     .catch(() => { return { error: error.api.loadItemById } });
   return response;
 };
 
 export const revokeAllDevices: any = async () => {
-  const response: any = await api.delete("/devices/all")
+  const response: any = await api.delete("/user/device/all")
     .then(response => response.data)
     .catch(() => { return { error: error.api.loadItemById } });
   return response;

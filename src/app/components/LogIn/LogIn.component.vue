@@ -24,6 +24,7 @@ const password = ref('');
 const step = ref<'credentials' | 'mfa'>('credentials');
 const mfaToken = ref('');
 const mfaError = ref('');
+const loginError = ref('');
 const otpLoginRef = ref<InstanceType<typeof OtpInput> | null>(null);
 
 const isDisabled = computed(() => !email.value || !password.value);
@@ -56,14 +57,17 @@ watch(logged, (newVal) => {
 
 async function handleLogin(e: Event) {
   e.preventDefault();
+  loginError.value = '';
   try {
     const result = await store.handleLogin({ email: email.value, password: password.value }, callback.value);
     if (result && typeof result === 'object' && result.mfaRequired) {
       mfaToken.value = result.mfaToken;
       step.value = 'mfa';
+    } else if (result && typeof result === 'object' && result.error) {
+      loginError.value = result.message;
     }
-  } catch (error) {
-    console.error(error);
+  } catch {
+    loginError.value = 'Error al iniciar sesión.';
   }
 }
 
@@ -110,6 +114,7 @@ async function handleMfa(code: string) {
           <input required v-model="password" class="input-form" type="password" />
         </li>
         <button :disabled="isDisabled" class="submit-button" @click="handleLogin">Iniciar Sesión</button>
+        <p v-if="loginError" class="form-error">{{ loginError }}</p>
       </form>
       <div class="separator-container">
         <div class="separator"></div>

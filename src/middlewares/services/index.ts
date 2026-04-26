@@ -27,7 +27,7 @@ export const signupInner: any = async (formData: any) => {
 export const loginInner: any = async (formData: any) => {
   const response: any = await axios.post(API_URL + "/login-inner", formData, { withCredentials: true })
     .then(response => response.data)
-    .catch(() => { return { error: error.api.loadItemById } });
+    .catch((err) => { return err.response?.data ?? { error: error.api.loadItemById } });
   return response;
 };
 

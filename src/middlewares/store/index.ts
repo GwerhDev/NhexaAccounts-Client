@@ -33,7 +33,7 @@ export const useStore = defineStore('store', {
         return { mfaRequired: true, mfaToken: result.mfaToken as string };
       }
       if (!result?.logged) {
-        return "/login/failed";
+        return { error: true, message: result?.message ?? 'Error al iniciar sesión.' };
       }
       if (callback) return window.location.href = callback;
       else {

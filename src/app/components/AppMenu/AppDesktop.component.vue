@@ -218,27 +218,12 @@ const apps = computed(() => {
   return [...user, ...admin];
 });
 
-const APP_COLORS: Record<string, string> = {
-  spectra:   '#9b59b6',
-  spellcast: '#5086b0',
-  streamby:  '#2ecc71',
-  nhexa:     '#73a5cc',
-};
-
 const APP_ICONS: Record<string, [string, string]> = {
   spectra:   ['fas', 'wand-magic-sparkles'],
   spellcast: ['fas', 'feather-pointed'],
   streamby:  ['fas', 'photo-film'],
   nhexa:     ['fas', 'layer-group'],
 };
-
-function colorFor(app: any): string {
-  const key = app.label?.toLowerCase() ?? '';
-  for (const [name, color] of Object.entries(APP_COLORS)) {
-    if (key.includes(name)) return color;
-  }
-  return 'var(--primary-color)';
-}
 
 function iconFor(app: any): [string, string] {
   const key = app.label?.toLowerCase() ?? '';
@@ -276,7 +261,7 @@ function select(app: any) {
             type="button"
             class="app-item"
             :class="{ current: isCurrent(app) }"
-            :style="{ '--app-color': colorFor(app) }"
+            :style="{ '--app-color': '#73a5cc' }"
             @click="select(app)"
           >
             <img v-if="app.icon" :src="app.icon" :alt="app.label" class="app-icon" />

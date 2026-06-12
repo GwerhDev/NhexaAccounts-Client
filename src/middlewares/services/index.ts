@@ -1,6 +1,6 @@
 import axios from "axios";
 import api from "./api";
-import { API_URL } from "../misc/const";
+import { API_URL, STREAMBY_URL } from "../misc/const";
 import { error } from "../misc/errors";
 
 export const signupGoogle: any = async (formData: any) => {
@@ -32,7 +32,7 @@ export const loginInner: any = async (formData: any) => {
 };
 
 export const getAppList: any = async () => {
-  const response: any = await api.get("/app-list")
+  const response: any = await axios.get(STREAMBY_URL + "/app-list", { withCredentials: true })
     .then(response => response.data)
     .catch(() => { return { error: error.api.loadItemById } });
   return response;

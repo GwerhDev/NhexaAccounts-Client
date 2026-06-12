@@ -98,6 +98,7 @@
   object-fit: contain;
   position: relative;
   z-index: 1;
+  filter: brightness(0) saturate(100%) invert(64%) sepia(11%) saturate(1268%) hue-rotate(166deg) brightness(89%) contrast(83%);
   transition: transform 0.25s ease;
 }
 
@@ -107,7 +108,7 @@
 
 .app-icon-fa {
   font-size: 2.5rem;
-  color: var(--app-color);
+  color: #73a5cc;
   position: relative;
   z-index: 1;
   transition: transform 0.25s ease;

@@ -137,6 +137,29 @@
   text-align: center;
 }
 
+.category {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.category-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.28);
+  text-transform: uppercase;
+}
+
+.category-apps {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
 .app-item-skeleton {
   width: 116px;
   height: 130px;
@@ -212,26 +235,8 @@ const emit = defineEmits<{ close: [] }>();
 
 const store = useStore();
 
-const apps = computed(() => {
-  const user = store.appList.user ?? [];
-  const admin = (store.appList as any).admin ?? [];
-  return [...user, ...admin];
-});
-
-const APP_ICONS: Record<string, [string, string]> = {
-  spectra:   ['fas', 'wand-magic-sparkles'],
-  spellcast: ['fas', 'feather-pointed'],
-  streamby:  ['fas', 'photo-film'],
-  nhexa:     ['fas', 'layer-group'],
-};
-
-function iconFor(app: any): [string, string] {
-  const key = app.label?.toLowerCase() ?? '';
-  for (const [name, icon] of Object.entries(APP_ICONS)) {
-    if (key.includes(name)) return icon;
-  }
-  return ['fas', 'grid-2'];
-}
+const categories = computed(() => store.appList);
+const loaded = computed(() => categories.value.length > 0);
 
 function isCurrent(app: any): boolean {
   try {
@@ -254,21 +259,26 @@ function select(app: any) {
   <Transition name="desktop" appear>
     <div class="app-desktop" @click.self="emit('close')">
       <div class="app-launcher">
-        <template v-if="apps.length">
-          <button
-            v-for="app in apps"
-            :key="app.url"
-            type="button"
-            class="app-item"
-            :class="{ current: isCurrent(app) }"
-            :style="{ '--app-color': '#73a5cc' }"
-            @click="select(app)"
-          >
-            <img v-if="app.icon" :src="app.icon" :alt="app.label" class="app-icon" />
-            <font-awesome-icon v-else :icon="iconFor(app)" class="app-icon-fa" />
-            <span class="app-label">{{ app.label.toUpperCase() }}</span>
-            <span class="app-description">{{ app.description }}</span>
-          </button>
+        <template v-if="loaded">
+          <div v-for="cat in categories" :key="cat.id" class="category">
+            <span class="category-label">{{ cat.name.toUpperCase() }}</span>
+            <div class="category-apps">
+              <button
+                v-for="app in cat.apps"
+                :key="app.url"
+                type="button"
+                class="app-item"
+                :class="{ current: isCurrent(app) }"
+                :style="{ '--app-color': '#73a5cc' }"
+                @click="select(app)"
+              >
+                <img v-if="app.icon" :src="app.icon" :alt="app.label" class="app-icon" />
+                <font-awesome-icon v-else :icon="['fas', 'grid-2']" class="app-icon-fa" />
+                <span class="app-label">{{ app.label.toUpperCase() }}</span>
+                <span class="app-description">{{ app.description }}</span>
+              </button>
+            </div>
+          </div>
         </template>
         <template v-else>
           <div v-for="n in 4" :key="n" class="app-item-skeleton">

@@ -32,10 +32,17 @@ export const loginInner: any = async (formData: any) => {
 };
 
 export const getNhexaEnv: any = async () => {
-  const response: any = await axios.get(STREAMBY_URL + "/app-list", { withCredentials: true })
+  const raw: any[] = await axios.get(STREAMBY_URL + "/nhexa-environment", { withCredentials: true })
     .then(response => response.data)
-    .catch(() => { return { error: error.api.loadItemById } });
-  return response;
+    .catch(() => []);
+  return raw.map((cat: any) => ({
+    id: cat._id,
+    name: cat._name,
+    apps: Object.entries(cat)
+      .filter(([k]) => /^\d+$/.test(k))
+      .sort(([a], [b]) => Number(a) - Number(b))
+      .map(([, v]) => v),
+  }));
 };
 
 export const getUserData: any = async () => {

@@ -4,7 +4,7 @@ import { computed, Ref } from 'vue';
 import { useStore } from '../../../middlewares/store';
 
 const store = useStore();
-const appList: Ref<any[]> = computed(() => store.appList.user);
+const appList: Ref<any[]> = computed(() => store.appList.flatMap(cat => cat.apps));
 
 </script>
 

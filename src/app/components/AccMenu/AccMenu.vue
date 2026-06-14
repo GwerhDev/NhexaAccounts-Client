@@ -8,7 +8,7 @@ import { closeMenu } from '../../../helpers/menu';
 const store = useStore();
 const currentUser: any = computed(() => store.currentUser);
 const logged: any = computed(() => currentUser.value.logged);
-const appList: any = computed(() => store.appList.admin);
+const appList: any = computed(() => store.appList.flatMap(cat => cat.apps));
 
 function logout() {
   store.logout();

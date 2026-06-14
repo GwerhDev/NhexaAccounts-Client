@@ -31,7 +31,7 @@ export const loginInner: any = async (formData: any) => {
   return response;
 };
 
-export const getAppList: any = async () => {
+export const getNhexaEnv: any = async () => {
   const response: any = await axios.get(STREAMBY_URL + "/app-list", { withCredentials: true })
     .then(response => response.data)
     .catch(() => { return { error: error.api.loadItemById } });

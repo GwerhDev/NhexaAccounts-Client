@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { getAppList, getUserData, loginInner, signupInner, updateUserData } from '../services';
+import { getNhexaEnv, getUserData, loginInner, signupInner, updateUserData } from '../services';
 import { clearUserToken } from '../services/token';
 
 interface storeState {
@@ -55,8 +55,8 @@ export const useStore = defineStore('store', {
       await updateUserData(formData, id);
       this.currentUser = await getUserData();
     },
-    async handleGetAppList() {
-      this.appList = await getAppList();
+    async handleGetNhexaEnv() {
+      this.appList = await getNhexaEnv();
       return;
     },
   }

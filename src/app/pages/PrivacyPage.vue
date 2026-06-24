@@ -112,6 +112,7 @@ import LabeledForm from '../components/LabeledForm/LabeledForm.component.vue';
   opacity: 0.55;
   margin: 0;
   line-height: 1.5;
+  padding-inline: 1rem;
 }
 
 .privacy-list {
@@ -167,6 +168,7 @@ import LabeledForm from '../components/LabeledForm/LabeledForm.component.vue';
 }
 
 .privacy-note {
+  padding-inline: 1rem;
   font-size: 0.72rem;
   opacity: 0.35;
   font-style: italic;

@@ -53,6 +53,11 @@ onMounted(load);
     <p v-else-if="sessions.length === 0" class="status-msg">No hay sesiones activas.</p>
     <ul v-else class="device-list">
       <li v-for="session in sessions" :key="session.id" class="device-item">
+        <div class="device-icon">
+          <font-awesome-icon
+            :icon="session.device.type === 'mobile' ? 'fa-solid fa-mobile-screen' : session.device.type === 'tablet' ? 'fa-solid fa-tablet-screen-button' : 'fa-solid fa-desktop'"
+          />
+        </div>
         <div class="device-info">
           <span class="device-name">{{ session.device.browser }}</span>
           <span class="device-meta">

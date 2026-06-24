@@ -32,7 +32,10 @@ onMounted(async () => {
       <ul v-else class="apps-grid">
         <li v-for="item in appList" :key="item.url">
           <a class="app-card" :href="item.url" target="_blank" :style="{ '--accent': item.color }">
-            <span class="app-icon" v-html="item.icon" />
+            <span class="app-icon">
+              <img v-if="item.icon" :src="item.icon" :alt="item.label" />
+              <font-awesome-icon v-else icon="fa-solid fa-layer-group" />
+            </span>
             <div class="app-info">
               <span class="app-name">{{ item.label }}</span>
               <span v-if="item.description" class="app-description">{{ item.description }}</span>

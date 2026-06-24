@@ -49,6 +49,20 @@
 .device-name {
   font-size: 0.9rem;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.current-badge {
+  font-size: 0.65rem;
+  font-weight: 500;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--primary-color) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 45%, transparent);
+  color: var(--primary-hover-color);
+  letter-spacing: 0.02em;
 }
 
 .device-meta {

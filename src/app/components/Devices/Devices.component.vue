@@ -10,6 +10,7 @@ interface DeviceSession {
   ip: string | null;
   created_at: string;
   expires_at: string;
+  isCurrent: boolean;
   device: {
     browser: string;
     os: string | null;
@@ -67,13 +68,16 @@ onMounted(load);
           />
         </div>
         <div class="device-info">
-          <span class="device-name">{{ session.device.browser }}</span>
+          <span class="device-name">
+            {{ session.device.browser }}
+            <span v-if="session.isCurrent" class="current-badge">Esta sesión</span>
+          </span>
           <span class="device-meta">
             {{ session.device.os ?? 'OS desconocido' }} · {{ session.ip ?? 'IP desconocida' }} · {{ formatDate(session.created_at) }}
           </span>
         </div>
         <div class="button-container">
-          <button class="revoke-button" @click="pendingRevokeId = session.id">Cerrar</button>
+          <button v-if="!session.isCurrent" class="revoke-button" @click="pendingRevokeId = session.id">Cerrar</button>
         </div>
       </li>
     </ul>

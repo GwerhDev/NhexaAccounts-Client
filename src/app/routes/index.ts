@@ -16,17 +16,50 @@ import AccountAlreadyExistsPage from '../pages/AccountAlreadyExistsPage.vue';
 import RegisterFailedPage from '../pages/RegisterFailedPage.vue';
 import NotFoundPage from '../pages/NotFoundPage.vue';
 import LoginFailedPage from '../pages/LoginFailedPage.vue';
+import { useStore } from '../../middlewares/store';
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'LandingPage',
     component: LandingPage,
+    meta: { requiresAuth: true },
   },
   {
     path: '/environment/apps',
     name: 'ConnectedAppsPage',
     component: ConnectedAppsPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/personal-info',
+    name: 'PersonalInfoPage',
+    component: PersonalInfoPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/privacy',
+    name: 'PrivacyPage',
+    component: PrivacyPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/security',
+    name: 'SecurityPage',
+    component: SecurityPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/billing',
+    name: 'BillingPage',
+    component: BillingPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/support',
+    name: 'SupportPage',
+    component: SupportPage,
+    meta: { requiresAuth: true },
   },
   {
     path: '/login',
@@ -44,34 +77,9 @@ const routes: RouteRecordRaw[] = [
     component: RegisterPage,
   },
   {
-    path: '/personal-info',
-    name: 'PersonalInfoPage',
-    component: PersonalInfoPage,
-  },
-  {
-    path: '/privacy',
-    name: 'PrivacyPage',
-    component: PrivacyPage,
-  },
-  {
-    path: '/security',
-    name: 'SecurityPage',
-    component: SecurityPage,
-  },
-  {
-    path: '/billing',
-    name: 'BillingPage',
-    component: BillingPage,
-  },
-  {
     path: '/oauth/chooseaccount',
     name: 'OAuth',
     component: OAuthPage,
-  },
-  {
-    path: '/support',
-    name: 'SupportPage',
-    component: SupportPage,
   },
   {
     path: '/account/already-exists',
@@ -103,11 +111,20 @@ const routes: RouteRecordRaw[] = [
     name: 'NotFoundPage',
     component: NotFoundPage,
   },
-]
+];
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+});
+
+router.beforeEach((to) => {
+  if (!to.meta.requiresAuth) return true;
+  const store = useStore();
+  if (!store.currentUser?.logged) {
+    return { name: 'LoginPage' };
+  }
+  return true;
 });
 
 export default router;

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useRouter } from 'vue-router';
 import LogoHeader from "../Logo/LogoHeader.component.vue";
+import SecurityScore from "../SecurityScore/SecurityScore.component.vue";
+import GamificationCard from "../GamificationCard/GamificationCard.component.vue";
 import defaultImage from '../../../assets/svg/user-icon.svg';
 import { useStore } from '../../../middlewares/store';
 
 const store = useStore();
-const router = useRouter();
 const currentUser: any = computed(() => store.currentUser);
 const logged: any = computed(() => currentUser.value.logged);
 const username: any = computed(() => currentUser.value.userData?.username);
@@ -20,12 +20,6 @@ const roleLabel: any = computed(() => {
   if (role.value === 'moderator') return 'Moderador';
   return 'Usuario';
 });
-
-const quickLinks = [
-  { icon: 'fa-solid fa-id-card', label: 'Información personal', to: '/personal-info' },
-  { icon: 'fa-solid fa-shield-halved', label: 'Seguridad', to: '/security' },
-  { icon: 'fa-solid fa-layer-group', label: 'Aplicaciones', to: '/environment/apps' },
-];
 </script>
 
 <template>
@@ -50,12 +44,8 @@ const quickLinks = [
           {{ roleLabel }}
         </span>
       </div>
-      <div class="quick-links">
-        <router-link v-for="link in quickLinks" :key="link.to" :to="link.to" class="quick-link-card">
-          <font-awesome-icon :icon="link.icon" class="quick-link-icon" />
-          <span>{{ link.label }}</span>
-        </router-link>
-      </div>
+      <SecurityScore />
+      <GamificationCard />
     </div>
 
     <div class="presentation" v-else>

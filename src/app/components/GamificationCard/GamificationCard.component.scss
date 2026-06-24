@@ -1,0 +1,81 @@
+.gamification-card {
+  width: 100%;
+  margin-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding-top: 1.25rem;
+}
+
+.gamification-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  font-size: 0.82rem;
+  opacity: 0.6;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  opacity: 0.6;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.level-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+  font-size: 0.82rem;
+}
+
+.level-label {
+  opacity: 0.5;
+}
+
+.xp-label {
+  font-size: 0.75rem;
+  opacity: 0.4;
+}
+
+.xp-bar-track {
+  width: 100%;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.xp-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--primary-color);
+  opacity: 0.5;
+  width: 0%;
+}
+
+.achievements-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  opacity: 0.4;
+}
+
+.coming-soon {
+  font-size: 0.72rem;
+  opacity: 0.35;
+  margin-top: 0.75rem;
+  font-style: italic;
+  line-height: 1.4;
+}

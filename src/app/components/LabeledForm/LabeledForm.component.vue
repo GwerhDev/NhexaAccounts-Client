@@ -34,11 +34,10 @@ const open = ref(props.initialOpen ?? !props.accordion);
   flex-direction: column;
   justify-content: flex-start;
   text-align: left;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   overflow: hidden;
-  background-color: var(--components-background-alt);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .title-section {
@@ -47,8 +46,7 @@ const open = ref(props.initialOpen ?? !props.accordion);
   justify-content: space-between;
   padding: 0.75rem 1rem;
   min-height: 3rem;
-  background-color: var(--components-background);
-  backdrop-filter: blur(10px);
+  background: transparent;
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s;
 
@@ -97,6 +95,35 @@ const open = ref(props.initialOpen ?? !props.accordion);
   padding-bottom: 1rem;
   display: flex;
   flex-direction: column;
+
+  .field-group {
+    label {
+      font-size: 0.75rem;
+      opacity: 0.85;
+      padding: 0 0.6rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: none;
+      border-radius: 0.45rem 0.45rem 0 0;
+    }
+
+    input,
+    .input-form {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0 0 0.45rem 0.45rem;
+      background: rgba(255, 255, 255, 0.05);
+      transition: border-color 0.15s, background 0.15s;
+
+      &:read-only {
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      &:focus {
+        outline: none;
+        border-color: rgba(255, 255, 255, 0.28);
+        background: rgba(255, 255, 255, 0.07);
+      }
+    }
+  }
 }
 
 .ul-form {

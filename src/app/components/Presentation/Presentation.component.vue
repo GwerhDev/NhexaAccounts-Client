@@ -44,8 +44,8 @@ const roleLabel: any = computed(() => {
           {{ roleLabel }}
         </span>
       </div>
-      <SecurityScore />
       <GamificationCard />
+      <SecurityScore />
     </div>
 
     <div class="presentation" v-else>

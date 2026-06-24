@@ -1,20 +1,55 @@
 .gamification-card {
   width: 100%;
-  margin-top: 1.25rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
-  padding-top: 1.25rem;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-.gamification-header {
+.gamification-top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.75rem;
-  font-size: 0.82rem;
-  opacity: 0.6;
-  font-weight: 500;
-  letter-spacing: 0.03em;
+  gap: 1.25rem;
+}
+
+.level-circle {
+  flex-shrink: 0;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  border: 2px solid var(--primary-color);
+  background: color-mix(in srgb, var(--primary-color) 10%, transparent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.05rem;
+}
+
+.level-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  line-height: 1;
+}
+
+.level-lbl {
+  font-size: 0.6rem;
+  opacity: 0.5;
   text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.gamification-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.rank-row {
+  display: flex;
+  align-items: center;
 }
 
 .rank-badge {
@@ -22,29 +57,32 @@
   align-items: center;
   gap: 0.3rem;
   font-size: 0.72rem;
-  padding: 0.15rem 0.5rem;
+  padding: 0.15rem 0.55rem;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  opacity: 0.6;
-  text-transform: none;
-  letter-spacing: 0;
+  color: rgba(255, 255, 255, 0.55);
 }
 
-.level-row {
+.xp-section {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.4rem;
-  font-size: 0.82rem;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
-.level-label {
-  opacity: 0.5;
+.xp-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
 }
 
 .xp-label {
-  font-size: 0.75rem;
   opacity: 0.4;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.xp-value {
+  opacity: 0.45;
 }
 
 .xp-bar-track {
@@ -53,29 +91,57 @@
   border-radius: 3px;
   background: rgba(255, 255, 255, 0.08);
   overflow: hidden;
-  margin-bottom: 1rem;
 }
 
 .xp-bar-fill {
   height: 100%;
   border-radius: 3px;
   background: var(--primary-color);
-  opacity: 0.5;
+  opacity: 0.6;
   width: 0%;
+  transition: width 0.4s ease;
 }
 
-.achievements-row {
+.stats-row {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  opacity: 0.4;
+  gap: 0.75rem;
+  margin-top: 0.1rem;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+}
+
+.stat-icon {
+  opacity: 0.35;
+  font-size: 0.7rem;
+}
+
+.stat-value {
+  font-weight: 600;
+  opacity: 0.65;
+}
+
+.stat-label {
+  opacity: 0.35;
 }
 
 .coming-soon {
-  font-size: 0.72rem;
-  opacity: 0.35;
-  margin-top: 0.75rem;
+  font-size: 0.7rem;
+  opacity: 0.3;
+  margin-top: 1rem;
+  margin-bottom: 0;
   font-style: italic;
   line-height: 1.4;
+  text-align: center;
 }

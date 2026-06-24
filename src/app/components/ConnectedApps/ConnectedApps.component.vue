@@ -18,9 +18,7 @@ onMounted(async () => {
 <template>
   <section class="section-container">
     <div class="inner-container">
-      <h2>Visita nuestras aplicaciones</h2>
-
-      <div v-if="loading" class="apps-state">
+<div v-if="loading" class="apps-state">
         <div class="apps-spinner" />
       </div>
 

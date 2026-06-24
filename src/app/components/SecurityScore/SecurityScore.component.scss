@@ -1,74 +1,116 @@
 .security-score {
   width: 100%;
-  margin-top: 1.25rem;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  margin-top: 0.75rem;
 }
 
-.score-header {
+.score-layout {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.75rem;
-  font-size: 0.82rem;
-  opacity: 0.6;
-  font-weight: 500;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
+  gap: 1.25rem;
 }
 
-.score-bar-track {
-  width: 100%;
-  height: 6px;
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.1);
-  overflow: hidden;
-  margin-bottom: 1rem;
+// ── Donut ────────────────────────────────────────────────────────────────────
+
+.donut-wrap {
+  flex-shrink: 0;
+  position: relative;
+  width: 88px;
+  height: 88px;
 }
 
-.score-bar-fill {
-  height: 100%;
-  border-radius: 3px;
-  transition: width 0.4s ease, background-color 0.4s ease;
+.donut-svg {
+  display: block;
 }
 
-.score-steps {
+.donut-track {
+  stroke: rgba(255, 255, 255, 0.07);
+}
+
+.donut-fill {
+  transition: stroke-dashoffset 0.6s ease, stroke 0.4s ease;
+}
+
+.donut-label {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.05rem;
+  pointer-events: none;
+}
+
+.donut-pct {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.donut-sub {
+  font-size: 0.55rem;
+  opacity: 0.4;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+// ── Steps ────────────────────────────────────────────────────────────────────
+
+.score-steps {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .score-step {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  font-size: 0.84rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.4rem;
+  gap: 0.55rem;
+  font-size: 0.8rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.35rem;
   border: 1px solid transparent;
-  background: transparent;
-  color: inherit;
-  text-align: left;
   cursor: default;
-  transition: border-color 0.15s, background 0.15s;
+  transition: border-color 0.15s, background 0.15s, opacity 0.15s;
 
   &.pending {
     cursor: pointer;
-    opacity: 0.65;
+    opacity: 0.5;
 
     &:hover {
-      border-color: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.1);
       background: rgba(255, 255, 255, 0.03);
-      opacity: 1;
+      opacity: 0.85;
     }
   }
 
   &.done {
-    opacity: 0.85;
+    opacity: 0.8;
   }
 }
 
 .step-icon {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   flex-shrink: 0;
-  width: 1rem;
+  width: 0.9rem;
   text-align: center;
+}
+
+.step-label {
+  flex: 1;
+}
+
+.step-arrow {
+  margin-left: auto;
+  opacity: 0.25;
+  font-size: 0.65rem;
+  flex-shrink: 0;
 }

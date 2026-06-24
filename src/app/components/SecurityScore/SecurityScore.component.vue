@@ -48,6 +48,11 @@ const barColor = computed(() => {
   return 'var(--primary-color)';
 });
 
+// SVG donut — r=36, circumference = 2π*36 ≈ 226.2
+const RADIUS = 36;
+const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
+const dashOffset = computed(() => CIRCUMFERENCE * (1 - score.value / 100));
+
 onMounted(async () => {
   const [security, detail] = await Promise.all([
     getPasswordStatus(),
@@ -71,38 +76,56 @@ const navigate = (step: { done: boolean; to: string }) => {
 
 <template>
   <div class="security-score">
-    <div class="score-header">
-      <span>Seguridad de la cuenta</span>
-      <span>{{ score }}%</span>
-    </div>
-    <div class="score-bar-track">
-      <div
-        class="score-bar-fill"
-        :style="{ width: score + '%', backgroundColor: barColor }"
-      />
-    </div>
-    <ul class="score-steps">
-      <li
-        v-for="step in steps"
-        :key="step.label"
-        class="score-step"
-        :class="step.done ? 'done' : 'pending'"
-        @click="navigate(step)"
-      >
-        <span class="step-icon">
-          <font-awesome-icon
-            :icon="step.done ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle'"
-            :style="{ color: step.done ? barColor : 'rgba(255,255,255,0.25)' }"
+    <div class="score-layout">
+      <!-- Donut -->
+      <div class="donut-wrap">
+        <svg class="donut-svg" viewBox="0 0 88 88" width="88" height="88">
+          <circle
+            class="donut-track"
+            cx="44" cy="44" :r="RADIUS"
+            fill="none" stroke-width="7"
           />
-        </span>
-        <span>{{ step.label }}</span>
-        <font-awesome-icon
-          v-if="!step.done"
-          icon="fa-solid fa-chevron-right"
-          style="margin-left: auto; opacity: 0.3; font-size: 0.7rem;"
-        />
-      </li>
-    </ul>
+          <circle
+            class="donut-fill"
+            cx="44" cy="44" :r="RADIUS"
+            fill="none" stroke-width="7"
+            stroke-linecap="round"
+            :stroke="barColor"
+            :stroke-dasharray="CIRCUMFERENCE"
+            :stroke-dashoffset="dashOffset"
+            transform="rotate(-90 44 44)"
+          />
+        </svg>
+        <div class="donut-label">
+          <span class="donut-pct">{{ score }}%</span>
+          <span class="donut-sub">seguridad</span>
+        </div>
+      </div>
+
+      <!-- Steps -->
+      <ul class="score-steps">
+        <li
+          v-for="step in steps"
+          :key="step.label"
+          class="score-step"
+          :class="step.done ? 'done' : 'pending'"
+          @click="navigate(step)"
+        >
+          <span class="step-icon">
+            <font-awesome-icon
+              :icon="step.done ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle'"
+              :style="{ color: step.done ? barColor : 'rgba(255,255,255,0.2)' }"
+            />
+          </span>
+          <span class="step-label">{{ step.label }}</span>
+          <font-awesome-icon
+            v-if="!step.done"
+            icon="fa-solid fa-chevron-right"
+            class="step-arrow"
+          />
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 

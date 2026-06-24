@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { getDevices, revokeDevice, revokeAllDevices } from '../../../middlewares/services';
 import LabeledForm from '../LabeledForm/LabeledForm.component.vue';
+import Modal from '../Modal/Modal.component.vue';
 
 interface DeviceSession {
   id: string;
@@ -19,6 +20,9 @@ interface DeviceSession {
 const sessions = ref<DeviceSession[]>([]);
 const loading = ref(true);
 
+const pendingRevokeId = ref<string | null>(null);
+const showRevokeAllModal = ref(false);
+
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleString('es-CL', { dateStyle: 'medium', timeStyle: 'short' });
 
@@ -29,12 +33,15 @@ const load = async () => {
   loading.value = false;
 };
 
-const revoke = async (id: string) => {
-  await revokeDevice(id);
-  sessions.value = sessions.value.filter(s => s.id !== id);
+const confirmRevoke = async () => {
+  if (!pendingRevokeId.value) return;
+  await revokeDevice(pendingRevokeId.value);
+  sessions.value = sessions.value.filter(s => s.id !== pendingRevokeId.value);
+  pendingRevokeId.value = null;
 };
 
-const revokeAll = async () => {
+const confirmRevokeAll = async () => {
+  showRevokeAllModal.value = false;
   await revokeAllDevices();
   await load();
 };
@@ -45,7 +52,7 @@ onMounted(load);
 <template>
   <LabeledForm title="Dispositivos activos" accordion>
     <template #actions>
-      <button v-if="sessions.length > 1" class="edit-button" @click="revokeAll">
+      <button v-if="sessions.length > 1" class="edit-button" @click="showRevokeAllModal = true">
         Cerrar otras sesiones
       </button>
     </template>
@@ -66,11 +73,33 @@ onMounted(load);
           </span>
         </div>
         <div class="button-container">
-          <button class="revoke-button" @click="revoke(session.id)">Cerrar</button>
+          <button class="revoke-button" @click="pendingRevokeId = session.id">Cerrar</button>
         </div>
       </li>
     </ul>
   </LabeledForm>
+
+  <Modal
+    v-if="pendingRevokeId"
+    title="Cerrar sesión"
+    confirm-label="Cerrar sesión"
+    danger
+    @confirm="confirmRevoke"
+    @cancel="pendingRevokeId = null"
+  >
+    ¿Estás seguro de que querés cerrar esta sesión? El dispositivo perderá el acceso a tu cuenta de inmediato.
+  </Modal>
+
+  <Modal
+    v-if="showRevokeAllModal"
+    title="Cerrar otras sesiones"
+    confirm-label="Cerrar todas"
+    danger
+    @confirm="confirmRevokeAll"
+    @cancel="showRevokeAllModal = false"
+  >
+    Esto cerrará todas las sesiones activas excepto la actual. Los demás dispositivos perderán el acceso de inmediato.
+  </Modal>
 </template>
 
 <style scoped lang="scss" src="./Devices.component.scss"></style>

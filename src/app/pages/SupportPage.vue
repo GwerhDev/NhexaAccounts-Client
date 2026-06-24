@@ -11,7 +11,7 @@
               <div class="support-contact">
                 <div class="support-contact-item">
                   <font-awesome-icon icon="fa-solid fa-envelope" />
-                  <span>soporte@nhexa.app</span>
+                  <a href="mailto:contacto@nhexa.cl">contacto@nhexa.cl</a>
                 </div>
                 <div class="support-contact-item">
                   <font-awesome-icon icon="fa-solid fa-clock" />
@@ -72,6 +72,11 @@
   svg {
     font-size: 0.9rem;
     flex-shrink: 0;
+  }
+
+  a {
+    color: var(--nhexa-white);
+    &:hover { color: var(--nhexa-white); opacity: 0.8; }
   }
 }
 </style>

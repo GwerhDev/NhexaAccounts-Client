@@ -135,138 +135,128 @@ const copyBackupCodes = async () => {
   const text = tfaBackupCodes.value.join('\n');
   await navigator.clipboard.writeText(text);
 };
-
 </script>
 
 <template>
   <main class="main-container">
     <section class="section-container">
       <div class="inner-container">
-        <ul class="card-container">
 
-          <!-- Columna izquierda: Contraseña + Dispositivos -->
-          <li class="card-column">
-            <LabeledForm title="Contraseña" accordion>
-              <template #actions>
-                <span v-if="savedPassword" class="saved-feedback">
-                  <font-awesome-icon icon="fa-solid fa-circle-check" /> Cambios guardados.
-                </span>
-                <button v-if="!editPassword" class="edit-button" @click="editPassword = true">
-                  <font-awesome-icon icon="fa-solid fa-edit" />
-                  {{ status.passwordSetAt ? 'Actualizar' : 'Configurar' }}
-                </button>
-              </template>
-              <form class="ul-form" @submit.prevent="savePassword">
-                <li v-if="!editPassword">
-                  <p class="status-msg">
-                    {{ status.passwordSetAt ? `Contraseña configurada · Actualizada ${timeAgo(status.passwordSetAt)}` : 'No tienes contraseña configurada.' }}
-                  </p>
-                </li>
-                <template v-if="editPassword">
-                  <input type="text" autocomplete="username" :value="email" aria-hidden="true" readonly tabindex="-1" class="visually-hidden" />
-                  <div class="info-grid">
-                    <div class="field-group">
-                      <label class="label-input">Nueva contraseña</label>
-                      <div class="input-reveal">
-                        <input v-model="password" class="input-form" :type="showPassword ? 'text' : 'password'" autocomplete="new-password" />
-                        <button type="button" class="reveal-btn" @click="showPassword = !showPassword" tabindex="-1">
-                          <font-awesome-icon :icon="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" />
-                        </button>
-                      </div>
-                    </div>
-                    <div class="field-group">
-                      <label class="label-input">Confirmar contraseña</label>
-                      <div class="input-reveal">
-                        <input v-model="confirm" class="input-form" :class="{ 'input-error': mismatch }" :type="showConfirm ? 'text' : 'password'" autocomplete="new-password" />
-                        <button type="button" class="reveal-btn" @click="showConfirm = !showConfirm" tabindex="-1">
-                          <font-awesome-icon :icon="showConfirm ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" />
-                        </button>
-                      </div>
-                      <span v-if="mismatch" class="field-error">Las contraseñas no coinciden.</span>
-                    </div>
-                  </div>
-                  <p class="password-hint">Mínimo 8 caracteres.</p>
-                  <div class="edit-buttons-container">
-                    <button type="submit" :disabled="!canSubmit">Guardar cambios</button>
-                    <button type="button" class="cancel-button" @click="cancelPassword">Cancelar</button>
-                  </div>
-                </template>
-              </form>
-            </LabeledForm>
-            <Devices />
-          </li>
-
-          <!-- Columna derecha: 2FA -->
-          <li class="card-column">
-            <LabeledForm title="Verificación en dos pasos" accordion>
-              <template #actions>
-                <button
-                  v-if="tfaStep === 'idle' && !status.twoFactorEnabled"
-                  class="edit-button"
-                  @click="startSetup2FA"
-                >
-                  <font-awesome-icon icon="fa-solid fa-shield-halved" />
-                  Activar
-                </button>
-                <button
-                  v-if="tfaStep === 'idle' && status.twoFactorEnabled"
-                  class="edit-button edit-button--danger"
-                  @click="tfaStep = 'disable-confirm'"
-                >
-                  <font-awesome-icon icon="fa-solid fa-shield-halved" />
-                  Desactivar
-                </button>
-              </template>
-
-              <div v-if="tfaStep === 'idle'" class="ul-form">
-                <p class="status-msg">
-                  <font-awesome-icon
-                    :icon="status.twoFactorEnabled ? 'fa-solid fa-shield-halved' : 'fa-solid fa-lock-open'"
-                    :style="{ color: status.twoFactorEnabled ? 'var(--primary-color)' : 'rgba(255,255,255,0.35)' }"
-                  />
-                  {{ status.twoFactorEnabled ? 'Habilitado · Tu cuenta tiene protección extra.' : 'Deshabilitado.' }}
-                </p>
-                <p v-if="!status.twoFactorEnabled" class="tfa-idle-description">
-                  La verificación en dos pasos añade una capa adicional de seguridad. Cuando está activa, necesitarás tu contraseña y un código de tu app de autenticación para iniciar sesión.
-                </p>
-              </div>
-
-              <div v-else-if="tfaStep === 'qr'" class="ul-form tfa-setup">
-                <p class="status-msg">Escanea el código QR con Google Authenticator o Authy, luego ingresa el código de 6 dígitos.</p>
-                <img :src="tfaQr" alt="QR 2FA" class="tfa-qr" />
-                <p class="tfa-secret-hint">Clave manual: <code>{{ tfaSecret }}</code></p>
+        <LabeledForm title="Contraseña" accordion initial-open>
+          <template #actions>
+            <span v-if="savedPassword" class="saved-feedback">
+              <font-awesome-icon icon="fa-solid fa-circle-check" /> Cambios guardados.
+            </span>
+            <button v-if="!editPassword" class="edit-button" @click="editPassword = true">
+              <font-awesome-icon icon="fa-solid fa-edit" />
+              {{ status.passwordSetAt ? 'Actualizar' : 'Configurar' }}
+            </button>
+          </template>
+          <form class="ul-form" @submit.prevent="savePassword">
+            <p v-if="!editPassword" class="status-msg">
+              {{ status.passwordSetAt ? `Contraseña configurada · Actualizada ${timeAgo(status.passwordSetAt)}` : 'No tienes contraseña configurada.' }}
+            </p>
+            <template v-if="editPassword">
+              <input type="text" autocomplete="username" :value="email" aria-hidden="true" readonly tabindex="-1" class="visually-hidden" />
+              <div class="info-grid">
                 <div class="field-group">
-                  <OtpInput ref="otpEnableRef" @complete="confirmEnable2FA" />
-                  <span v-if="tfaError" class="field-error">{{ tfaError }}</span>
+                  <label class="label-input">Nueva contraseña</label>
+                  <div class="input-reveal">
+                    <input v-model="password" class="input-form" :type="showPassword ? 'text' : 'password'" autocomplete="new-password" />
+                    <button type="button" class="reveal-btn" @click="showPassword = !showPassword" tabindex="-1">
+                      <font-awesome-icon :icon="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" />
+                    </button>
+                  </div>
                 </div>
-                <button type="button" class="cancel-button" style="align-self: flex-start" @click="cancelTfa">Cancelar</button>
-              </div>
-
-              <div v-else-if="tfaStep === 'backup-codes'" class="ul-form tfa-setup">
-                <p class="status-msg"><strong>2FA activado.</strong> Guarda estos códigos de respaldo en un lugar seguro. Solo se muestran una vez.</p>
-                <ul class="backup-codes-grid">
-                  <li v-for="code in tfaBackupCodes" :key="code" class="backup-code">{{ code }}</li>
-                </ul>
-                <div class="edit-buttons-container">
-                  <button type="button" class="edit-button" @click="copyBackupCodes">
-                    <font-awesome-icon icon="fa-solid fa-copy" /> Copiar todos
-                  </button>
-                  <button type="button" @click="finishSetup2FA">Listo</button>
-                </div>
-              </div>
-
-              <div v-else-if="tfaStep === 'disable-confirm'" class="ul-form tfa-setup">
-                <p class="status-msg">Ingresa tu código de autenticación o un código de respaldo para desactivar 2FA.</p>
                 <div class="field-group">
-                  <OtpInput ref="otpDisableRef" @complete="confirmDisable2FA" />
-                  <span v-if="tfaError" class="field-error">{{ tfaError }}</span>
+                  <label class="label-input">Confirmar contraseña</label>
+                  <div class="input-reveal">
+                    <input v-model="confirm" class="input-form" :class="{ 'input-error': mismatch }" :type="showConfirm ? 'text' : 'password'" autocomplete="new-password" />
+                    <button type="button" class="reveal-btn" @click="showConfirm = !showConfirm" tabindex="-1">
+                      <font-awesome-icon :icon="showConfirm ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" />
+                    </button>
+                  </div>
+                  <span v-if="mismatch" class="field-error">Las contraseñas no coinciden.</span>
                 </div>
-                <button type="button" class="cancel-button" style="align-self: flex-start" @click="cancelTfa">Cancelar</button>
               </div>
-            </LabeledForm>
-          </li>
+              <p class="password-hint">Mínimo 8 caracteres.</p>
+              <div class="edit-buttons-container">
+                <button type="submit" :disabled="!canSubmit">Guardar cambios</button>
+                <button type="button" class="cancel-button" @click="cancelPassword">Cancelar</button>
+              </div>
+            </template>
+          </form>
+        </LabeledForm>
 
-        </ul>
+        <LabeledForm title="Verificación en dos pasos" accordion>
+          <template #actions>
+            <button
+              v-if="tfaStep === 'idle' && !status.twoFactorEnabled"
+              class="edit-button"
+              @click="startSetup2FA"
+            >
+              <font-awesome-icon icon="fa-solid fa-shield-halved" /> Activar
+            </button>
+            <button
+              v-if="tfaStep === 'idle' && status.twoFactorEnabled"
+              class="edit-button edit-button--danger"
+              @click="tfaStep = 'disable-confirm'"
+            >
+              <font-awesome-icon icon="fa-solid fa-shield-halved" /> Desactivar
+            </button>
+          </template>
+
+          <div v-if="tfaStep === 'idle'" class="ul-form">
+            <p class="status-msg">
+              <font-awesome-icon
+                :icon="status.twoFactorEnabled ? 'fa-solid fa-shield-halved' : 'fa-solid fa-lock-open'"
+                :style="{ color: status.twoFactorEnabled ? 'var(--primary-color)' : 'rgba(255,255,255,0.35)' }"
+              />
+              {{ status.twoFactorEnabled ? 'Habilitado · Tu cuenta tiene protección extra.' : 'Deshabilitado.' }}
+            </p>
+            <p v-if="!status.twoFactorEnabled" class="tfa-idle-description">
+              La verificación en dos pasos añade una capa adicional de seguridad. Cuando está activa, necesitarás tu contraseña y un código de tu app de autenticación para iniciar sesión.
+            </p>
+          </div>
+
+          <div v-else-if="tfaStep === 'qr'" class="ul-form tfa-setup">
+            <p class="status-msg">Escanea el código QR con Google Authenticator o Authy, luego ingresa el código de 6 dígitos.</p>
+            <img :src="tfaQr" alt="QR 2FA" class="tfa-qr" />
+            <p class="tfa-secret-hint">Clave manual: <code>{{ tfaSecret }}</code></p>
+            <div class="field-group">
+              <OtpInput ref="otpEnableRef" @complete="confirmEnable2FA" />
+              <span v-if="tfaError" class="field-error">{{ tfaError }}</span>
+            </div>
+            <button type="button" class="cancel-button" style="align-self: flex-start" @click="cancelTfa">Cancelar</button>
+          </div>
+
+          <div v-else-if="tfaStep === 'backup-codes'" class="ul-form tfa-setup">
+            <p class="status-msg"><strong>2FA activado.</strong> Guarda estos códigos de respaldo en un lugar seguro. Solo se muestran una vez.</p>
+            <ul class="backup-codes-grid">
+              <li v-for="code in tfaBackupCodes" :key="code" class="backup-code">{{ code }}</li>
+            </ul>
+            <div class="edit-buttons-container">
+              <button type="button" class="edit-button" @click="copyBackupCodes">
+                <font-awesome-icon icon="fa-solid fa-copy" /> Copiar todos
+              </button>
+              <button type="button" @click="finishSetup2FA">Listo</button>
+            </div>
+          </div>
+
+          <div v-else-if="tfaStep === 'disable-confirm'" class="ul-form tfa-setup">
+            <p class="status-msg">Ingresa tu código de autenticación o un código de respaldo para desactivar 2FA.</p>
+            <div class="field-group">
+              <OtpInput ref="otpDisableRef" @complete="confirmDisable2FA" />
+              <span v-if="tfaError" class="field-error">{{ tfaError }}</span>
+            </div>
+            <button type="button" class="cancel-button" style="align-self: flex-start" @click="cancelTfa">Cancelar</button>
+          </div>
+        </LabeledForm>
+
+        <LabeledForm title="Dispositivos activos" accordion>
+          <Devices />
+        </LabeledForm>
+
       </div>
     </section>
   </main>
@@ -326,7 +316,7 @@ const copyBackupCodes = async () => {
 }
 
 .edit-button--danger {
-  &:hover { 
+  &:hover {
     background: var(--danger-color);
     color: var(--nhexa-white);
   }
@@ -392,7 +382,6 @@ const copyBackupCodes = async () => {
   font-size: 0.8rem;
   opacity: 0.5;
   margin: 0;
-  padding: 0 1rem 0.5rem;
   line-height: 1.55;
 }
 </style>

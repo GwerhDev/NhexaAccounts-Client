@@ -88,96 +88,91 @@ const cancelDetail = () => {
   <main class="main-container">
     <section class="section-container">
       <div class="inner-container">
-        <ul class="card-container">
-          <li>
-            <LabeledForm title="Datos de la cuenta" accordion>
-              <template #actions>
-                <span v-if="savedAccount" class="saved-feedback">
-                  <font-awesome-icon icon="fa-solid fa-circle-check" /> Cambios guardados.
-                </span>
-                <button v-if="!editAccount" class="edit-button" @click="editAccount = true">
-                  <font-awesome-icon icon="fa-solid fa-edit" /> Actualizar
-                </button>
-              </template>
-              <p class="section-description">Tu nombre de usuario e email identifican tu cuenta en el ecosistema NHEXA.</p>
-              <form class="ul-form" @submit.prevent="saveAccount">
-                <div class="info-grid">
-                  <div class="field-group">
-                    <label class="label-input">Nombre de usuario</label>
-                    <input v-model="username" class="input-form" type="text" :readonly="!editAccount" />
-                  </div>
-                  <div class="field-group">
-                    <label class="label-input">
-                      Correo electrónico
-                      <span class="verified-badge" :class="isVerified ? 'is-verified' : 'not-verified'">
-                        <font-awesome-icon title="Verificado" :icon="isVerified ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-xmark'" />
-                      </span>
-                      <span class="email-info-tooltip" title="El correo electrónico no puede modificarse directamente. Contacta al soporte si necesitas cambiarlo.">
-                        <font-awesome-icon icon="fa-solid fa-circle-info" />
-                      </span>
-                    </label>
-                    <input v-model="email" class="input-form" type="email" :readonly="!editAccount" :disabled="editAccount" />
-                  </div>
-                </div>
-                <div v-show="editAccount" class="edit-buttons-container">
-                  <button type="submit">Guardar cambios</button>
-                  <button type="button" class="cancel-button" @click="cancelAccount">Cancelar</button>
-                </div>
-              </form>
-            </LabeledForm>
-          </li>
 
-          <li>
-            <LabeledForm title="Información personal" accordion>
-              <template #actions>
-                <span v-if="savedDetail" class="saved-feedback">
-                  <font-awesome-icon icon="fa-solid fa-circle-check" /> Cambios guardados.
-                </span>
-                <button v-if="!editDetail" class="edit-button" @click="editDetail = true">
-                  <font-awesome-icon icon="fa-solid fa-edit" /> Actualizar
-                </button>
-              </template>
-              <p class="section-description">Esta información es opcional y solo se usa para personalizar tu experiencia.</p>
-              <form class="ul-form" @submit.prevent="saveDetail">
-                <div class="info-grid">
-                  <div class="field-group">
-                    <label class="label-input">Nombre</label>
-                    <input v-model="detail.firstName" class="input-form" type="text" :readonly="!editDetail" />
-                  </div>
-                  <div class="field-group">
-                    <label class="label-input">Apellido</label>
-                    <input v-model="detail.lastName" class="input-form" type="text" :readonly="!editDetail" />
-                  </div>
-                  <div class="field-group">
-                    <label class="label-input">Fecha de nacimiento</label>
-                    <input v-model="detail.birthDate" class="input-form" type="date" :readonly="!editDetail" />
-                  </div>
-                  <div class="field-group">
-                    <label class="label-input">País</label>
-                    <input v-model="detail.countryId" class="input-form" type="text" :readonly="!editDetail" />
-                  </div>
-                  <div class="field-group phone-group">
-                    <div class="phone-row">
-                      <span class="field-group w-auto">
-                        <label class="label-input">Código</label>
-                        <input v-model="detail.phoneCode" class="input-form" type="text" placeholder="+56" :readonly="!editDetail" />
-                      </span>
-                      <span class="field-group w-full">
-                        <label class="label-input">Teléfono</label>
-                        <input v-model="detail.phone" class="input-form" type="tel" :readonly="!editDetail" />
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div v-show="editDetail" class="edit-buttons-container">
-                  <button type="submit">Guardar cambios</button>
-                  <button type="button" class="cancel-button" @click="cancelDetail">Cancelar</button>
-                </div>
-              </form>
-            </LabeledForm>
-          </li>
+        <LabeledForm title="Datos de la cuenta" accordion initial-open>
+          <template #actions>
+            <span v-if="savedAccount" class="saved-feedback">
+              <font-awesome-icon icon="fa-solid fa-circle-check" /> Cambios guardados.
+            </span>
+            <button v-if="!editAccount" class="edit-button" @click="editAccount = true">
+              <font-awesome-icon icon="fa-solid fa-edit" /> Actualizar
+            </button>
+          </template>
+          <form class="ul-form" @submit.prevent="saveAccount">
+            <p class="section-description">Tu nombre de usuario e email identifican tu cuenta en el ecosistema NHEXA.</p>
+            <div class="info-grid">
+              <div class="field-group">
+                <label class="label-input">Nombre de usuario</label>
+                <input v-model="username" class="input-form" type="text" :readonly="!editAccount" />
+              </div>
+              <div class="field-group">
+                <label class="label-input">
+                  Correo electrónico
+                  <span class="verified-badge" :class="isVerified ? 'is-verified' : 'not-verified'">
+                    <font-awesome-icon title="Verificado" :icon="isVerified ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-xmark'" />
+                  </span>
+                  <span class="email-info-tooltip" title="El correo electrónico no puede modificarse directamente. Contacta al soporte si necesitas cambiarlo.">
+                    <font-awesome-icon icon="fa-solid fa-circle-info" />
+                  </span>
+                </label>
+                <input v-model="email" class="input-form" type="email" :readonly="!editAccount" :disabled="editAccount" />
+              </div>
+            </div>
+            <div v-show="editAccount" class="edit-buttons-container">
+              <button type="submit">Guardar cambios</button>
+              <button type="button" class="cancel-button" @click="cancelAccount">Cancelar</button>
+            </div>
+          </form>
+        </LabeledForm>
 
-        </ul>
+        <LabeledForm title="Información personal" accordion>
+          <template #actions>
+            <span v-if="savedDetail" class="saved-feedback">
+              <font-awesome-icon icon="fa-solid fa-circle-check" /> Cambios guardados.
+            </span>
+            <button v-if="!editDetail" class="edit-button" @click="editDetail = true">
+              <font-awesome-icon icon="fa-solid fa-edit" /> Actualizar
+            </button>
+          </template>
+          <form class="ul-form" @submit.prevent="saveDetail">
+            <p class="section-description">Esta información es opcional y solo se usa para personalizar tu experiencia.</p>
+            <div class="info-grid">
+              <div class="field-group">
+                <label class="label-input">Nombre</label>
+                <input v-model="detail.firstName" class="input-form" type="text" :readonly="!editDetail" />
+              </div>
+              <div class="field-group">
+                <label class="label-input">Apellido</label>
+                <input v-model="detail.lastName" class="input-form" type="text" :readonly="!editDetail" />
+              </div>
+              <div class="field-group">
+                <label class="label-input">Fecha de nacimiento</label>
+                <input v-model="detail.birthDate" class="input-form" type="date" :readonly="!editDetail" />
+              </div>
+              <div class="field-group">
+                <label class="label-input">País</label>
+                <input v-model="detail.countryId" class="input-form" type="text" :readonly="!editDetail" />
+              </div>
+              <div class="field-group phone-group">
+                <div class="phone-row">
+                  <span class="field-group w-auto">
+                    <label class="label-input">Código</label>
+                    <input v-model="detail.phoneCode" class="input-form" type="text" placeholder="+56" :readonly="!editDetail" />
+                  </span>
+                  <span class="field-group w-full">
+                    <label class="label-input">Teléfono</label>
+                    <input v-model="detail.phone" class="input-form" type="tel" :readonly="!editDetail" />
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div v-show="editDetail" class="edit-buttons-container">
+              <button type="submit">Guardar cambios</button>
+              <button type="button" class="cancel-button" @click="cancelDetail">Cancelar</button>
+            </div>
+          </form>
+        </LabeledForm>
+
       </div>
     </section>
   </main>
@@ -199,14 +194,6 @@ const cancelDetail = () => {
 .phone-row {
   display: flex;
   gap: 0.5rem;
-}
-
-.phone-code {
-  flex-shrink: 0;
-}
-
-.phone-number {
-  flex: 1;
 }
 
 .verified-badge {
@@ -241,9 +228,9 @@ const cancelDetail = () => {
 
 .section-description {
   font-size: 0.82rem;
-  opacity: 0.55;
+  opacity: 0.5;
   margin: 0;
-  padding: 0.5rem 1rem 0;
+  line-height: 1.5;
 }
 
 .saved-feedback {

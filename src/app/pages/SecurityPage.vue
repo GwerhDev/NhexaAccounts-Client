@@ -198,7 +198,7 @@ const copyBackupCodes = async () => {
 
           <!-- Columna derecha: 2FA -->
           <li class="card-column">
-            <LabeledForm title="Verificación en dos pasos" accordion>
+            <LabeledForm title="Verificación en dos pasos" accordion initial-open>
               <template #actions>
                 <button
                   v-if="tfaStep === 'idle' && !status.twoFactorEnabled"

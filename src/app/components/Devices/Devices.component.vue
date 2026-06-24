@@ -51,7 +51,7 @@ onMounted(load);
 </script>
 
 <template>
-  <LabeledForm title="Dispositivos activos" accordion>
+  <LabeledForm title="Dispositivos activos" accordion initial-open>
     <template #actions>
       <button v-if="sessions.length > 1" class="edit-button" @click="showRevokeAllModal = true">
         Cerrar otras sesiones

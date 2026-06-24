@@ -128,7 +128,7 @@ const cancelDetail = () => {
           </li>
 
           <li>
-            <LabeledForm title="Información personal" accordion>
+            <LabeledForm title="Información personal" accordion initial-open>
               <template #actions>
                 <span v-if="savedDetail" class="saved-feedback">
                   <font-awesome-icon icon="fa-solid fa-circle-check" /> Cambios guardados.

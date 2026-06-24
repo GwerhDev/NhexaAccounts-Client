@@ -22,7 +22,7 @@ import LabeledForm from '../components/LabeledForm/LabeledForm.component.vue';
             </LabeledForm>
           </li>
           <li>
-            <LabeledForm title="Tus derechos" accordion>
+            <LabeledForm title="Tus derechos" accordion initial-open>
               <div class="ul-form privacy-content">
                 <p>Como usuario de NHEXA tienes los siguientes derechos sobre tus datos personales:</p>
                 <ul class="privacy-list">

@@ -49,6 +49,7 @@ onMounted(load);
         Cerrar otras sesiones
       </button>
     </template>
+    <p class="device-description">Estos son los dispositivos con una sesión activa en tu cuenta. Si no reconoces alguno, ciérralo de inmediato.</p>
     <p v-if="loading" class="status-msg">Cargando sesiones...</p>
     <p v-else-if="sessions.length === 0" class="status-msg">No hay sesiones activas.</p>
     <ul v-else class="device-list">

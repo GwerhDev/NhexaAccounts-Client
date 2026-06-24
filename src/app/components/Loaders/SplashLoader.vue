@@ -5,6 +5,9 @@ import LogoHeaderComponent from '../Logo/LogoHeader.component.vue';
 <template>
   <div class="splash-container">
     <LogoHeaderComponent />
+    <div class="splash-bar-track">
+      <div class="splash-bar" />
+    </div>
   </div>
 </template>
 

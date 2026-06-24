@@ -10,7 +10,8 @@ import LabeledForm from '../components/LabeledForm/LabeledForm.component.vue';
           <li>
             <LabeledForm title="Datos que recopilamos" accordion initial-open>
               <div class="privacy-wrap">
-                <p class="privacy-lead">Para brindarte acceso a las aplicaciones del ecosistema NHEXA, almacenamos los siguientes datos:</p>
+                <p class="privacy-lead">Para brindarte acceso a las aplicaciones del ecosistema NHEXA, almacenamos los
+                  siguientes datos:</p>
                 <ul class="privacy-list">
                   <li class="privacy-item">
                     <span class="privacy-icon"><font-awesome-icon icon="fa-solid fa-at" /></span>
@@ -30,52 +31,60 @@ import LabeledForm from '../components/LabeledForm/LabeledForm.component.vue';
                     <span class="privacy-icon"><font-awesome-icon icon="fa-solid fa-circle-info" /></span>
                     <div class="privacy-body">
                       <span class="privacy-title">Información personal opcional</span>
-                      <span class="privacy-desc">Nombre, apellido, fecha de nacimiento y teléfono, solo si los proporcionas.</span>
+                      <span class="privacy-desc">Nombre, apellido, fecha de nacimiento y teléfono, solo si los
+                        proporcionas.</span>
                     </div>
                   </li>
                   <li class="privacy-item">
                     <span class="privacy-icon"><font-awesome-icon icon="fa-solid fa-desktop" /></span>
                     <div class="privacy-body">
                       <span class="privacy-title">Dispositivos activos</span>
-                      <span class="privacy-desc">Registro de sesiones activas (navegador, sistema operativo, IP y fecha) para que puedas gestionar el acceso a tu cuenta.</span>
+                      <span class="privacy-desc">Registro de sesiones activas (navegador, sistema operativo, IP y fecha)
+                        para que puedas gestionar el acceso a tu cuenta.</span>
                     </div>
                   </li>
                 </ul>
-                <p class="privacy-note">No vendemos ni compartimos tus datos con terceros. La información se usa exclusivamente para el funcionamiento del servicio.</p>
+                <p class="privacy-note">No vendemos ni compartimos tus datos con terceros. La información se usa
+                  exclusivamente para el funcionamiento del servicio.</p>
               </div>
             </LabeledForm>
           </li>
           <li>
             <LabeledForm title="Tus derechos" accordion initial-open>
               <div class="privacy-wrap">
-                <p class="privacy-lead">Como usuario de NHEXA tienes los siguientes derechos sobre tus datos personales:</p>
+                <p class="privacy-lead">Como usuario de NHEXA tienes los siguientes derechos sobre tus datos personales:
+                </p>
                 <ul class="privacy-list">
                   <li class="privacy-item">
                     <span class="privacy-icon"><font-awesome-icon icon="fa-solid fa-eye" /></span>
                     <div class="privacy-body">
                       <span class="privacy-title">Acceso</span>
-                      <span class="privacy-desc">Puedes consultar toda la información asociada a tu cuenta en la sección "Información personal".</span>
+                      <span class="privacy-desc">Puedes consultar toda la información asociada a tu cuenta en la sección
+                        "Información personal".</span>
                     </div>
                   </li>
                   <li class="privacy-item">
                     <span class="privacy-icon"><font-awesome-icon icon="fa-solid fa-pen" /></span>
                     <div class="privacy-body">
                       <span class="privacy-title">Rectificación</span>
-                      <span class="privacy-desc">Puedes actualizar tus datos en cualquier momento desde "Información personal".</span>
+                      <span class="privacy-desc">Puedes actualizar tus datos en cualquier momento desde "Información
+                        personal".</span>
                     </div>
                   </li>
                   <li class="privacy-item">
                     <span class="privacy-icon"><font-awesome-icon icon="fa-solid fa-trash" /></span>
                     <div class="privacy-body">
                       <span class="privacy-title">Eliminación</span>
-                      <span class="privacy-desc">Puedes solicitar la eliminación de tu cuenta y todos tus datos contactando al soporte técnico.</span>
+                      <span class="privacy-desc">Puedes solicitar la eliminación de tu cuenta y todos tus datos
+                        contactando al soporte técnico.</span>
                     </div>
                   </li>
                   <li class="privacy-item">
                     <span class="privacy-icon"><font-awesome-icon icon="fa-solid fa-lock" /></span>
                     <div class="privacy-body">
                       <span class="privacy-title">Seguridad</span>
-                      <span class="privacy-desc">Puedes gestionar el acceso desde la sección "Seguridad", incluyendo sesiones activas y verificación en dos pasos.</span>
+                      <span class="privacy-desc">Puedes gestionar el acceso desde la sección "Seguridad", incluyendo
+                        sesiones activas y verificación en dos pasos.</span>
                     </div>
                   </li>
                 </ul>
@@ -90,10 +99,12 @@ import LabeledForm from '../components/LabeledForm/LabeledForm.component.vue';
 
 <style lang="scss">
 .privacy-wrap {
-  padding: 0 1rem 1rem;
+  padding: 0 0 1rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .privacy-lead {
@@ -117,9 +128,10 @@ import LabeledForm from '../components/LabeledForm/LabeledForm.component.vue';
   align-items: flex-start;
   gap: 0.75rem;
   padding: 0.65rem 0.75rem;
-  border-radius: 0.5rem;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.06);
+  border-left: none;
+  border-right: none;
 }
 
 .privacy-icon {

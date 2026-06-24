@@ -9,20 +9,15 @@ interface DeviceSession {
   ip: string | null;
   created_at: string;
   expires_at: string;
+  device: {
+    browser: string;
+    os: string | null;
+    type: string;
+  };
 }
 
 const sessions = ref<DeviceSession[]>([]);
 const loading = ref(true);
-
-const parseAgent = (ua: string | null): string => {
-  if (!ua) return 'Dispositivo desconocido';
-  if (/Chrome/.test(ua) && !/Chromium|Edg/.test(ua)) return 'Google Chrome';
-  if (/Firefox/.test(ua)) return 'Mozilla Firefox';
-  if (/Edg/.test(ua)) return 'Microsoft Edge';
-  if (/Safari/.test(ua) && !/Chrome/.test(ua)) return 'Safari';
-  if (/OPR|Opera/.test(ua)) return 'Opera';
-  return 'Navegador desconocido';
-};
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleString('es-CL', { dateStyle: 'medium', timeStyle: 'short' });
@@ -59,8 +54,10 @@ onMounted(load);
     <ul v-else class="device-list">
       <li v-for="session in sessions" :key="session.id" class="device-item">
         <div class="device-info">
-          <span class="device-name">{{ parseAgent(session.user_agent) }}</span>
-          <span class="device-meta">{{ session.ip ?? 'IP desconocida' }} · {{ formatDate(session.created_at) }}</span>
+          <span class="device-name">{{ session.device.browser }}</span>
+          <span class="device-meta">
+            {{ session.device.os ?? 'OS desconocido' }} · {{ session.ip ?? 'IP desconocida' }} · {{ formatDate(session.created_at) }}
+          </span>
         </div>
         <div class="button-container">
           <button class="revoke-button" @click="revoke(session.id)">Cerrar</button>

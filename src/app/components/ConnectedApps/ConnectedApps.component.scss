@@ -72,6 +72,12 @@
   color: var(--accent, var(--primary-color));
   background: color-mix(in srgb, var(--accent, var(--primary-color)) 18%, transparent);
   border: 1px solid color-mix(in srgb, var(--accent, var(--primary-color)) 40%, transparent);
+
+  :deep(svg) {
+    width: 1.2rem;
+    height: 1.2rem;
+    fill: currentColor;
+  }
 }
 
 .app-info {

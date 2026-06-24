@@ -29,6 +29,13 @@ const snapshot = ref<{ username: string; email: string; detail: AccountDetail }>
 
 const editAccount = ref(false);
 const editDetail = ref(false);
+const savedAccount = ref(false);
+const savedDetail = ref(false);
+
+const showSavedFeedback = (target: typeof savedAccount) => {
+  target.value = true;
+  setTimeout(() => { target.value = false; }, 2000);
+};
 
 const applyResponse = (res: DetailResponse) => {
   username.value = res.userData.username ?? '';
@@ -48,6 +55,7 @@ const saveAccount = async () => {
   const data = await updateUserDetail({ username: username.value, email: email.value });
   if (data?.userData) applyResponse(data);
   editAccount.value = false;
+  showSavedFeedback(savedAccount);
 };
 
 const cancelAccount = () => {
@@ -67,6 +75,7 @@ const saveDetail = async () => {
   });
   if (data?.userData) applyResponse(data);
   editDetail.value = false;
+  showSavedFeedback(savedDetail);
 };
 
 const cancelDetail = () => {
@@ -83,10 +92,14 @@ const cancelDetail = () => {
           <li>
             <LabeledForm title="Datos de la cuenta" accordion>
               <template #actions>
+                <span v-if="savedAccount" class="saved-feedback">
+                  <font-awesome-icon icon="fa-solid fa-circle-check" /> Cambios guardados.
+                </span>
                 <button v-if="!editAccount" class="edit-button" @click="editAccount = true">
                   <font-awesome-icon icon="fa-solid fa-edit" /> Actualizar
                 </button>
               </template>
+              <p class="section-description">Tu nombre de usuario e email identifican tu cuenta en el ecosistema NHEXA.</p>
               <form class="ul-form" @submit.prevent="saveAccount">
                 <div class="info-grid">
                   <div class="field-group">
@@ -94,9 +107,13 @@ const cancelDetail = () => {
                     <input v-model="username" class="input-form" type="text" :readonly="!editAccount" />
                   </div>
                   <div class="field-group">
-                    <label class="label-input">Correo electrónico
+                    <label class="label-input">
+                      Correo electrónico
                       <span class="verified-badge" :class="isVerified ? 'is-verified' : 'not-verified'">
                         <font-awesome-icon title="Verificado" :icon="isVerified ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-xmark'" />
+                      </span>
+                      <span class="email-info-tooltip" title="El correo electrónico no puede modificarse directamente. Contacta al soporte si necesitas cambiarlo.">
+                        <font-awesome-icon icon="fa-solid fa-circle-info" />
                       </span>
                     </label>
                     <input v-model="email" class="input-form" type="email" :readonly="!editAccount" :disabled="editAccount" />
@@ -113,10 +130,14 @@ const cancelDetail = () => {
           <li>
             <LabeledForm title="Información personal" accordion>
               <template #actions>
+                <span v-if="savedDetail" class="saved-feedback">
+                  <font-awesome-icon icon="fa-solid fa-circle-check" /> Cambios guardados.
+                </span>
                 <button v-if="!editDetail" class="edit-button" @click="editDetail = true">
                   <font-awesome-icon icon="fa-solid fa-edit" /> Actualizar
                 </button>
               </template>
+              <p class="section-description">Esta información es opcional y solo se usa para personalizar tu experiencia.</p>
               <form class="ul-form" @submit.prevent="saveDetail">
                 <div class="info-grid">
                   <div class="field-group">
@@ -198,11 +219,38 @@ const cancelDetail = () => {
   padding: 0.15rem 0;
 
   &.is-verified {
-    color: var(--app-white);
+    color: var(--primary-color);
   }
 
   &.not-verified {
     color: rgba(255, 255, 255, 0.35);
   }
+}
+
+.email-info-tooltip {
+  margin-left: 0.3rem;
+  font-size: 0.65rem;
+  opacity: 0.4;
+  cursor: help;
+  vertical-align: middle;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.section-description {
+  font-size: 0.82rem;
+  opacity: 0.55;
+  margin: 0;
+  padding: 0.5rem 1rem 0;
+}
+
+.saved-feedback {
+  font-size: 0.8rem;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
 }
 </style>

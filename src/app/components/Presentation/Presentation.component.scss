@@ -11,12 +11,26 @@ section {
 
   .services {
     display: flex;
+    align-items: flex-start;
+    gap: 1rem;
 
     ul {
       text-align: left;
+      flex: 1;
+      padding: 0;
+      margin: 0;
 
       h2 {
         color: var(--primary-color);
+        margin: 0;
+      }
+
+      p {
+        margin: 0;
+        opacity: 0.7;
+        line-height: 1.5;
+        padding-top: 0.5rem;
+        padding-bottom: 1rem;
       }
     }
 
@@ -24,11 +38,15 @@ section {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      gap: 1rem;
+      flex-shrink: 0;
+      width: 1.5rem;
+      align-self: stretch;
+      padding-top: 0.1em;
+      gap: 0.5rem;
 
-      img {
-        filter: drop-shadow(0 0 9px white);
+      .vertical-separator {
+        flex: 1;
+        height: auto;
       }
     }
   }
@@ -54,4 +72,73 @@ section {
 
 .welcome-message {
   text-wrap: nowrap;
+}
+
+.account-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.25rem;
+}
+
+.account-email,
+.account-role {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  opacity: 0.65;
+}
+
+.verified-chip {
+  font-size: 0.7rem;
+
+  &.verified {
+    color: var(--primary-color);
+    opacity: 1;
+  }
+
+  &.unverified {
+    opacity: 0.4;
+  }
+}
+
+.quick-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  width: 100%;
+}
+
+.quick-link-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: var(--components-background);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  color: inherit;
+  text-decoration: none;
+  font-size: 0.88rem;
+  transition: border-color 0.15s, background 0.15s;
+
+  &:hover {
+    border-color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.04);
+  }
+}
+
+.quick-link-icon {
+  font-size: 1rem;
+  opacity: 0.6;
+  width: 1.1rem;
+  flex-shrink: 0;
+}
+
+.service-icon {
+  font-size: 1.6rem;
+  filter: drop-shadow(0 0 9px white);
 }

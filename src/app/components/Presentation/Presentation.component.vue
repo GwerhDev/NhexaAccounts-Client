@@ -1,18 +1,31 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import appIcon from "../../../assets/svg/appstab-icon.svg";
-import secureUserIcon from "../../../assets/svg/user-shield-icon.svg";
-import supportIcon from "../../../assets/svg/support-icon.svg";
+import { useRouter } from 'vue-router';
 import LogoHeader from "../Logo/LogoHeader.component.vue";
 import defaultImage from '../../../assets/svg/user-icon.svg';
 import { useStore } from '../../../middlewares/store';
 
 const store = useStore();
+const router = useRouter();
 const currentUser: any = computed(() => store.currentUser);
-let logged: any = computed(() => currentUser.value.logged);
-let username: any = computed(() => currentUser.value.userData?.username);
-let profilePic: any = computed(() => currentUser.value.userData?.profilePic ?? defaultImage);
+const logged: any = computed(() => currentUser.value.logged);
+const username: any = computed(() => currentUser.value.userData?.username);
+const email: any = computed(() => currentUser.value.userData?.email);
+const isVerified: any = computed(() => currentUser.value.userData?.isVerified);
+const role: any = computed(() => currentUser.value.userData?.role);
+const profilePic: any = computed(() => currentUser.value.userData?.profilePic ?? defaultImage);
 
+const roleLabel: any = computed(() => {
+  if (role.value === 'admin') return 'Administrador';
+  if (role.value === 'moderator') return 'Moderador';
+  return 'Usuario';
+});
+
+const quickLinks = [
+  { icon: 'fa-solid fa-id-card', label: 'Información personal', to: '/personal-info' },
+  { icon: 'fa-solid fa-shield-halved', label: 'Seguridad', to: '/security' },
+  { icon: 'fa-solid fa-layer-group', label: 'Aplicaciones', to: '/environment/apps' },
+];
 </script>
 
 <template>
@@ -24,13 +37,30 @@ let profilePic: any = computed(() => currentUser.value.userData?.profilePic ?? d
       <span class="welcome-message">
         <h1>¡Hola, {{ username }}!</h1>
       </span>
-      <p>Administra tu información y las opciones de privacidad y seguridad a fin de que NHEXA sea más relevante para
-        ti.</p>
+      <div class="account-summary">
+        <span class="account-email">
+          <font-awesome-icon icon="fa-solid fa-at" />
+          {{ email }}
+          <span class="verified-chip" :class="isVerified ? 'verified' : 'unverified'" :title="isVerified ? 'Cuenta verificada' : 'Cuenta sin verificar'">
+            <font-awesome-icon :icon="isVerified ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-xmark'" />
+          </span>
+        </span>
+        <span class="account-role">
+          <font-awesome-icon icon="fa-solid fa-tag" />
+          {{ roleLabel }}
+        </span>
+      </div>
+      <div class="quick-links">
+        <router-link v-for="link in quickLinks" :key="link.to" :to="link.to" class="quick-link-card">
+          <font-awesome-icon :icon="link.icon" class="quick-link-icon" />
+          <span>{{ link.label }}</span>
+        </router-link>
+      </div>
     </div>
 
     <div class="presentation" v-else>
       <LogoHeader />
-      <span class="buttons-container w-full mt-1 mb-1" v-if="!logged">
+      <span class="buttons-container w-full mt-1 mb-1">
         <router-link class="w-full" to='/login'>
           <button class="w-full principal-button">
             Iniciar sesión
@@ -43,41 +73,38 @@ let profilePic: any = computed(() => currentUser.value.userData?.profilePic ?? d
         </router-link>
       </span>
       <h2>Aquí encontrarás:</h2>
-    </div>
-
-    <div class="services">
-      <div class="section">
-        <img :src="appIcon" alt="" width="25">
-        <div class="vertical-separator"></div>
+      <div class="services">
+        <div class="section">
+          <font-awesome-icon icon="fa-solid fa-layer-group" class="service-icon" />
+          <div class="vertical-separator"></div>
+        </div>
+        <ul>
+          <h2>Acceso a tus aplicaciones</h2>
+          <p>Navega entre nuestras aplicaciones, y descubre el contenido que tenemos disponible para ti.</p>
+        </ul>
       </div>
-      <ul>
-        <h2>Acceso a tus aplicaciones</h2>
-        <p>Navega entre nuestras aplicaciones, y descubre el contenido que tenemos disponible para ti.</p>
-      </ul>
-    </div>
-    <div class="services">
-      <div class="section">
-        <img :src="secureUserIcon" alt="" width="25">
-        <div class="vertical-separator"></div>
+      <div class="services">
+        <div class="section">
+          <font-awesome-icon icon="fa-solid fa-id-card" class="service-icon" />
+          <div class="vertical-separator"></div>
+        </div>
+        <ul>
+          <h2>Administración de cuentas</h2>
+          <p>Aquí puedes gestionar los datos de tus cuentas de nuestro entorno de aplicaciones web.</p>
+        </ul>
       </div>
-      <ul>
-        <h2>Administración de cuentas</h2>
-        <p>Aquí puedes gestionar los datos de tus cuentas de nuestro entorno de aplicaciones web.</p>
-      </ul>
-    </div>
-    <div class="services">
-      <div class="section">
-        <img :src="supportIcon" alt="" width="25">
-        <div class="vertical-separator"></div>
+      <div class="services">
+        <div class="section">
+          <font-awesome-icon icon="fa-solid fa-headset" class="service-icon" />
+          <div class="vertical-separator"></div>
+        </div>
+        <ul>
+          <h2>Soporte técnico</h2>
+          <p>Puedes comunicarte con nuestro equipo para solucionar problemas y despejar dudas.</p>
+        </ul>
       </div>
-      <ul>
-        <h2>Soporte técnico</h2>
-        <p>Puedes comunicarte con nuestro equipo para solucionar problemas y despejar dudas.</p>
-      </ul>
     </div>
   </section>
-
-
 </template>
 
 <style scoped lang="scss" src="./Presentation.component.scss"></style>

@@ -117,6 +117,8 @@ const savePassword = async () => {
   showConfirm.value = false;
   editPassword.value = false;
   status.value = await getPasswordStatus();
+  savedPassword.value = true;
+  setTimeout(() => { savedPassword.value = false; }, 2000);
 };
 
 const cancelPassword = () => {
@@ -125,6 +127,13 @@ const cancelPassword = () => {
   showPassword.value = false;
   showConfirm.value = false;
   editPassword.value = false;
+};
+
+const savedPassword = ref(false);
+
+const copyBackupCodes = async () => {
+  const text = tfaBackupCodes.value.join('\n');
+  await navigator.clipboard.writeText(text);
 };
 
 </script>
@@ -139,6 +148,9 @@ const cancelPassword = () => {
           <li class="card-column">
             <LabeledForm title="Contraseña" accordion>
               <template #actions>
+                <span v-if="savedPassword" class="saved-feedback">
+                  <font-awesome-icon icon="fa-solid fa-circle-check" /> Cambios guardados.
+                </span>
                 <button v-if="!editPassword" class="edit-button" @click="editPassword = true">
                   <font-awesome-icon icon="fa-solid fa-edit" />
                   {{ status.passwordSetAt ? 'Actualizar' : 'Configurar' }}
@@ -173,6 +185,7 @@ const cancelPassword = () => {
                       <span v-if="mismatch" class="field-error">Las contraseñas no coinciden.</span>
                     </div>
                   </div>
+                  <p class="password-hint">Mínimo 8 caracteres.</p>
                   <div class="edit-buttons-container">
                     <button type="submit" :disabled="!canSubmit">Guardar cambios</button>
                     <button type="button" class="cancel-button" @click="cancelPassword">Cancelar</button>
@@ -208,10 +221,13 @@ const cancelPassword = () => {
               <div v-if="tfaStep === 'idle'" class="ul-form">
                 <p class="status-msg">
                   <font-awesome-icon
-                    :icon="status.twoFactorEnabled ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-xmark'"
-                    :style="{ color: status.twoFactorEnabled ? 'var(--app-white)' : 'rgba(255,255,255,0.35)' }"
+                    :icon="status.twoFactorEnabled ? 'fa-solid fa-shield-halved' : 'fa-solid fa-lock-open'"
+                    :style="{ color: status.twoFactorEnabled ? 'var(--primary-color)' : 'rgba(255,255,255,0.35)' }"
                   />
-                  {{ status.twoFactorEnabled ? 'Habilitado · Tu cuenta tiene protección extra.' : 'Deshabilitado · Activa 2FA para mayor seguridad.' }}
+                  {{ status.twoFactorEnabled ? 'Habilitado · Tu cuenta tiene protección extra.' : 'Deshabilitado.' }}
+                </p>
+                <p v-if="!status.twoFactorEnabled" class="tfa-idle-description">
+                  La verificación en dos pasos añade una capa adicional de seguridad. Cuando está activa, necesitarás tu contraseña y un código de tu app de autenticación para iniciar sesión.
                 </p>
               </div>
 
@@ -232,6 +248,9 @@ const cancelPassword = () => {
                   <li v-for="code in tfaBackupCodes" :key="code" class="backup-code">{{ code }}</li>
                 </ul>
                 <div class="edit-buttons-container">
+                  <button type="button" class="edit-button" @click="copyBackupCodes">
+                    <font-awesome-icon icon="fa-solid fa-copy" /> Copiar todos
+                  </button>
                   <button type="button" @click="finishSetup2FA">Listo</button>
                 </div>
               </div>
@@ -353,5 +372,27 @@ const cancelPassword = () => {
   background: rgba(255, 255, 255, 0.07);
   color: var(--nhexa-white);
   text-align: center;
+}
+
+.password-hint {
+  font-size: 0.75rem;
+  opacity: 0.45;
+  margin: 0;
+}
+
+.saved-feedback {
+  font-size: 0.8rem;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.tfa-idle-description {
+  font-size: 0.8rem;
+  opacity: 0.5;
+  margin: 0;
+  padding: 0 1rem 0.5rem;
+  line-height: 1.55;
 }
 </style>

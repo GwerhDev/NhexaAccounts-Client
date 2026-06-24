@@ -1,1 +1,0 @@
-export const environment: any = process.env.NODE_ENV;

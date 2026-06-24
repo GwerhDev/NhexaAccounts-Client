@@ -497,6 +497,7 @@ input {
   border: 1px solid var(--primary-color);
   border-radius: 5px;
   background: var(--secondary-semitransparent-background-color);
+  font-family: inherit;
 }
 
 input:disabled {

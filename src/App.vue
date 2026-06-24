@@ -4,6 +4,7 @@ import { useStore } from './middlewares/store/index';
 import NavBar from './app/components/Navigator/NavBar.component.vue';
 import LateralBar from './app/components/Navigator/LateralBar.component.vue';
 import SplashLoader from './app/components/Loaders/SplashLoader.vue';
+import Toast from './app/components/Toast/Toast.component.vue';
 
 const store: any = useStore();
 const currentUser: any = computed(() => store.currentUser);
@@ -18,6 +19,7 @@ onMounted(async () => {
 </script>
 
 <template>
+  <Toast />
   <SplashLoader v-if="isFetchingUser" />
   <div v-else class="viewport-container">
     <template v-if="$route.path !== '/oauth/chooseaccount/' && !$route.path.startsWith('/oauth/chooseaccount/')">

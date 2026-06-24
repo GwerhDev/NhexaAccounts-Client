@@ -11,8 +11,10 @@ import {
 import LabeledForm from '../components/LabeledForm/LabeledForm.component.vue';
 import Devices from '../components/Devices/Devices.component.vue';
 import OtpInput from '../components/OtpInput/OtpInput.component.vue';
+import { useToast } from '../composables/useToast';
 
 const store = useStore();
+const toast = useToast();
 const email = computed(() => store.currentUser?.userData?.email ?? '');
 
 interface SecurityStatus {
@@ -110,15 +112,18 @@ onMounted(async () => {
 
 const savePassword = async () => {
   if (!canSubmit.value) return;
-  await updatePassword(password.value);
+  const result = await updatePassword(password.value);
   password.value = '';
   confirm.value = '';
   showPassword.value = false;
   showConfirm.value = false;
   editPassword.value = false;
-  status.value = await getPasswordStatus();
-  savedPassword.value = true;
-  setTimeout(() => { savedPassword.value = false; }, 2000);
+  if (result?.error) {
+    toast.error('No se pudo actualizar la contraseña.');
+  } else {
+    status.value = await getPasswordStatus();
+    toast.success('Contraseña actualizada.');
+  }
 };
 
 const cancelPassword = () => {
@@ -128,8 +133,6 @@ const cancelPassword = () => {
   showConfirm.value = false;
   editPassword.value = false;
 };
-
-const savedPassword = ref(false);
 
 const copyBackupCodes = async () => {
   const text = tfaBackupCodes.value.join('\n');
@@ -148,9 +151,6 @@ const copyBackupCodes = async () => {
           <li class="card-column">
             <LabeledForm title="Contraseña" accordion initial-open>
               <template #actions>
-                <span v-if="savedPassword" class="saved-feedback">
-                  <font-awesome-icon icon="fa-solid fa-circle-check" /> Cambios guardados.
-                </span>
                 <button v-if="!editPassword" class="edit-button" @click="editPassword = true">
                   <font-awesome-icon icon="fa-solid fa-edit" />
                   {{ status.passwordSetAt ? 'Actualizar' : 'Configurar' }}

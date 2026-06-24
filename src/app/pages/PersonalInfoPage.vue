@@ -3,8 +3,10 @@ import { ref, onMounted } from 'vue';
 import { useStore } from '../../middlewares/store';
 import { getUserDetail, updateUserDetail } from '../../middlewares/services';
 import LabeledForm from '../components/LabeledForm/LabeledForm.component.vue';
+import { useToast } from '../composables/useToast';
 
 const store = useStore();
+const toast = useToast();
 
 interface AccountDetail {
   firstName: string | null;
@@ -29,13 +31,6 @@ const snapshot = ref<{ username: string; email: string; detail: AccountDetail }>
 
 const editAccount = ref(false);
 const editDetail = ref(false);
-const savedAccount = ref(false);
-const savedDetail = ref(false);
-
-const showSavedFeedback = (target: typeof savedAccount) => {
-  target.value = true;
-  setTimeout(() => { target.value = false; }, 2000);
-};
 
 const applyResponse = (res: DetailResponse) => {
   username.value = res.userData.username ?? '';
@@ -53,9 +48,13 @@ onMounted(async () => {
 
 const saveAccount = async () => {
   const data = await updateUserDetail({ username: username.value, email: email.value });
-  if (data?.userData) applyResponse(data);
+  if (data?.userData) {
+    applyResponse(data);
+    toast.success('Cambios guardados.');
+  } else {
+    toast.error('No se pudieron guardar los cambios.');
+  }
   editAccount.value = false;
-  showSavedFeedback(savedAccount);
 };
 
 const cancelAccount = () => {
@@ -73,9 +72,13 @@ const saveDetail = async () => {
     phone: detail.value.phone,
     phoneCode: detail.value.phoneCode,
   });
-  if (data?.userData) applyResponse(data);
+  if (data?.userData) {
+    applyResponse(data);
+    toast.success('Cambios guardados.');
+  } else {
+    toast.error('No se pudieron guardar los cambios.');
+  }
   editDetail.value = false;
-  showSavedFeedback(savedDetail);
 };
 
 const cancelDetail = () => {
@@ -92,9 +95,6 @@ const cancelDetail = () => {
           <li>
             <LabeledForm title="Datos de la cuenta" accordion initial-open>
               <template #actions>
-                <span v-if="savedAccount" class="saved-feedback">
-                  <font-awesome-icon icon="fa-solid fa-circle-check" /> Cambios guardados.
-                </span>
                 <button v-if="!editAccount" class="edit-button" @click="editAccount = true">
                   <font-awesome-icon icon="fa-solid fa-edit" /> Actualizar
                 </button>
@@ -130,9 +130,6 @@ const cancelDetail = () => {
           <li>
             <LabeledForm title="Información personal" accordion initial-open>
               <template #actions>
-                <span v-if="savedDetail" class="saved-feedback">
-                  <font-awesome-icon icon="fa-solid fa-circle-check" /> Cambios guardados.
-                </span>
                 <button v-if="!editDetail" class="edit-button" @click="editDetail = true">
                   <font-awesome-icon icon="fa-solid fa-edit" /> Actualizar
                 </button>

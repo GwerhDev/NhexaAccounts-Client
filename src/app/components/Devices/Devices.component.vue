@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue';
 import { getDevices, revokeDevice, revokeAllDevices } from '../../../middlewares/services';
 import LabeledForm from '../LabeledForm/LabeledForm.component.vue';
 import Modal from '../Modal/Modal.component.vue';
+import { useToast } from '../../composables/useToast';
 
 interface DeviceSession {
   id: string;
@@ -20,6 +21,7 @@ interface DeviceSession {
 
 const sessions = ref<DeviceSession[]>([]);
 const loading = ref(true);
+const toast = useToast();
 
 const pendingRevokeId = ref<string | null>(null);
 const showRevokeAllModal = ref(false);
@@ -36,15 +38,25 @@ const load = async () => {
 
 const confirmRevoke = async () => {
   if (!pendingRevokeId.value) return;
-  await revokeDevice(pendingRevokeId.value);
-  sessions.value = sessions.value.filter(s => s.id !== pendingRevokeId.value);
+  const result = await revokeDevice(pendingRevokeId.value);
+  if (result?.error) {
+    toast.error('No se pudo cerrar la sesión.');
+  } else {
+    sessions.value = sessions.value.filter(s => s.id !== pendingRevokeId.value);
+    toast.success('Sesión cerrada.');
+  }
   pendingRevokeId.value = null;
 };
 
 const confirmRevokeAll = async () => {
   showRevokeAllModal.value = false;
-  await revokeAllDevices();
-  await load();
+  const result = await revokeAllDevices();
+  if (result?.error) {
+    toast.error('No se pudieron cerrar las sesiones.');
+  } else {
+    toast.success('Otras sesiones cerradas.');
+    await load();
+  }
 };
 
 onMounted(load);

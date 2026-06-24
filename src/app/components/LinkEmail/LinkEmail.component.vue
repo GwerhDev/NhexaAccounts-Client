@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { linkEmail } from '../../../middlewares/services';
 import LabeledForm from '../LabeledForm/LabeledForm.component.vue';
+import { useToast } from '../../composables/useToast';
 
 const password = ref('');
 const confirm = ref('');
@@ -9,6 +10,7 @@ const status = ref<'idle' | 'loading' | 'success' | 'error'>('idle');
 const errorMsg = ref('');
 
 const emit = defineEmits<{ linked: [] }>();
+const toast = useToast();
 
 const submit = async () => {
   errorMsg.value = '';
@@ -24,10 +26,12 @@ const submit = async () => {
   const res = await linkEmail(password.value);
   if (res?.success) {
     status.value = 'success';
+    toast.success('Contraseña vinculada a tu cuenta.');
     emit('linked');
   } else {
     status.value = 'error';
     errorMsg.value = res?.message ?? 'Error al vincular la contraseña.';
+    toast.error(errorMsg.value);
   }
 };
 </script>

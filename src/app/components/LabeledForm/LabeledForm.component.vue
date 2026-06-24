@@ -96,6 +96,24 @@ const open = ref(props.initialOpen ?? !props.accordion);
   display: flex;
   flex-direction: column;
 
+  input,
+  .input-form {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.45rem;
+    background: rgba(255, 255, 255, 0.05);
+    transition: border-color 0.15s, background 0.15s;
+
+    &:read-only {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.07);
+    }
+  }
+
   .field-group {
     label {
       font-size: 0.75rem;
@@ -106,22 +124,9 @@ const open = ref(props.initialOpen ?? !props.accordion);
       border-radius: 0.45rem 0.45rem 0 0;
     }
 
-    input,
-    .input-form {
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    label ~ input,
+    label ~ .input-form {
       border-radius: 0 0 0.45rem 0.45rem;
-      background: rgba(255, 255, 255, 0.05);
-      transition: border-color 0.15s, background 0.15s;
-
-      &:read-only {
-        background: rgba(255, 255, 255, 0.03);
-      }
-
-      &:focus {
-        outline: none;
-        border-color: rgba(255, 255, 255, 0.28);
-        background: rgba(255, 255, 255, 0.07);
-      }
     }
   }
 }

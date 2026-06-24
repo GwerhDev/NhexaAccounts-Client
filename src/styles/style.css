@@ -492,6 +492,19 @@ button:disabled:hover {
   background: linear-gradient(168deg, #414141 20%, var(--button-primary-hover-color) 120%);
 }
 
+.status-msg {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.82rem;
+  margin: 0;
+  padding: 0.6rem 0.85rem;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  opacity: 0.9;
+}
+
 input {
   padding: 8px;
   border: 1px solid var(--primary-color);

@@ -219,10 +219,10 @@ const copyBackupCodes = async () => {
               </template>
 
               <div v-if="tfaStep === 'idle'" class="ul-form">
-                <p class="status-msg">
+                <p class="status-msg" style="gap: 0.6rem;">
                   <font-awesome-icon
                     :icon="status.twoFactorEnabled ? 'fa-solid fa-shield-halved' : 'fa-solid fa-lock-open'"
-                    :style="{ color: status.twoFactorEnabled ? 'var(--primary-color)' : 'rgba(255,255,255,0.35)' }"
+                    :style="{ color: status.twoFactorEnabled ? 'var(--nhexa-white)' : 'rgba(255,255,255,0.35)' }"
                   />
                   {{ status.twoFactorEnabled ? 'Habilitado · Tu cuenta tiene protección extra.' : 'Deshabilitado.' }}
                 </p>

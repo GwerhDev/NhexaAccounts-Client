@@ -118,9 +118,19 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   if (!to.meta.requiresAuth) return true;
   const store = useStore();
+  if (!store.authReady) {
+    await new Promise<void>(resolve => {
+      const unwatch = store.$subscribe(() => {
+        if (store.authReady) {
+          unwatch();
+          resolve();
+        }
+      });
+    });
+  }
   if (!store.currentUser?.logged) {
     return { name: 'LoginPage' };
   }

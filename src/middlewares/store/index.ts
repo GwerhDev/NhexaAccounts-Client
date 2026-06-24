@@ -9,6 +9,7 @@ interface storeState {
   currentUser: any,
   appList: EnvCategory[],
   menuList: Array<any>,
+  authReady: boolean,
 }
 
 export const useStore = defineStore('store', {
@@ -18,6 +19,7 @@ export const useStore = defineStore('store', {
     },
     appList: [],
     menuList: [],
+    authReady: false,
   }),
 
   actions: {
@@ -44,7 +46,7 @@ export const useStore = defineStore('store', {
         return '/';
       }
     },
-    async handleUserData(callback: any, router: any) {
+    async handleUserData(callback?: any, router?: any) {
       try {
         this.currentUser = await getUserData();
         if (router && !callback) return router.push('/');
@@ -52,6 +54,8 @@ export const useStore = defineStore('store', {
         else return;
       } catch (error) {
         console.error(error);
+      } finally {
+        this.authReady = true;
       }
     },
     async handleUpdateUserData(formData: any, id: any) {

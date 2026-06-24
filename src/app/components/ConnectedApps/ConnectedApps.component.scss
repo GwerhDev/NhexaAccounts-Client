@@ -1,27 +1,103 @@
-.app-card-li {
-  width: 100%;
+.apps-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 4rem 0;
+  opacity: 0.45;
+  font-size: 0.9rem;
 
-  .app-card {
-    width: 100%;
-    height: 120px;
-    border-radius: 5px;
-    padding: 1rem;
-    padding-inline: 0;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    color: var(--nhexa-white);
-    border: solid 1px rgba(105, 105, 105, 0.705);
-    background-color: var(--secondary-background-color);
+  p { margin: 0; }
+}
 
-    &:hover {
-      border: 2px solid var(--primary-hover-color);
-      cursor: pointer;
+.apps-empty-icon {
+  font-size: 2rem;
+}
+
+.apps-spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.apps-grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.app-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background-color: var(--components-background-alt);
+  color: var(--nhexa-white);
+  text-decoration: none;
+  transition: border-color 0.18s, background-color 0.18s;
+
+  &:hover {
+    border-color: color-mix(in srgb, var(--accent, var(--primary-color)) 60%, transparent);
+    background-color: color-mix(in srgb, var(--accent, var(--primary-color)) 8%, var(--components-background-alt));
+
+    .app-arrow {
+      opacity: 0.7;
+      transform: translateX(3px);
     }
   }
+}
 
-  img {
-    height: 70px;
-  }
+.app-icon {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--accent, var(--primary-color));
+  background: color-mix(in srgb, var(--accent, var(--primary-color)) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent, var(--primary-color)) 40%, transparent);
+}
+
+.app-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.app-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.app-description {
+  font-size: 0.78rem;
+  opacity: 0.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-arrow {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  opacity: 0.2;
+  transition: opacity 0.18s, transform 0.18s;
 }

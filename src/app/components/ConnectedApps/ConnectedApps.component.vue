@@ -1,21 +1,45 @@
 <style scoped lang="scss" src="./ConnectedApps.component.scss" />
 <script setup lang="ts">
-import { computed, Ref } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useStore } from '../../../middlewares/store';
 
 const store = useStore();
-const appList: Ref<any[]> = computed(() => store.appList.flatMap(cat => cat.apps));
+const loading = ref(true);
+const appList = computed(() => store.appList.flatMap(cat => cat.apps));
 
+onMounted(async () => {
+  if (!store.appList.length) {
+    await store.handleGetNhexaEnv();
+  }
+  loading.value = false;
+});
 </script>
 
 <template>
   <section class="section-container">
     <div class="inner-container">
       <h2>Visita nuestras aplicaciones</h2>
-      <ul class="card-container">
-        <li v-if="appList.length" class="app-card-li" v-for="item in appList">
-          <a class="app-card" :href="item.url" target="_blank">
-            <h2>{{ item.label }}</h2>
+
+      <div v-if="loading" class="apps-state">
+        <div class="apps-spinner" />
+      </div>
+
+      <div v-else-if="!appList.length" class="apps-state">
+        <font-awesome-icon icon="fa-solid fa-layer-group" class="apps-empty-icon" />
+        <p>No hay aplicaciones disponibles por el momento.</p>
+      </div>
+
+      <ul v-else class="apps-grid">
+        <li v-for="item in appList" :key="item.url">
+          <a class="app-card" :href="item.url" target="_blank" :style="{ '--accent': item.color }">
+            <span class="app-icon">
+              <font-awesome-icon :icon="item.icon" />
+            </span>
+            <div class="app-info">
+              <span class="app-name">{{ item.label }}</span>
+              <span v-if="item.description" class="app-description">{{ item.description }}</span>
+            </div>
+            <font-awesome-icon icon="fa-solid fa-arrow-right" class="app-arrow" />
           </a>
         </li>
       </ul>

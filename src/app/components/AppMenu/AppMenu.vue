@@ -8,7 +8,7 @@ const store = useStore();
 const isOpen = ref(false);
 
 onMounted(() => {
-  if (!store.appList.length) store.handleGetNhexaEnv();
+  store.handleGetNhexaEnv();
 });
 </script>
 

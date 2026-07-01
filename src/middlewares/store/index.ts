@@ -2,6 +2,9 @@ import { defineStore } from 'pinia';
 import { getNhexaEnv, getUserData, getUserOverview, loginInner, signupInner, updateUserData, updateUserDetail } from '../services';
 import { clearUserToken } from '../services/token';
 
+let envFetch: Promise<void> | null = null;
+let overviewFetch: Promise<void> | null = null;
+
 export interface AppEntry { label: string; url: string; icon: string; color?: string; description?: string; route?: string }
 export interface EnvCategory { id: string; name: string; apps: AppEntry[] }
 
@@ -71,15 +74,24 @@ export const useStore = defineStore('store', {
       this.currentUser = await getUserData();
     },
     async handleGetNhexaEnv() {
-      this.appList = await getNhexaEnv();
-      return;
+      if (this.appList.length) return;
+      if (!envFetch) {
+        envFetch = getNhexaEnv().then((list: EnvCategory[]) => {
+          this.appList = list;
+        }).finally(() => { envFetch = null; });
+      }
+      await envFetch;
     },
     async handleGetUserOverview() {
       if (this.passwordStatus !== null && this.userDetail !== null) return;
-      const overview = await getUserOverview();
-      if (!overview) return;
-      this.passwordStatus = overview.securityStatus;
-      this.userDetail = { userData: overview.userData, accountDetail: overview.accountDetail };
+      if (!overviewFetch) {
+        overviewFetch = getUserOverview().then((overview: any) => {
+          if (!overview) return;
+          this.passwordStatus = overview.securityStatus;
+          this.userDetail = { userData: overview.userData, accountDetail: overview.accountDetail };
+        }).finally(() => { overviewFetch = null; });
+      }
+      await overviewFetch;
     },
     async handleUpdateUserDetail(data: Partial<AccountDetail & { username?: string; email?: string }>) {
       const result: UserDetailResponse | null = await updateUserDetail(data);

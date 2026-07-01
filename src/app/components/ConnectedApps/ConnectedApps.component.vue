@@ -8,9 +8,7 @@ const loading = ref(true);
 const appList = computed(() => store.appList.flatMap(cat => cat.apps));
 
 onMounted(async () => {
-  if (!store.appList.length) {
-    await store.handleGetNhexaEnv();
-  }
+  await store.handleGetNhexaEnv();
   loading.value = false;
 });
 </script>

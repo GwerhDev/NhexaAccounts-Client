@@ -1,14 +1,18 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { getPasswordStatus, getUserDetail } from '../../../middlewares/services';
+import { useStore } from '../../../middlewares/store';
 
 const router = useRouter();
+const store = useStore();
 
-const hasPassword = ref(false);
-const hasTwoFactor = ref(false);
-const isVerified = ref(false);
-const hasPersonalInfo = ref(false);
+const hasPassword = computed(() => !!store.passwordStatus?.passwordSetAt);
+const hasTwoFactor = computed(() => !!store.passwordStatus?.twoFactorEnabled);
+const isVerified = computed(() => !!store.userDetail?.userData?.isVerified);
+const hasPersonalInfo = computed(() => {
+  const { firstName, lastName } = store.userDetail?.accountDetail ?? {};
+  return !!(firstName && lastName);
+});
 
 const steps = computed(() => [
   {
@@ -54,19 +58,10 @@ const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 const dashOffset = computed(() => CIRCUMFERENCE * (1 - score.value / 100));
 
 onMounted(async () => {
-  const [security, detail] = await Promise.all([
-    getPasswordStatus(),
-    getUserDetail(),
+  await Promise.all([
+    store.handleGetPasswordStatus(),
+    store.handleGetUserDetail(),
   ]);
-  if (security) {
-    hasPassword.value = !!security.passwordSetAt;
-    hasTwoFactor.value = !!security.twoFactorEnabled;
-  }
-  if (detail) {
-    isVerified.value = !!detail.userData?.isVerified;
-    const { firstName, lastName } = detail.accountDetail ?? {};
-    hasPersonalInfo.value = !!(firstName && lastName);
-  }
 });
 
 const navigate = (step: { done: boolean; to: string }) => {

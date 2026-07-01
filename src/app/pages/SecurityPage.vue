@@ -2,7 +2,6 @@
 import { ref, computed, onMounted } from 'vue';
 import { useStore } from '../../middlewares/store';
 import {
-  getPasswordStatus,
   updatePassword,
   getTwoFactorSetup,
   enableTwoFactor,
@@ -17,12 +16,7 @@ const store = useStore();
 const toast = useToast();
 const email = computed(() => store.currentUser?.userData?.email ?? '');
 
-interface SecurityStatus {
-  passwordSetAt: string | null;
-  twoFactorEnabled: boolean;
-}
-
-const status = ref<SecurityStatus>({ passwordSetAt: null, twoFactorEnabled: false });
+const status = computed(() => store.passwordStatus ?? { passwordSetAt: null, twoFactorEnabled: false });
 
 // Password
 const password = ref('');
@@ -62,7 +56,8 @@ const confirmEnable2FA = async (code: string) => {
   }
   tfaBackupCodes.value = result.backupCodes;
   tfaStep.value = 'backup-codes';
-  status.value = await getPasswordStatus();
+  store.invalidatePasswordStatus();
+  await store.handleGetPasswordStatus();
 };
 
 const finishSetup2FA = () => {
@@ -81,7 +76,8 @@ const confirmDisable2FA = async (code: string) => {
     return;
   }
   tfaStep.value = 'idle';
-  status.value = await getPasswordStatus();
+  store.invalidatePasswordStatus();
+  await store.handleGetPasswordStatus();
 };
 
 const cancelTfa = () => {
@@ -107,7 +103,7 @@ const timeAgo = (iso: string): string => {
 };
 
 onMounted(async () => {
-  status.value = await getPasswordStatus();
+  await store.handleGetPasswordStatus();
 });
 
 const savePassword = async () => {
@@ -121,7 +117,8 @@ const savePassword = async () => {
   if (result?.error) {
     toast.error('No se pudo actualizar la contraseña.');
   } else {
-    status.value = await getPasswordStatus();
+    store.invalidatePasswordStatus();
+    await store.handleGetPasswordStatus();
     toast.success('Contraseña actualizada.');
   }
 };

@@ -1,55 +1,41 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useStore } from '../../middlewares/store';
-import { getUserDetail, updateUserDetail } from '../../middlewares/services';
+import type { AccountDetail } from '../../middlewares/store';
 import LabeledForm from '../components/LabeledForm/LabeledForm.component.vue';
 import { useToast } from '../composables/useToast';
 
 const store = useStore();
 const toast = useToast();
 
-interface AccountDetail {
-  firstName: string | null;
-  lastName: string | null;
-  birthDate: string | null;
-  countryId: string | null;
-  phone: string | null;
-  phoneCode: string | null;
-  passwordSetAt: string | null;
-}
-
-interface DetailResponse {
-  userData: { id: string; username: string; email: string; isVerified: boolean; role: string; profilePic: string | null };
-  accountDetail: AccountDetail;
-}
-
-const username = ref('');
-const email = ref('');
-const isVerified = ref(false);
-const detail = ref<AccountDetail>({ firstName: null, lastName: null, birthDate: null, countryId: null, phone: null, phoneCode: null, passwordSetAt: null });
-const snapshot = ref<{ username: string; email: string; detail: AccountDetail }>({ username: '', email: '', detail: { ...detail.value } });
-
 const editAccount = ref(false);
 const editDetail = ref(false);
 
-const applyResponse = (res: DetailResponse) => {
-  username.value = res.userData.username ?? '';
-  email.value = res.userData.email ?? '';
-  isVerified.value = res.userData.isVerified ?? false;
-  detail.value = { ...res.accountDetail };
-  snapshot.value = { username: username.value, email: email.value, detail: { ...res.accountDetail } };
-  store.currentUser.userData = res.userData;
+// Local form state synced from store
+const username = ref('');
+const email = ref('');
+const isVerified = computed(() => store.userDetail?.userData?.isVerified ?? false);
+const detail = ref<AccountDetail>({ firstName: null, lastName: null, birthDate: null, countryId: null, phone: null, phoneCode: null, passwordSetAt: null });
+const snapshot = ref<{ username: string; email: string; detail: AccountDetail }>({ username: '', email: '', detail: { ...detail.value } });
+
+const syncFromStore = () => {
+  const d = store.userDetail;
+  if (!d) return;
+  username.value = d.userData.username ?? '';
+  email.value = d.userData.email ?? '';
+  detail.value = { ...d.accountDetail };
+  snapshot.value = { username: username.value, email: email.value, detail: { ...d.accountDetail } };
 };
 
 onMounted(async () => {
-  const data = await getUserDetail();
-  if (data) applyResponse(data);
+  await store.handleGetUserDetail();
+  syncFromStore();
 });
 
 const saveAccount = async () => {
-  const data = await updateUserDetail({ username: username.value, email: email.value });
+  const data = await store.handleUpdateUserDetail({ username: username.value, email: email.value });
   if (data?.userData) {
-    applyResponse(data);
+    syncFromStore();
     toast.success('Cambios guardados.');
   } else {
     toast.error('No se pudieron guardar los cambios.');
@@ -64,7 +50,7 @@ const cancelAccount = () => {
 };
 
 const saveDetail = async () => {
-  const data = await updateUserDetail({
+  const data = await store.handleUpdateUserDetail({
     firstName: detail.value.firstName,
     lastName: detail.value.lastName,
     birthDate: detail.value.birthDate,
@@ -73,7 +59,7 @@ const saveDetail = async () => {
     phoneCode: detail.value.phoneCode,
   });
   if (data?.userData) {
-    applyResponse(data);
+    syncFromStore();
     toast.success('Cambios guardados.');
   } else {
     toast.error('No se pudieron guardar los cambios.');

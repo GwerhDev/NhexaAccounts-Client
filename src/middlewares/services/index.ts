@@ -86,6 +86,13 @@ export const revokeAllDevices: any = async () => {
   return response;
 };
 
+export const getUserOverview: any = async () => {
+  const response: any = await api.get("/user/overview")
+    .then(response => response.data)
+    .catch(() => { return null });
+  return response;
+};
+
 export const getUserDetail: any = async () => {
   const response: any = await api.get("/user/detail")
     .then(response => response.data)

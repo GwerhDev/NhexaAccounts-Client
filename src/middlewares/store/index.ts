@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { getNhexaEnv, getUserData, getUserDetail, getPasswordStatus, loginInner, signupInner, updateUserData, updateUserDetail } from '../services';
+import { getNhexaEnv, getUserData, getUserOverview, loginInner, signupInner, updateUserData, updateUserDetail } from '../services';
 import { clearUserToken } from '../services/token';
 
 export interface AppEntry { label: string; url: string; icon: string; color?: string; description?: string; route?: string }
@@ -74,21 +74,21 @@ export const useStore = defineStore('store', {
       this.appList = await getNhexaEnv();
       return;
     },
-    async handleGetPasswordStatus() {
-      if (this.passwordStatus !== null) return;
-      this.passwordStatus = await getPasswordStatus();
-    },
-    async handleGetUserDetail() {
-      if (this.userDetail !== null) return;
-      this.userDetail = await getUserDetail();
+    async handleGetUserOverview() {
+      if (this.passwordStatus !== null && this.userDetail !== null) return;
+      const overview = await getUserOverview();
+      if (!overview) return;
+      this.passwordStatus = overview.securityStatus;
+      this.userDetail = { userData: overview.userData, accountDetail: overview.accountDetail };
     },
     async handleUpdateUserDetail(data: Partial<AccountDetail & { username?: string; email?: string }>) {
       const result: UserDetailResponse | null = await updateUserDetail(data);
       if (result?.userData) this.userDetail = result;
       return result;
     },
-    invalidatePasswordStatus() {
+    invalidateUserOverview() {
       this.passwordStatus = null;
+      this.userDetail = null;
     },
   }
 

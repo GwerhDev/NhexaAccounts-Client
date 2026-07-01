@@ -28,7 +28,7 @@ const syncFromStore = () => {
 };
 
 onMounted(async () => {
-  await store.handleGetUserDetail();
+  await store.handleGetUserOverview();
   syncFromStore();
 });
 

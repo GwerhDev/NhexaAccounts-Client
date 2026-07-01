@@ -58,10 +58,7 @@ const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 const dashOffset = computed(() => CIRCUMFERENCE * (1 - score.value / 100));
 
 onMounted(async () => {
-  await Promise.all([
-    store.handleGetPasswordStatus(),
-    store.handleGetUserDetail(),
-  ]);
+  await store.handleGetUserOverview();
 });
 
 const navigate = (step: { done: boolean; to: string }) => {

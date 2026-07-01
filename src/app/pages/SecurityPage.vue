@@ -56,8 +56,8 @@ const confirmEnable2FA = async (code: string) => {
   }
   tfaBackupCodes.value = result.backupCodes;
   tfaStep.value = 'backup-codes';
-  store.invalidatePasswordStatus();
-  await store.handleGetPasswordStatus();
+  store.invalidateUserOverview();
+  await store.handleGetUserOverview();
 };
 
 const finishSetup2FA = () => {
@@ -76,8 +76,8 @@ const confirmDisable2FA = async (code: string) => {
     return;
   }
   tfaStep.value = 'idle';
-  store.invalidatePasswordStatus();
-  await store.handleGetPasswordStatus();
+  store.invalidateUserOverview();
+  await store.handleGetUserOverview();
 };
 
 const cancelTfa = () => {
@@ -103,7 +103,7 @@ const timeAgo = (iso: string): string => {
 };
 
 onMounted(async () => {
-  await store.handleGetPasswordStatus();
+  await store.handleGetUserOverview();
 });
 
 const savePassword = async () => {
@@ -117,8 +117,8 @@ const savePassword = async () => {
   if (result?.error) {
     toast.error('No se pudo actualizar la contraseña.');
   } else {
-    store.invalidatePasswordStatus();
-    await store.handleGetPasswordStatus();
+    store.invalidateUserOverview();
+    await store.handleGetUserOverview();
     toast.success('Contraseña actualizada.');
   }
 };

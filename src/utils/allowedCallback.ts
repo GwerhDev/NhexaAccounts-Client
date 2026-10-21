@@ -1,8 +1,9 @@
-import { ACCOUNTS_URL, CLIENT_URL, STREAMBY_URL } from '../middlewares/misc/const';
+import { ACCOUNTS_URL, ALLOWED_ORIGINS, CLIENT_URL, STREAMBY_URL } from '../middlewares/misc/const';
 
 // Where a login (or a signup) may send the user back to once it's done: only Nhexa's own
 // sites (https://nhexa.cl and its subdomains) and this deployment's own apps (its client,
-// StreamBy and accounts URLs). Anything else -- another site, a relative path, a javascript:
+// StreamBy and accounts URLs, and the apps registered in VITE_ALLOWED_ORIGINS -- the same
+// list as Nhexa-API's ALLOWED_ORIGINS, e.g. each app on localhost while developing). Anything else -- another site, a relative path, a javascript:
 // URL -- is never followed: it would hand the user, signed in, to whoever wrote the link.
 
 const NHEXA_DOMAIN = 'nhexa.cl';
@@ -15,7 +16,11 @@ const originOf = (url: string | undefined): string[] => {
   }
 };
 
-const REGISTERED = [ACCOUNTS_URL, CLIENT_URL, STREAMBY_URL].flatMap(originOf);
+/** The origins in a list like ALLOWED_ORIGINS ("['https://a', 'https://b']" or "https://a,https://b"). */
+export const parseOrigins = (raw: string | undefined): string[] =>
+  (raw ?? '').replace(/[[\]'"\s]/g, '').split(',').flatMap(originOf);
+
+const REGISTERED = [...[ACCOUNTS_URL, CLIENT_URL, STREAMBY_URL].flatMap(originOf), ...parseOrigins(ALLOWED_ORIGINS)];
 
 /** Whether a login may send the user to `target`: a full URL on Nhexa's sites (https) or one
  * of this deployment's apps. */

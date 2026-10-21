@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { allowedCallback, isAllowedCallback } from '../utils/allowedCallback';
+import { describe, it, expect, vi, afterEach } from 'vitest';
+import { allowedCallback, isAllowedCallback, parseOrigins } from '../utils/allowedCallback';
 
 const REGISTERED = ['http://localhost:5174', 'https://streamby.example.com'];
 
@@ -46,5 +46,31 @@ describe('allowedCallback', () => {
     expect(allowedCallback('https://accounts.nhexa.cl/x')).toBe('https://accounts.nhexa.cl/x');
     expect(allowedCallback('https://evil.example.com')).toBe('');
     expect(allowedCallback('javascript:alert(1)')).toBe('');
+  });
+});
+
+describe('parseOrigins', () => {
+  // The same list as Nhexa-API's ALLOWED_ORIGINS, written either way.
+  it('reads a list written as an array or comma-separated, keeping only valid origins', () => {
+    expect(parseOrigins("['http://localhost:5175', 'https://spellcast.example.com/']")).toEqual(['http://localhost:5175', 'https://spellcast.example.com']);
+    expect(parseOrigins('http://localhost:5175,http://localhost:5176')).toEqual(['http://localhost:5175', 'http://localhost:5176']);
+    expect(parseOrigins('not a url,')).toEqual([]);
+    expect(parseOrigins(undefined)).toEqual([]);
+  });
+
+  it('lets a login go back to an app on that list (e.g. Spellcast on localhost)', () => {
+    expect(isAllowedCallback('http://localhost:5175/', parseOrigins("['http://localhost:5175']"))).toBe(true);
+  });
+});
+
+describe('the apps registered with this deployment', () => {
+  afterEach(() => { vi.unstubAllEnvs(); vi.resetModules(); });
+
+  it('a login goes back to an app in VITE_ALLOWED_ORIGINS, and not to one outside it', async () => {
+    vi.stubEnv('VITE_ALLOWED_ORIGINS', "['http://localhost:5175']");
+    vi.resetModules();
+    const fresh = await import('../utils/allowedCallback');
+    expect(fresh.allowedCallback('http://localhost:5175/')).toBe('http://localhost:5175/');
+    expect(fresh.allowedCallback('http://localhost:6666/')).toBe('');
   });
 });

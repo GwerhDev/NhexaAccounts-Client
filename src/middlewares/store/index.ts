@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { getNhexaEnv, getUserData, getUserOverview, loginInner, signupInner, updateUserData, updateUserDetail } from '../services';
 import { clearUserToken } from '../services/token';
+import { allowedCallback } from '../../utils/allowedCallback';
 
 let envFetch: Promise<void> | null = null;
 let overviewFetch: Promise<void> | null = null;
@@ -51,7 +52,8 @@ export const useStore = defineStore('store', {
       if (!result?.logged) {
         return { error: true, message: result?.message ?? 'Error al iniciar sesión.' };
       }
-      if (callback) return window.location.href = callback;
+      const destination = allowedCallback(callback);
+      if (destination) return window.location.href = destination;
       else {
         this.currentUser = await getUserData();
         return '/';
@@ -60,8 +62,9 @@ export const useStore = defineStore('store', {
     async handleUserData(callback?: any, router?: any) {
       try {
         this.currentUser = await getUserData();
-        if (router && !callback) return router.push('/');
-        else if (router && callback) return window.location.href = callback;
+        const destination = allowedCallback(callback);
+        if (router && !destination) return router.push('/');
+        else if (router && destination) return window.location.href = destination;
         else return;
       } catch (error) {
         console.error(error);

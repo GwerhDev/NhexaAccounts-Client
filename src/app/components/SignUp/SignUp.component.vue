@@ -3,6 +3,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { onMounted, computed, ref, watch } from 'vue';
 import { API_URL } from '../../../middlewares/misc/const';
 import { useStore } from '../../../middlewares/store/index';
+import { allowedCallback } from '../../../utils/allowedCallback';
 import LogoHeader from '../Logo/LogoHeader.component.vue';
 import googleIcon from '../../../assets/png/google-icon.png';
 
@@ -25,20 +26,19 @@ const isDisabled = computed(() => {
 
 onMounted(() => {
   const rawCallback = route.query.callback;
-  callback.value = typeof rawCallback === 'string' ? rawCallback : '';
+  // Only a destination a login may send the user to is kept: any other is dropped.
+  callback.value = allowedCallback(rawCallback);
   apiUrl.value = callback.value
-    ? `${API_URL}/signup-google?callback=${callback.value}`
+    ? `${API_URL}/signup-google?callback=${encodeURIComponent(callback.value)}`
     : `${API_URL}/signup-google`;
 
   redirectIfLogged();
 });
 
 const redirectIfLogged = () => {
-  if (logged.value) {
-    const rawCallback = route.query.callback;
-    const target = typeof rawCallback === 'string' ? rawCallback : '/';
-    router.push(target);
-  }
+  if (!logged.value) return;
+  if (callback.value) window.location.href = callback.value;
+  else router.push('/');
 };
 
 watch(logged, (newVal) => {

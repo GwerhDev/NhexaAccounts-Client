@@ -22,9 +22,7 @@ onMounted(async () => {
   <Toast />
   <SplashLoader v-if="isFetchingUser" />
   <div v-else class="viewport-container">
-    <template v-if="$route.path !== '/oauth/chooseaccount/' && !$route.path.startsWith('/oauth/chooseaccount/')">
-      <nav-bar />
-    </template>
+    <nav-bar />
     <div class="app-container">
       <div v-if="logged" class="view-lateral-bar">
         <lateral-bar />

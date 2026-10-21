@@ -1,6 +1,5 @@
 import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router';
 import LoginPage from '../pages/LoginPage.vue';
-import OAuthPage from '../pages/OAuthPage.vue';
 import LandingPage from '../pages/LandingPage.vue';
 import BillingPage from '../pages/BillingPage.vue';
 import SupportPage from '../pages/SupportPage.vue';
@@ -75,11 +74,6 @@ const routes: RouteRecordRaw[] = [
     path: '/register',
     name: 'RegisterPage',
     component: RegisterPage,
-  },
-  {
-    path: '/oauth/chooseaccount',
-    name: 'OAuth',
-    component: OAuthPage,
   },
   {
     path: '/account/already-exists',

@@ -4,6 +4,7 @@ import { onMounted, computed, ref, watch } from 'vue';
 import OtpInput from '../OtpInput/OtpInput.component.vue';
 import { API_URL } from '../../../middlewares/misc/const';
 import { useStore } from '../../../middlewares/store/index';
+import { allowedCallback } from '../../../utils/allowedCallback';
 import { verifyMfa, getUserData } from '../../../middlewares/services';
 import LogoApp from '../Logo/LogoApp.component.vue';
 import LogoHeader from '../Logo/LogoHeader.component.vue';
@@ -33,22 +34,21 @@ onMounted(() => {
   const rawAppId = route.query.appId;
   const rawCallback = route.query.callback;
 
-  callback.value = typeof rawCallback === 'string' ? rawCallback : '';
+  // Only a destination a login may send the user to is kept: any other is dropped.
+  callback.value = allowedCallback(rawCallback);
   appLogo.value = typeof rawAppId === 'string' ? "https://streamby.s3.amazonaws.com/" + rawAppId + "/project-image" : '';
 
   apiUrl.value = callback.value
-    ? `${API_URL}/login-google?callback=${callback.value}`
+    ? `${API_URL}/login-google?callback=${encodeURIComponent(callback.value)}`
     : `${API_URL}/login-google`;
 
   redirectIfLogged();
 });
 
 const redirectIfLogged = () => {
-  if (logged.value) {
-    const rawCallback = route.query.callback;
-    const target = typeof rawCallback === 'string' ? rawCallback : '/';
-    router.push(target);
-  }
+  if (!logged.value) return;
+  if (callback.value) window.location.href = callback.value;
+  else router.push('/');
 };
 
 watch(logged, (newVal) => {

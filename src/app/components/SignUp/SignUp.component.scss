@@ -1,10 +1,11 @@
 .form-container {
   padding: 3rem;
+  border-radius: 5px;
+  border: none;
   display: flex;
+  text-align: left;
   flex-direction: column;
   justify-content: flex-start;
-  border-radius: 5px;
-  text-align: left;
   background-color: transparent;
 }
 

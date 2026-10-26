@@ -15,6 +15,7 @@ import AccountAlreadyExistsPage from '../pages/AccountAlreadyExistsPage.vue';
 import RegisterFailedPage from '../pages/RegisterFailedPage.vue';
 import NotFoundPage from '../pages/NotFoundPage.vue';
 import LoginFailedPage from '../pages/LoginFailedPage.vue';
+import OAuthAuthorizePage from '../pages/OAuthAuthorizePage.vue';
 import { useStore } from '../../middlewares/store';
 
 const routes: RouteRecordRaw[] = [
@@ -69,6 +70,12 @@ const routes: RouteRecordRaw[] = [
     path: '/login/failed',
     name: 'LoginFailedPage',
     component: LoginFailedPage,
+  },
+  {
+    // Signs the user in itself when needed, coming back here with the same request.
+    path: '/oauth/authorize',
+    name: 'OAuthAuthorizePage',
+    component: OAuthAuthorizePage,
   },
   {
     path: '/register',

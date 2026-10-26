@@ -148,3 +148,21 @@ export const verifyMfa: any = async (mfaToken: string, code: string) => {
     .catch(() => { return { error: error.api.loadItemById } });
   return response;
 };
+export interface OAuthClientInfo { id: string; name: string; logoUri: string | null; clientUri: string | null; verified: boolean }
+export interface OAuthAuthorizeRequest { client: OAuthClientInfo; scopes: string[]; redirectUri: string; consented: boolean }
+export interface OAuthFailure { error: string; error_description?: string; redirectTo?: string }
+
+const oauthFailure = (err: any): OAuthFailure =>
+  err?.response?.data?.error ? err.response.data : { error: 'server_error', error_description: 'No se pudo contactar a Nhexa.' };
+
+// The authorization request an app sent the user with, as Nhexa checked it.
+export const getOAuthAuthorizeRequest = async (query: Record<string, string>): Promise<OAuthAuthorizeRequest | OAuthFailure> =>
+  api.get("/oauth/authorize/request", { params: query })
+    .then(response => response.data)
+    .catch(oauthFailure);
+
+// The user's answer to that request: where to send them back to the app.
+export const sendOAuthDecision = async (query: Record<string, string>, approve: boolean): Promise<{ redirectTo: string } | OAuthFailure> =>
+  api.post("/oauth/authorize/decision", { request: query, approve })
+    .then(response => response.data)
+    .catch(oauthFailure);

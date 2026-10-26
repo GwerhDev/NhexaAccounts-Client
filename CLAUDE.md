@@ -167,7 +167,7 @@ Flat route structure, no nested routes. Auth guard in `router.beforeEach` waits 
 | `/environment/apps` | Yes |
 | `/login` | No |
 | `/register` | No |
-| `/oauth/chooseaccount` | No |
+| `/oauth/authorize` | No (signs in itself) |
 | `/:pathMatch(.*)` | — |
 
 ---

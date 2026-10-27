@@ -1,0 +1,68 @@
+.desktop-dock {
+  position: fixed;
+  top: 50%;
+  left: 1.25rem;
+  transform: translateY(-50%);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: var(--components-background);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+}
+
+.dock-tool {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 1.1rem;
+  color: var(--nhexa-white);
+  background: transparent;
+  border: 1.5px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
+
+  &:hover:not(:disabled) {
+    color: #73a5cc;
+    border-color: #73a5cc;
+    background: rgba(115, 165, 204, 0.12);
+  }
+
+  &.current {
+    color: #73a5cc;
+    border-color: #73a5cc;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+}
+
+.dock-separator {
+  width: 60%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+// On a narrow screen there's no room beside the apps: the dock goes on top.
+@media (max-width: 600px) {
+  .desktop-dock {
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    flex-direction: row;
+  }
+
+  .dock-separator {
+    width: 1px;
+    height: 24px;
+  }
+}

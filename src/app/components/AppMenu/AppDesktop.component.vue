@@ -230,6 +230,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useStore } from '../../../middlewares/store';
+import DesktopDock from './DesktopDock.component.vue';
 
 const emit = defineEmits<{ close: [] }>();
 
@@ -258,6 +259,7 @@ function select(app: any) {
 <template>
   <Transition name="desktop" appear>
     <div class="app-desktop" @click.self="emit('close')">
+      <DesktopDock @close="emit('close')" />
       <div class="app-launcher">
         <template v-if="loaded">
           <div v-for="cat in categories" :key="cat.id" class="category">

@@ -55,7 +55,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="errorMessage" class="authorize-error px-1 flex-col items-center text-center">
+  <div v-if="errorMessage" class="px-1 flex-col items-center text-center">
     <h1>No se pudo autorizar la aplicación</h1>
     <h3>{{ errorMessage }}</h3>
     <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="10x" color="var(--primary-color)" />

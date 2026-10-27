@@ -17,100 +17,42 @@ import NotFoundPage from '../pages/NotFoundPage.vue';
 import LoginFailedPage from '../pages/LoginFailedPage.vue';
 import OAuthAuthorizePage from '../pages/OAuthAuthorizePage.vue';
 import { useStore } from '../../middlewares/store';
+import AuthLayout from '../layouts/AuthLayout/AuthLayout.layout.vue';
+import DefaultLayout from '../layouts/DefaultLayout/DefaultLayout.layout.vue';
 
+// Each route is a child of the layout it's shown in: DefaultLayout (the account, with its menus)
+// or AuthLayout (signing in and up, authorizing an app: no navigation, the task centered).
+// DefaultLayout goes first: both parents are at '/', and '/' itself must be its home page.
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    name: 'LandingPage',
-    component: LandingPage,
-    meta: { requiresAuth: true },
+    component: DefaultLayout,
+    children: [
+      { path: '', name: 'LandingPage', component: LandingPage, meta: { requiresAuth: true } },
+      { path: 'environment/apps', name: 'ConnectedAppsPage', component: ConnectedAppsPage, meta: { requiresAuth: true } },
+      { path: 'personal-info', name: 'PersonalInfoPage', component: PersonalInfoPage, meta: { requiresAuth: true } },
+      { path: 'privacy', name: 'PrivacyPage', component: PrivacyPage, meta: { requiresAuth: true } },
+      { path: 'security', name: 'SecurityPage', component: SecurityPage, meta: { requiresAuth: true } },
+      { path: 'billing', name: 'BillingPage', component: BillingPage, meta: { requiresAuth: true } },
+      { path: 'support', name: 'SupportPage', component: SupportPage, meta: { requiresAuth: true } },
+      { path: ':pathMatch(.*)*', name: 'NotFoundPage', component: NotFoundPage },
+    ],
   },
   {
-    path: '/environment/apps',
-    name: 'ConnectedAppsPage',
-    component: ConnectedAppsPage,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/personal-info',
-    name: 'PersonalInfoPage',
-    component: PersonalInfoPage,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/privacy',
-    name: 'PrivacyPage',
-    component: PrivacyPage,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/security',
-    name: 'SecurityPage',
-    component: SecurityPage,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/billing',
-    name: 'BillingPage',
-    component: BillingPage,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/support',
-    name: 'SupportPage',
-    component: SupportPage,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/login',
-    name: 'LoginPage',
-    component: LoginPage,
-  },
-  {
-    path: '/login/failed',
-    name: 'LoginFailedPage',
-    component: LoginFailedPage,
-  },
-  {
-    // Signs the user in itself when needed, coming back here with the same request.
-    path: '/oauth/authorize',
-    name: 'OAuthAuthorizePage',
-    component: OAuthAuthorizePage,
-  },
-  {
-    path: '/register',
-    name: 'RegisterPage',
-    component: RegisterPage,
-  },
-  {
-    path: '/account/already-exists',
-    name: 'AccountAlreadyExistsPage',
-    component: AccountAlreadyExistsPage,
-  },
-  {
-    path: '/account/not-found',
-    name: 'AccountNotFoundPage',
-    component: AccountNotFoundPage,
-  },
-  {
-    path: '/register/verify',
-    name: 'RegisterVerifyPage',
-    component: RegisterVerifyPage,
-  },
-  {
-    path: '/register/success',
-    name: 'RegisterSuccessPage',
-    component: RegisterSuccessPage,
-  },
-  {
-    path: '/register/failed',
-    name: 'RegisterFailedPage',
-    component: RegisterFailedPage,
-  },
-  {
-    path: '/:pathMatch(.*)*',
-    name: 'NotFoundPage',
-    component: NotFoundPage,
+    path: '/',
+    component: AuthLayout,
+    children: [
+      { path: 'login', name: 'LoginPage', component: LoginPage },
+      { path: 'login/failed', name: 'LoginFailedPage', component: LoginFailedPage },
+      // Signs the user in itself when needed, coming back here with the same request.
+      { path: 'oauth/authorize', name: 'OAuthAuthorizePage', component: OAuthAuthorizePage },
+      { path: 'register', name: 'RegisterPage', component: RegisterPage },
+      { path: 'register/verify', name: 'RegisterVerifyPage', component: RegisterVerifyPage },
+      { path: 'register/success', name: 'RegisterSuccessPage', component: RegisterSuccessPage },
+      { path: 'register/failed', name: 'RegisterFailedPage', component: RegisterFailedPage },
+      { path: 'account/already-exists', name: 'AccountAlreadyExistsPage', component: AccountAlreadyExistsPage },
+      { path: 'account/not-found', name: 'AccountNotFoundPage', component: AccountNotFoundPage },
+    ],
   },
 ];
 

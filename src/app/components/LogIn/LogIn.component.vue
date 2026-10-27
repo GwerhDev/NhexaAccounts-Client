@@ -5,9 +5,9 @@ import OtpInput from '../OtpInput/OtpInput.component.vue';
 import { API_URL } from '../../../middlewares/misc/const';
 import { useStore } from '../../../middlewares/store/index';
 import { allowedCallback } from '../../../utils/allowedCallback';
+import { callbackNotice } from '../../../utils/callbackNotice';
 import { verifyMfa, getUserData } from '../../../middlewares/services';
 import LogoApp from '../Logo/LogoApp.component.vue';
-import LogoHeader from '../Logo/LogoHeader.component.vue';
 import googleIcon from '../../../assets/png/google-icon.png';
 
 const apiUrl = ref('');
@@ -29,6 +29,7 @@ const loginError = ref('');
 const otpLoginRef = ref<InstanceType<typeof OtpInput> | null>(null);
 
 const isDisabled = computed(() => !email.value || !password.value);
+const notice = computed(() => callbackNotice(callback.value));
 
 onMounted(() => {
   const rawAppId = route.query.appId;
@@ -94,8 +95,7 @@ async function handleMfa(code: string) {
 
 <template>
   <div class="form-container">
-    <LogoHeader v-if="!appLogo" />
-    <span v-else class="logo-container">
+    <span v-if="appLogo" class="logo-container">
       <LogoApp />
       <font-awesome-icon icon="fa-solid fa-exchange" size="lg" />
       <LogoApp :logo=appLogo />
@@ -103,7 +103,7 @@ async function handleMfa(code: string) {
 
     <template v-if="step === 'credentials'">
       <h2>Rellena los siguientes campos:</h2>
-      <p v-if="callback"><small>Al iniciar sesión, se te redireccionará a: <a :href="callback">{{ callback }}</a></small></p>
+      <p v-if="notice" data-testid="callback-notice"><small>{{ notice }}</small></p>
       <form class="ul-form">
         <li class="li-form">
           <label>Correo electrónico</label>

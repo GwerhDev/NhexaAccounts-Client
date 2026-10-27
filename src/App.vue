@@ -1,35 +1,21 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useStore } from './middlewares/store/index';
-import NavBar from './app/components/Navigator/NavBar.component.vue';
-import LateralBar from './app/components/Navigator/LateralBar.component.vue';
 import SplashLoader from './app/components/Loaders/SplashLoader.vue';
 import Toast from './app/components/Toast/Toast.component.vue';
 
-const store: any = useStore();
-const currentUser: any = computed(() => store.currentUser);
-const logged: any = computed(() => currentUser.value.logged);
+const store = useStore();
+// Pages render once the session is known: the guard and the OAuth page both rely on it.
 const isFetchingUser = ref(true);
 
 onMounted(async () => {
   await store.handleUserData();
   isFetchingUser.value = false;
 });
-
 </script>
 
 <template>
   <Toast />
   <SplashLoader v-if="isFetchingUser" />
-  <div v-else class="viewport-container">
-    <nav-bar />
-    <div class="app-container">
-      <div v-if="logged" class="view-lateral-bar">
-        <lateral-bar />
-      </div>
-      <div class="router-view">
-        <router-view />
-      </div>
-    </div>
-  </div>
+  <router-view v-else />
 </template>

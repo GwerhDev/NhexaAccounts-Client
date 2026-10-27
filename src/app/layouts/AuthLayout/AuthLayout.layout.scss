@@ -1,0 +1,28 @@
+.auth-layout {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  background-attachment: fixed;
+}
+
+// margin: auto centers it vertically, and still lets a tall page scroll from its top.
+.auth-content {
+  width: 100%;
+  margin: auto 0;
+  padding: 2rem 0;
+  box-sizing: border-box;
+
+  // A long URL or address in a text wraps instead of widening the page (buttons keep their words).
+  :deep(:is(p, small, h1, h2, h3, a)) {
+    overflow-wrap: anywhere;
+  }
+}
+
+.auth-header {
+  display: flex;
+  justify-content: center;
+}

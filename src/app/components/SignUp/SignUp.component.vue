@@ -4,7 +4,6 @@ import { onMounted, computed, ref, watch } from 'vue';
 import { API_URL } from '../../../middlewares/misc/const';
 import { useStore } from '../../../middlewares/store/index';
 import { allowedCallback } from '../../../utils/allowedCallback';
-import LogoHeader from '../Logo/LogoHeader.component.vue';
 import googleIcon from '../../../assets/png/google-icon.png';
 
 const apiUrl = ref('');
@@ -66,7 +65,6 @@ const handleRegister = async (e: Event) => {
 
 <template>
   <div class="form-container">
-    <LogoHeader />
     <h2>Rellena los siguientes campos:</h2>
     <form class="ul-form">
       <li class="li-form">

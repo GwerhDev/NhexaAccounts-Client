@@ -40,7 +40,7 @@ No `--space-*` or `--size-*` spacing tokens — use raw values or the utility sp
 
 Spacing: `.gap-1`, `.gap-2`, `.pl-1`–`.pl-5`, `.pr-1`–`.pr-5`, `.pt-1`–`.pt-5`, `.pb-1`–`.pb-5`, `.ml-1`–`.ml-5`, `.mr-1`–`.mr-5`, `.mt-1`–`.mt-5`, `.mb-1`–`.mb-5`
 
-Layout: `.flex`, `.flex-col`, `.d-flex`, `.fd-col`, `.just-cent`, `.align-cent`, `.items-center`, `.justify-center`, `.text-center`, `.w-100`, `.w-full`, `.w-auto`, `.h-auto`, `.mw-650`
+Layout: `.flex`, `.flex-col`, `.d-flex`, `.fd-col`, `.just-cent`, `.align-cent`, `.items-center`, `.justify-center`, `.text-center`, `.w-100`, `.w-full`, `.w-auto`, `.h-auto`, `.mw-650`, `.mw-460`
 
 Containers: `.viewport-container`, `.app-container`, `.main-container`, `.section-container`, `.inner-container`, `.card-container`, `.card-column`, `.view-lateral-bar`, `.router-view`
 
@@ -59,6 +59,7 @@ src/
   app/
     components/   ← ComponentName/ComponentName.component.vue + ComponentName.component.scss
     composables/  ← useXxx.ts
+    layouts/      ← XxxLayout/XxxLayout.layout.vue (+ .scss): the shell a group of routes renders in
     pages/        ← XxxPage.vue (thin wrappers, no fetch, no state)
     routes/       ← index.ts (router + auth guards)
   middlewares/
@@ -154,21 +155,25 @@ Single store `useStore()` at `src/middlewares/store/index.ts`.
 
 ## Router
 
-Flat route structure, no nested routes. Auth guard in `router.beforeEach` waits for `store.authReady`.
+Routes are nested under one parent per layout (`component: <Layout>`); App.vue only holds what's global (Toast, the SplashLoader while the session loads) and a `<router-view>`. Auth guard in `router.beforeEach` waits for `store.authReady`.
 
-| Path | Auth required |
-|---|---|
-| `/` | Yes |
-| `/personal-info` | Yes |
-| `/security` | Yes |
-| `/billing` | Yes |
-| `/privacy` | Yes |
-| `/support` | Yes |
-| `/environment/apps` | Yes |
-| `/login` | No |
-| `/register` | No |
-| `/oauth/authorize` | No (signs in itself) |
-| `/:pathMatch(.*)` | — |
+- **DefaultLayout** — NavBar, LateralBar when signed in, the page. Declared first: both parents are at `/`, and `/` must resolve to its home page.
+- **AuthLayout** — no navigation: the Nhexa logo and the page, centered, at most 460px wide (`.mw-460`).
+
+| Path | Layout | Auth required |
+|---|---|---|
+| `/` | Default | Yes |
+| `/personal-info` | Default | Yes |
+| `/security` | Default | Yes |
+| `/billing` | Default | Yes |
+| `/privacy` | Default | Yes |
+| `/support` | Default | Yes |
+| `/environment/apps` | Default | Yes |
+| `/:pathMatch(.*)` | Default | — |
+| `/login`, `/login/failed` | Auth | No |
+| `/register`, `/register/verify`, `/register/success`, `/register/failed` | Auth | No |
+| `/account/already-exists`, `/account/not-found` | Auth | No |
+| `/oauth/authorize` | Auth | No (signs in itself) |
 
 ---
 
@@ -196,4 +201,5 @@ Framework: **Vitest** + `@vue/test-utils`.
 
 - Test files: `src/tests/ComponentName.spec.ts`
 - Run: `npm run test`
+- Tests that mount components use happy-dom, per file (`// @vitest-environment happy-dom`), and find elements by `data-testid`
 - Currently no meaningful coverage — all components need tests

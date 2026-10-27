@@ -2,6 +2,7 @@ import axios from "axios";
 import api from "./api";
 import { API_URL, STREAMBY_URL } from "../misc/const";
 import { error } from "../misc/errors";
+import type { AppEntry, EnvCategory } from "../store";
 
 export const signupGoogle: any = async (formData: any) => {
   const response: any = await axios.post(API_URL + "/signup-google", formData)
@@ -31,17 +32,20 @@ export const loginInner: any = async (formData: any) => {
   return response;
 };
 
-export const getNhexaEnv: any = async () => {
-  const raw: any[] = await axios.get(STREAMBY_URL + "/nhexa-environment", { withCredentials: true })
-    .then(response => response.data)
-    .catch(() => []);
+// The Nhexa environment's apps, by category: a StreamBy export, read by the browser (it answers
+// only allowed origins). null when it can't be read (an empty catalog is []).
+export const getNhexaEnv = async (): Promise<EnvCategory[] | null> => {
+  const raw: any[] | null = await axios.get(STREAMBY_URL + "/nhexa-environment", { withCredentials: true })
+    .then(response => (Array.isArray(response.data) ? response.data : []))
+    .catch(() => null);
+  if (!raw) return null;
   return raw.map((cat: any) => ({
     id: cat._id,
     name: cat._name,
     apps: Object.entries(cat)
       .filter(([k]) => /^\d+$/.test(k))
       .sort(([a], [b]) => Number(a) - Number(b))
-      .map(([, v]) => v),
+      .map(([, v]) => v as AppEntry),
   }));
 };
 
@@ -167,18 +171,15 @@ export const sendOAuthDecision = async (query: Record<string, string>, approve: 
     .then(response => response.data)
     .catch(oauthFailure);
 
-export interface NhexaApp { label: string; url: string; icon?: string; color?: string; description?: string; route?: string }
-export interface NhexaAppCategory { id: string; name: string; apps: NhexaApp[] }
 export interface ConnectedApp {
   clientId: string; name: string; logoUri: string | null; verified: boolean;
   scopes: string[]; authorizedAt: string | null; lastUsedAt: string | null;
 }
-export interface AccountApps { nhexa: NhexaAppCategory[]; connected: ConnectedApp[] }
 
-// The Nhexa environment's apps, and the ones the user connected with their account (OAuth).
-export const getAccountApps = async (): Promise<AccountApps | null> =>
+// The apps the user connected with their account (OAuth); null when they can't be read.
+export const getConnectedApps = async (): Promise<ConnectedApp[] | null> =>
   api.get("/account/apps")
-    .then(response => response.data)
+    .then(response => response.data.connected ?? [])
     .catch(() => null);
 
 // Takes an app's access away: true once it's gone.

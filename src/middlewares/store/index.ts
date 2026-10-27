@@ -3,7 +3,7 @@ import { getNhexaEnv, getUserData, getUserOverview, loginInner, signupInner, upd
 import { clearUserToken } from '../services/token';
 import { allowedCallback } from '../../utils/allowedCallback';
 
-let envFetch: Promise<void> | null = null;
+let envFetch: Promise<boolean> | null = null;
 let overviewFetch: Promise<void> | null = null;
 
 export interface AppEntry { label: string; url: string; icon: string; color?: string; description?: string; route?: string }
@@ -76,14 +76,16 @@ export const useStore = defineStore('store', {
       await updateUserData(formData, id);
       this.currentUser = await getUserData();
     },
-    async handleGetNhexaEnv() {
-      if (this.appList.length) return;
+    // Whether the catalog could be read (an empty one too); false when it couldn't.
+    async handleGetNhexaEnv(): Promise<boolean> {
+      if (this.appList.length) return true;
       if (!envFetch) {
-        envFetch = getNhexaEnv().then((list: EnvCategory[]) => {
-          this.appList = list;
+        envFetch = getNhexaEnv().then((list) => {
+          if (list) this.appList = list;
+          return list !== null;
         }).finally(() => { envFetch = null; });
       }
-      await envFetch;
+      return envFetch;
     },
     async handleGetUserOverview() {
       if (this.passwordStatus !== null && this.userDetail !== null) return;

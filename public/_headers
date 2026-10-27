@@ -1,0 +1,15 @@
+# Netlify response headers. Lives in public/ so Vite copies it into dist/, the folder Netlify
+# publishes.
+#
+# Who may show these pages inside a frame: Nhexa's own sites. Only Content-Security-Policy says
+# it: X-Frame-Options can't list several sites (ALLOW-FROM is gone from browsers).
+/*
+  Content-Security-Policy: frame-ancestors https://nhexa.cl https://laruina.cl https://elumbral.cl https://terminalcore.cl https://terminalkiller.cl https://spectra.nhexa.cl https://spellcast.nhexa.cl https://havenstore.nhexa.cl https://streamby.nhexa.cl
+
+# The OAuth consent screen is never framed, by anyone: a framed "Autorizar" button could be
+# clicked unawares. Netlify applies every rule a path matches; if it joins both
+# Content-Security-Policy values with a comma, those are two policies and the browser enforces
+# both, so 'none' still wins. X-Frame-Options is set here only, so it's never two values.
+/oauth/*
+  X-Frame-Options: DENY
+  Content-Security-Policy: frame-ancestors 'none'

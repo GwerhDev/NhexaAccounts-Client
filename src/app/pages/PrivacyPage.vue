@@ -103,7 +103,6 @@ import LabeledForm from '../components/LabeledForm/LabeledForm.component.vue';
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  box-sizing: border-box;
   width: 100%;
 }
 
@@ -137,8 +136,8 @@ import LabeledForm from '../components/LabeledForm/LabeledForm.component.vue';
 
 .privacy-icon {
   flex-shrink: 0;
-  width: 1.75rem;
-  height: 1.75rem;
+  width: calc(1.75rem + 2px);
+  height: calc(1.75rem + 2px);
   border-radius: 0.4rem;
   background: color-mix(in srgb, var(--primary-color) 12%, transparent);
   border: 1px solid color-mix(in srgb, var(--primary-color) 25%, transparent);

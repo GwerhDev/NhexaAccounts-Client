@@ -114,17 +114,20 @@
   gap: 1.5rem;
 }
 
-.apps-description,
-.status-msg {
+.apps-description {
   margin: 0;
   padding: 0 1rem;
   font-size: 0.85rem;
   opacity: 0.6;
 }
 
-// Inside a section, the lists keep off its edges (as Devices' does).
+// Inside a section, the lists and the messages keep off its edges (as Devices' do).
 .apps-sections .apps-grid {
   padding: 0 1rem;
+}
+
+.apps-sections .status-msg {
+  margin: 0 1rem;
 }
 
 .connected-app {

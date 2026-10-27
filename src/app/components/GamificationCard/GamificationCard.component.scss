@@ -14,8 +14,8 @@
 
 .level-circle {
   flex-shrink: 0;
-  width: 4.5rem;
-  height: 4.5rem;
+  width: calc(4.5rem + 4px);
+  height: calc(4.5rem + 4px);
   border-radius: 50%;
   border: 2px solid var(--primary-color);
   background: color-mix(in srgb, var(--primary-color) 10%, transparent);

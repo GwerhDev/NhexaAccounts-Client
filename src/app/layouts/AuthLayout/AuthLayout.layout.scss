@@ -14,7 +14,6 @@
   width: 100%;
   margin: auto 0;
   padding: 2rem 0;
-  box-sizing: border-box;
 
   // A long URL or address in a text wraps instead of widening the page (buttons keep their words).
   :deep(:is(p, small, h1, h2, h3, a)) {

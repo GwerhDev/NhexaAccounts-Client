@@ -45,7 +45,7 @@ const open = ref(props.initialOpen ?? !props.accordion);
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 1rem;
-  min-height: 3rem;
+  min-height: calc(4.5rem + 1px);
   background: transparent;
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s;

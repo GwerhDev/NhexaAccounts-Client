@@ -16,8 +16,8 @@ export type AuthorizeStep =
 export const SCOPE_LABELS: Record<string, string> = {
   profile: 'Ver tu nombre de usuario y foto de perfil',
   email: 'Ver tu correo electrónico',
-  'streamby:read': 'Ver tus proyectos y archivos de StreamBy',
-  'streamby:write': 'Crear y modificar tus proyectos y archivos de StreamBy',
+  'streamby:read': 'Ver tus proyectos, archivos y documentos de StreamBy',
+  'streamby:write': 'Crear y modificar tus proyectos, archivos y documentos de StreamBy',
 };
 
 export const scopeLabel = (scope: string): string => SCOPE_LABELS[scope] ?? scope;

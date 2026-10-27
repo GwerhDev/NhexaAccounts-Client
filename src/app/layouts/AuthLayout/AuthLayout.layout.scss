@@ -21,9 +21,18 @@
     overflow-wrap: anywhere;
   }
 
-  // The pages' titles (an error, a confirmation) sized for this column, not the full width.
+  // Text sized for this column, not the full width: titles (an error, a confirmation), their
+  // subtitle and the paragraphs keep their proportions to one another.
   :deep(h1) {
     font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+
+  :deep(h3) {
+    font-size: clamp(0.95rem, 4vw, 1.05rem);
+  }
+
+  :deep(:is(p, li)) {
+    font-size: clamp(0.85rem, 3.5vw, 0.95rem);
   }
 }
 

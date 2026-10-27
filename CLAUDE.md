@@ -158,7 +158,7 @@ Single store `useStore()` at `src/middlewares/store/index.ts`.
 Routes are nested under one parent per layout (`component: <Layout>`); App.vue only holds what's global (Toast, the SplashLoader while the session loads) and a `<router-view>`. Auth guard in `router.beforeEach` waits for `store.authReady`.
 
 - **DefaultLayout** — NavBar, LateralBar when signed in, the page. Declared first: both parents are at `/`, and `/` must resolve to its home page.
-- **AuthLayout** — no navigation: the Nhexa logo and the page, centered, at most 460px wide (`.mw-460`), titles sized for that column. The logo is big (`LogoHeader`) unless the route's `meta.compactLogo` (a boolean, or a function of the route) says the page shows it itself next to an app's.
+- **AuthLayout** — no navigation: the Nhexa logo and the page, centered, at most 460px wide (`.mw-460`), text (titles, subtitles, paragraphs) sized for that column. The logo is big (`LogoHeader`) unless the route's `meta.compactLogo` (a boolean, or a function of the route) says the page shows it itself next to an app's.
 
 | Path | Layout | Auth required |
 |---|---|---|

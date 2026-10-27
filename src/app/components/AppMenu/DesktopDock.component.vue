@@ -1,5 +1,7 @@
 <style scoped lang="scss" src="./DesktopDock.component.scss" />
 <script setup lang="ts">
+import { ACCOUNTS_URL, CLIENT_URL } from '../../../middlewares/misc/const';
+
 // The desktop's fixed tools, always there whatever StreamBy's catalog says: Nhexa's home, the
 // account, and the settings (not available yet). The one this site already is closes the
 // desktop instead of reloading it.
@@ -8,8 +10,8 @@ const emit = defineEmits<{ close: [] }>();
 const HERE = 'account';
 
 const TOOLS = [
-  { id: 'home', label: 'Inicio', icon: 'house', url: 'https://nhexa.cl' },
-  { id: 'account', label: 'Cuenta', icon: 'user', url: 'https://accounts.nhexa.cl' },
+  { id: 'home', label: 'Inicio', icon: 'house', url: CLIENT_URL },
+  { id: 'account', label: 'Cuenta', icon: 'user', url: ACCOUNTS_URL },
 ];
 
 function select(tool: typeof TOOLS[number]) {

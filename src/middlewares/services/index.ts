@@ -166,3 +166,23 @@ export const sendOAuthDecision = async (query: Record<string, string>, approve: 
   api.post("/oauth/authorize/decision", { request: query, approve })
     .then(response => response.data)
     .catch(oauthFailure);
+
+export interface NhexaApp { label: string; url: string; icon?: string; color?: string; description?: string; route?: string }
+export interface NhexaAppCategory { id: string; name: string; apps: NhexaApp[] }
+export interface ConnectedApp {
+  clientId: string; name: string; logoUri: string | null; verified: boolean;
+  scopes: string[]; authorizedAt: string | null; lastUsedAt: string | null;
+}
+export interface AccountApps { nhexa: NhexaAppCategory[]; connected: ConnectedApp[] }
+
+// The Nhexa environment's apps, and the ones the user connected with their account (OAuth).
+export const getAccountApps = async (): Promise<AccountApps | null> =>
+  api.get("/account/apps")
+    .then(response => response.data)
+    .catch(() => null);
+
+// Takes an app's access away: true once it's gone.
+export const removeAccountApp = async (clientId: string): Promise<boolean> =>
+  api.delete("/account/apps/" + encodeURIComponent(clientId))
+    .then(() => true)
+    .catch(() => false);

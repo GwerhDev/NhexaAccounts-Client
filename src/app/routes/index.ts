@@ -1,4 +1,4 @@
-import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router';
+import { RouteLocationNormalized, RouteRecordRaw, createRouter, createWebHistory } from 'vue-router';
 import LoginPage from '../pages/LoginPage.vue';
 import LandingPage from '../pages/LandingPage.vue';
 import BillingPage from '../pages/BillingPage.vue';
@@ -42,10 +42,11 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: AuthLayout,
     children: [
-      { path: 'login', name: 'LoginPage', component: LoginPage },
+      // With an appId, the login shows Nhexa and that app's logos itself.
+      { path: 'login', name: 'LoginPage', component: LoginPage, meta: { compactLogo: (route: RouteLocationNormalized) => typeof route.query.appId === 'string' } },
       { path: 'login/failed', name: 'LoginFailedPage', component: LoginFailedPage },
       // Signs the user in itself when needed, coming back here with the same request.
-      { path: 'oauth/authorize', name: 'OAuthAuthorizePage', component: OAuthAuthorizePage },
+      { path: 'oauth/authorize', name: 'OAuthAuthorizePage', component: OAuthAuthorizePage, meta: { compactLogo: true } },
       { path: 'register', name: 'RegisterPage', component: RegisterPage },
       { path: 'register/verify', name: 'RegisterVerifyPage', component: RegisterVerifyPage },
       { path: 'register/success', name: 'RegisterSuccessPage', component: RegisterSuccessPage },

@@ -3,7 +3,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { defineComponent, h } from 'vue';
 import { flushPromises, mount } from '@vue/test-utils';
-import { createPinia } from 'pinia';
+import { createPinia, setActivePinia } from 'pinia';
 
 // The session the API answers with, per test.
 let session: { logged: boolean; userData?: Record<string, unknown> } = { logged: false };
@@ -13,9 +13,11 @@ vi.mock('../middlewares/services', async importOriginal => {
   const actual = await importOriginal<Record<string, unknown>>();
   const mocked: Record<string, unknown> = Object.fromEntries(Object.keys(actual).map(name => [name, vi.fn(async () => [])]));
   mocked.getUserData = vi.fn(async () => session);
+  // An authorization request Nhexa turns down: the page stays, showing the error.
+  mocked.getOAuthAuthorizeRequest = vi.fn(async () => ({ error: 'invalid_request' }));
   mocked.getUserOverview = vi.fn(async () => ({
     securityStatus: { passwordSetAt: null, twoFactorEnabled: false },
-    userData: session.userData,
+    userData: session.userData ?? { username: '', email: '' },
     accountDetail: { firstName: null, lastName: null, birthDate: null, countryId: null, phone: null, phoneCode: null, passwordSetAt: null },
   }));
   return mocked;
@@ -31,10 +33,16 @@ const USER = { id: 'ada', username: 'ada', email: 'ada@nhexa.cl', role: 'user', 
 
 const mountAt = async (path: string, logged: boolean) => {
   session = logged ? { logged: true, userData: USER } : { logged: false };
-  await router.push(path);
-  const wrapper = mount(App, { global: { plugins: [createPinia(), router], stubs: { 'font-awesome-icon': true } } });
+  // A fresh session store for each mount, the one the guard reads too.
+  const pinia = createPinia();
+  setActivePinia(pinia);
+  // The router is shared by the tests: each one starts away from what the last one left (a page
+  // that needs no session), lets the app load the session, then goes where it tests.
+  await router.push('/start');
+  const wrapper = mount(App, { global: { plugins: [pinia, router], stubs: { 'font-awesome-icon': true } } });
   await flushPromises();
-  await router.isReady();
+  const failure = await router.push(path);
+  if (failure) throw failure;
   await flushPromises();
   return wrapper;
 };
@@ -50,6 +58,23 @@ describe('layouts', () => {
       expect(has(wrapper, 'auth-layout'), path).toBe(true);
       expect(has(wrapper, 'nav-bar'), path).toBe(false);
       expect(has(wrapper, 'lateral-bar'), path).toBe(false);
+      wrapper.unmount();
+    }
+  });
+
+  it("shows Nhexa's logo big when it's alone, and small where the page pairs it with an app's", async () => {
+    for (const path of ['/login', '/register', '/login/failed']) {
+      const wrapper = await mountAt(path, false);
+      expect(has(wrapper, 'auth-logo'), path).toBe(true);
+      expect(has(wrapper, 'auth-logo-compact'), path).toBe(false);
+      wrapper.unmount();
+    }
+    // The login only stays without a session; the consent screen only with one.
+    for (const [path, logged] of [['/login?appId=streamby', false], ['/oauth/authorize?client_id=x', true]] as const) {
+      const wrapper = await mountAt(path, logged);
+      expect(router.currentRoute.value.path, path).toBe(path.split('?')[0]);
+      expect(has(wrapper, 'auth-logo-compact'), path).toBe(true);
+      expect(has(wrapper, 'auth-logo'), path).toBe(false);
       wrapper.unmount();
     }
   });

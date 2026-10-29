@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import LogoHeader from "../Logo/LogoHeader.component.vue";
 import SecurityScore from "../SecurityScore/SecurityScore.component.vue";
 import GamificationCard from "../GamificationCard/GamificationCard.component.vue";
-import defaultImage from '../../../assets/svg/user-icon.svg';
+import UserAvatar from '../UserAvatar/UserAvatar.component.vue';
 import { useStore } from '../../../middlewares/store';
 
 const store = useStore();
@@ -13,7 +13,7 @@ const username: any = computed(() => currentUser.value.userData?.username);
 const email: any = computed(() => currentUser.value.userData?.email);
 const isVerified: any = computed(() => currentUser.value.userData?.isVerified);
 const role: any = computed(() => currentUser.value.userData?.role);
-const profilePic: any = computed(() => currentUser.value.userData?.profilePic ?? defaultImage);
+const profilePic = computed(() => currentUser.value.userData?.profilePic ?? null);
 
 const roleLabel: any = computed(() => {
   if (role.value === 'admin') return 'Administrador';
@@ -26,7 +26,7 @@ const roleLabel: any = computed(() => {
   <section>
     <div v-if="logged" class="presentation">
       <div>
-        <img class="profile-pic" :src="profilePic" alt="">
+        <UserAvatar :src="profilePic" :name="username" size="120px" border="4px" />
       </div>
       <span class="welcome-message">
         <h1>¡Hola, {{ username }}!</h1>

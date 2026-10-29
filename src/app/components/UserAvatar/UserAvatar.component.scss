@@ -1,0 +1,22 @@
+.user-avatar {
+  box-sizing: border-box;
+  flex-shrink: 0;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  border-radius: 50%;
+  border: var(--avatar-border) solid var(--primary-color);
+  object-fit: cover;
+}
+
+.user-avatar--initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--components-background-solid);
+  color: var(--nhexa-white);
+  font-size: calc(var(--avatar-size) * 0.4);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  user-select: none;
+}

@@ -6,7 +6,7 @@ import { getOAuthAuthorizeRequest, sendOAuthDecision, OAuthAuthorizeRequest } fr
 import { authorizeQuery, failureMessage, loginLocation, nextAuthorizeStep, scopeLabel } from '../../../utils/oauthAuthorize';
 import LogoApp from '../Logo/LogoApp.component.vue';
 import SkeletonLoader from '../Loaders/SkeletonLoader.component.vue';
-import defaultImage from '../../../assets/svg/user-icon.svg';
+import UserAvatar from '../UserAvatar/UserAvatar.component.vue';
 
 const store = useStore();
 const route = useRoute();
@@ -18,7 +18,7 @@ const errorMessage = ref('');
 const sending = ref(false);
 
 const userData = computed(() => store.currentUser?.userData);
-const profilePic = computed(() => userData.value?.profilePic ?? defaultImage);
+const profilePic = computed(() => userData.value?.profilePic ?? null);
 
 // Sends the user back to the app: a full navigation, the app is somewhere else.
 const leave = (to: string) => window.location.assign(to);
@@ -75,7 +75,7 @@ onMounted(async () => {
       <h2><span class="app-name">{{ request.client.name }}</span> quiere acceder a tu cuenta de Nhexa</h2>
 
       <div class="account">
-        <img class="profile-pic" :src="profilePic" alt="">
+        <UserAvatar :src="profilePic" :name="userData?.username" size="36px" />
         <div class="account-data">
           <span class="font-bold">{{ userData?.username }}</span>
           <small>{{ userData?.email }}</small>

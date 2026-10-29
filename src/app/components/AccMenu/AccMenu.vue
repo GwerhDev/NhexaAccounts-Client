@@ -4,6 +4,7 @@ import { computed, onMounted, onUnmounted, ref, Ref } from 'vue';
 import { useStore } from '../../../middlewares/store';
 import { ACCOUNTS_URL, CLIENT_URL } from '../../../middlewares/misc/const';
 import { closeMenu } from '../../../helpers/menu';
+import UserAvatar from '../UserAvatar/UserAvatar.component.vue';
 
 const store = useStore();
 const currentUser: any = computed(() => store.currentUser);
@@ -50,11 +51,9 @@ onUnmounted(() => {
 
 <template>
   <span class="acc-menu-button" ref="accMenuButton">
-    <font-awesome-icon class="icon" v-if="!currentUser?.userData?.profilePic" icon="fa-solid fa-user"
-      @click="toggleDropdown" />
-    <div class="profile-pic-container">
-      <img class="profile-pic" v-if="currentUser?.userData?.profilePic" :src="currentUser?.userData?.profilePic"
-        @click="toggleDropdown" alt="">
+    <font-awesome-icon class="icon" v-if="!logged" icon="fa-solid fa-user" @click="toggleDropdown" />
+    <div v-else class="profile-pic-container" @click="toggleDropdown">
+      <UserAvatar :src="currentUser?.userData?.profilePic" :name="currentUser?.userData?.username" size="1.6rem" border=".15rem" />
     </div>
     <div class="dropdown" v-if="showDropdown">
       <ul class="acc-menu-container">
@@ -75,8 +74,7 @@ onUnmounted(() => {
         </li>
         <li class="current-user-data" v-if="logged">
           <h2>{{ currentUser?.userData?.username }}</h2>
-          <img v-if="currentUser?.userData?.profilePic" :src="currentUser?.userData?.profilePic" alt="">
-          <font-awesome-icon v-else icon="fa-solid fa-user" size="2x" />
+          <UserAvatar :src="currentUser?.userData?.profilePic" :name="currentUser?.userData?.username" size="50px" />
           <p>{{ currentUser?.userData?.role }}</p>
         </li>
         <div class="separator" v-if="logged"></div>

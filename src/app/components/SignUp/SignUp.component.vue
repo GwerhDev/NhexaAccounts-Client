@@ -4,6 +4,7 @@ import { onMounted, computed, ref, watch } from 'vue';
 import { API_URL } from '../../../middlewares/misc/const';
 import { useStore } from '../../../middlewares/store/index';
 import { allowedCallback } from '../../../utils/allowedCallback';
+import PasswordInput from '../PasswordInput/PasswordInput.component.vue';
 import googleIcon from '../../../assets/png/google-icon.png';
 
 const apiUrl = ref('');
@@ -69,15 +70,16 @@ const handleRegister = async (e: Event) => {
     <form class="ul-form">
       <li class="li-form">
         <label>Nombre de usuario</label>
-        <input required v-model="username" class="input-form" type="text" />
+        <!-- Not the login's identifier: the password manager keeps the email as it (below). -->
+        <input required v-model="username" class="input-form" type="text" name="nickname" autocomplete="nickname" />
       </li>
       <li class="li-form">
         <label>Correo electrónico</label>
-        <input required v-model="email" class="input-form" type="email" />
+        <input required v-model="email" class="input-form" type="email" name="email" autocomplete="username" />
       </li>
       <li class="li-form">
         <label>Contraseña</label>
-        <input required v-model="password" class="input-form" type="password" />
+        <PasswordInput v-model="password" name="password" autocomplete="new-password" />
       </li>
       <button :disabled="isDisabled" class="submit-button" @click="handleRegister">
         Registrarse

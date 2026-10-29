@@ -2,6 +2,7 @@
 import { useRouter, useRoute } from 'vue-router';
 import { onMounted, computed, ref, watch } from 'vue';
 import OtpInput from '../OtpInput/OtpInput.component.vue';
+import PasswordInput from '../PasswordInput/PasswordInput.component.vue';
 import { API_URL } from '../../../middlewares/misc/const';
 import { useStore } from '../../../middlewares/store/index';
 import { allowedCallback } from '../../../utils/allowedCallback';
@@ -107,11 +108,11 @@ async function handleMfa(code: string) {
       <form class="ul-form">
         <li class="li-form">
           <label>Correo electrónico</label>
-          <input required v-model="email" class="input-form" type="email" />
+          <input required v-model="email" class="input-form" type="email" name="email" autocomplete="username" />
         </li>
         <li class="li-form">
           <label>Contraseña</label>
-          <input required v-model="password" class="input-form" type="password" />
+          <PasswordInput v-model="password" name="password" autocomplete="current-password" />
         </li>
         <button :disabled="isDisabled" class="submit-button" @click="handleLogin">Iniciar Sesión</button>
         <p v-if="loginError" class="form-error">{{ loginError }}</p>

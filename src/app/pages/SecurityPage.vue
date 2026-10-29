@@ -10,6 +10,7 @@ import {
 import LabeledForm from '../components/LabeledForm/LabeledForm.component.vue';
 import Devices from '../components/Devices/Devices.component.vue';
 import OtpInput from '../components/OtpInput/OtpInput.component.vue';
+import PasswordInput from '../components/PasswordInput/PasswordInput.component.vue';
 import { useToast } from '../composables/useToast';
 
 const store = useStore();
@@ -22,8 +23,7 @@ const status = computed(() => store.passwordStatus ?? { passwordSetAt: null, two
 const password = ref('');
 const confirm = ref('');
 const editPassword = ref(false);
-const showPassword = ref(false);
-const showConfirm = ref(false);
+const savingPassword = ref(false);
 const mismatch = computed(() => confirm.value.length > 0 && password.value !== confirm.value);
 const canSubmit = computed(() => password.value.length >= 8 && password.value === confirm.value);
 
@@ -106,28 +106,28 @@ onMounted(async () => {
   await store.handleGetUserOverview();
 });
 
+// While it's saved, the form can't be changed nor sent again; it closes once it's saved.
 const savePassword = async () => {
-  if (!canSubmit.value) return;
-  const result = await updatePassword(password.value);
-  password.value = '';
-  confirm.value = '';
-  showPassword.value = false;
-  showConfirm.value = false;
-  editPassword.value = false;
-  if (result?.error) {
-    toast.error('No se pudo actualizar la contraseña.');
-  } else {
+  if (!canSubmit.value || savingPassword.value) return;
+  savingPassword.value = true;
+  try {
+    const result = await updatePassword(password.value);
+    if (result?.error) {
+      toast.error('No se pudo actualizar la contraseña.');
+      return;
+    }
     store.invalidateUserOverview();
     await store.handleGetUserOverview();
+    cancelPassword();
     toast.success('Contraseña actualizada.');
+  } finally {
+    savingPassword.value = false;
   }
 };
 
 const cancelPassword = () => {
   password.value = '';
   confirm.value = '';
-  showPassword.value = false;
-  showConfirm.value = false;
   editPassword.value = false;
 };
 
@@ -164,28 +164,21 @@ const copyBackupCodes = async () => {
                   <div class="info-grid">
                     <div class="field-group">
                       <label class="label-input">Nueva contraseña</label>
-                      <div class="input-reveal">
-                        <input v-model="password" class="input-form" :type="showPassword ? 'text' : 'password'" autocomplete="new-password" />
-                        <button type="button" class="reveal-btn" @click="showPassword = !showPassword" tabindex="-1">
-                          <font-awesome-icon :icon="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" />
-                        </button>
-                      </div>
+                      <PasswordInput v-model="password" autocomplete="new-password" :disabled="savingPassword" data-testid="new-password" />
                     </div>
                     <div class="field-group">
                       <label class="label-input">Confirmar contraseña</label>
-                      <div class="input-reveal">
-                        <input v-model="confirm" class="input-form" :class="{ 'input-error': mismatch }" :type="showConfirm ? 'text' : 'password'" autocomplete="new-password" />
-                        <button type="button" class="reveal-btn" @click="showConfirm = !showConfirm" tabindex="-1">
-                          <font-awesome-icon :icon="showConfirm ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" />
-                        </button>
-                      </div>
+                      <PasswordInput v-model="confirm" autocomplete="new-password" :invalid="mismatch" :disabled="savingPassword" data-testid="confirm-password" />
                       <span v-if="mismatch" class="field-error">Las contraseñas no coinciden.</span>
                     </div>
                   </div>
                   <p class="password-hint">Mínimo 8 caracteres.</p>
                   <div class="edit-buttons-container">
-                    <button type="submit" :disabled="!canSubmit">Guardar cambios</button>
-                    <button type="button" class="cancel-button" @click="cancelPassword">Cancelar</button>
+                    <button type="submit" :disabled="!canSubmit || savingPassword" data-testid="save-password">
+                      <font-awesome-icon v-if="savingPassword" icon="fa-solid fa-spinner" spin />
+                      {{ savingPassword ? 'Guardando…' : 'Guardar cambios' }}
+                    </button>
+                    <button type="button" class="cancel-button" :disabled="savingPassword" @click="cancelPassword">Cancelar</button>
                   </div>
                 </template>
               </form>
@@ -270,39 +263,6 @@ const copyBackupCodes = async () => {
 </template>
 
 <style lang="scss">
-.input-reveal {
-  position: relative;
-  display: flex;
-  align-items: center;
-
-  .input-form {
-    flex: 1;
-    padding-right: 2.5rem;
-  }
-
-  .reveal-btn {
-    position: absolute;
-    right: 0.6rem;
-    background: none;
-    border: none;
-    padding: 0;
-    color: rgba(255, 255, 255, 0.45);
-    cursor: pointer;
-    font-size: 0.85rem;
-    line-height: 1;
-
-    &:hover {
-      color: rgba(255, 255, 255, 0.8);
-      background: none;
-      border-color: transparent;
-    }
-
-    &:focus-visible {
-      outline: none;
-    }
-  }
-}
-
 .visually-hidden {
   position: absolute;
   width: 1px;

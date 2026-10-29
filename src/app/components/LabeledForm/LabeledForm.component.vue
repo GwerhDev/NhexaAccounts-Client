@@ -124,8 +124,10 @@ const open = ref(props.initialOpen ?? !props.accordion);
       border-radius: 0.45rem 0.45rem 0 0;
     }
 
+    // An input under its label meets it: no top corners, also inside a field that wraps it.
     label ~ input,
-    label ~ .input-form {
+    label ~ .input-form,
+    label ~ .password-input .input-form {
       border-radius: 0 0 0.45rem 0.45rem;
     }
   }

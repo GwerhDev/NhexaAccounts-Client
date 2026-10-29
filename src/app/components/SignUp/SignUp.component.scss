@@ -76,3 +76,8 @@
   padding-top: 2rem;
   gap: 1rem;
 }
+// The other way in, while the form is being sent.
+.link-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}

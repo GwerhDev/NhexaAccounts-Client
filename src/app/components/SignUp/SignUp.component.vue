@@ -19,6 +19,8 @@ const logged = computed(() => currentUser.value.logged);
 const username = ref('');
 const email = ref('');
 const password = ref('');
+// While the account is made, the form can't be changed nor sent again.
+const submitting = ref(false);
 
 const isDisabled = computed(() => {
   return !username.value || !email.value || !password.value;
@@ -47,6 +49,8 @@ watch(logged, (newVal) => {
 
 const handleRegister = async (e: Event) => {
   e.preventDefault();
+  if (submitting.value) return;
+  submitting.value = true;
 
   try {
     const formData = {
@@ -59,6 +63,8 @@ const handleRegister = async (e: Event) => {
     router.push(path);
   } catch (error) {
     console.error(error);
+  } finally {
+    submitting.value = false;
   }
 };
 
@@ -71,18 +77,19 @@ const handleRegister = async (e: Event) => {
       <li class="li-form">
         <label>Nombre de usuario</label>
         <!-- Not the login's identifier: the password manager keeps the email as it (below). -->
-        <input required v-model="username" class="input-form" type="text" name="nickname" autocomplete="nickname" />
+        <input required v-model="username" class="input-form" type="text" name="nickname" autocomplete="nickname" :disabled="submitting" />
       </li>
       <li class="li-form">
         <label>Correo electrónico</label>
-        <input required v-model="email" class="input-form" type="email" name="email" autocomplete="username" />
+        <input required v-model="email" class="input-form" type="email" name="email" autocomplete="username" :disabled="submitting" />
       </li>
       <li class="li-form">
         <label>Contraseña</label>
-        <PasswordInput v-model="password" name="password" autocomplete="new-password" />
+        <PasswordInput v-model="password" name="password" autocomplete="new-password" :disabled="submitting" />
       </li>
-      <button :disabled="isDisabled" class="submit-button" @click="handleRegister">
-        Registrarse
+      <button :disabled="isDisabled || submitting" class="submit-button" data-testid="register-submit" @click="handleRegister">
+        <font-awesome-icon v-if="submitting" icon="fa-solid fa-spinner" spin />
+        {{ submitting ? 'Creando cuenta…' : 'Registrarse' }}
       </button>
     </form>
     <div class="separator-container">
@@ -91,7 +98,7 @@ const handleRegister = async (e: Event) => {
       <div class="separator"></div>
     </div>
     <p>puedes crear una cuenta mediante:</p>
-    <a :href="apiUrl">
+    <a :href="apiUrl" :class="{ 'link-disabled': submitting }" :aria-disabled="submitting">
       <div class="google-button">
         <img :src="googleIcon" alt="" />
         Google

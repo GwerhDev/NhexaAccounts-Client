@@ -27,6 +27,8 @@ const step = ref<'credentials' | 'mfa'>('credentials');
 const mfaToken = ref('');
 const mfaError = ref('');
 const loginError = ref('');
+// While the credentials are checked, the form can't be changed nor sent again.
+const submitting = ref(false);
 const otpLoginRef = ref<InstanceType<typeof OtpInput> | null>(null);
 
 const isDisabled = computed(() => !email.value || !password.value);
@@ -59,7 +61,9 @@ watch(logged, (newVal) => {
 
 async function handleLogin(e: Event) {
   e.preventDefault();
+  if (submitting.value) return;
   loginError.value = '';
+  submitting.value = true;
   try {
     const result = await store.handleLogin({ email: email.value, password: password.value }, callback.value);
     if (result && typeof result === 'object' && result.mfaRequired) {
@@ -67,10 +71,14 @@ async function handleLogin(e: Event) {
       step.value = 'mfa';
     } else if (result && typeof result === 'object' && result.error) {
       loginError.value = result.message;
+    } else {
+      // Signed in: it's leaving the page, so the form stays as it is meanwhile.
+      return;
     }
   } catch {
     loginError.value = 'Error al iniciar sesión.';
   }
+  submitting.value = false;
 }
 
 async function handleMfa(code: string) {
@@ -108,13 +116,16 @@ async function handleMfa(code: string) {
       <form class="ul-form">
         <li class="li-form">
           <label>Correo electrónico</label>
-          <input required v-model="email" class="input-form" type="email" name="email" autocomplete="username" />
+          <input required v-model="email" class="input-form" type="email" name="email" autocomplete="username" :disabled="submitting" />
         </li>
         <li class="li-form">
           <label>Contraseña</label>
-          <PasswordInput v-model="password" name="password" autocomplete="current-password" />
+          <PasswordInput v-model="password" name="password" autocomplete="current-password" :disabled="submitting" />
         </li>
-        <button :disabled="isDisabled" class="submit-button" @click="handleLogin">Iniciar Sesión</button>
+        <button :disabled="isDisabled || submitting" class="submit-button" data-testid="login-submit" @click="handleLogin">
+          <font-awesome-icon v-if="submitting" icon="fa-solid fa-spinner" spin />
+          {{ submitting ? 'Iniciando sesión…' : 'Iniciar Sesión' }}
+        </button>
         <p v-if="loginError" class="form-error">{{ loginError }}</p>
       </form>
       <div class="separator-container">
@@ -123,7 +134,7 @@ async function handleMfa(code: string) {
         <div class="separator"></div>
       </div>
       <p>puedes iniciar sesión mediante:</p>
-      <a :href="apiUrl">
+      <a :href="apiUrl" :class="{ 'link-disabled': submitting }" :aria-disabled="submitting">
         <div class="google-button">
           <img :src="googleIcon" alt="">
           Google

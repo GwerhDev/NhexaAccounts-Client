@@ -91,3 +91,9 @@
   font-size: 0.875rem;
   color: var(--danger-color-accent);
 }
+
+// The other way in, while the form is being sent.
+.link-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}

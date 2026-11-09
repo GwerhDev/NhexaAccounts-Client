@@ -14,7 +14,7 @@ onMounted(() => {
 
 <template>
   <span class="app-menu-button">
-    <font-awesome-icon class="icon" :icon="['fas', 'layer-group']" @click="isOpen = true" />
+    <font-awesome-icon class="icon" :icon="['fas', 'hexagon-nodes']" @click="isOpen = true" />
     <Teleport to="body">
       <AppDesktop v-if="isOpen" @close="isOpen = false" />
     </Teleport>

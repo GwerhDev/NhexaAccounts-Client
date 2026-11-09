@@ -47,7 +47,7 @@ import { closeMenu } from '../../../helpers/menu';
   <ul class="lateral-menu-text">
     <li>
       <router-link class="lateral-menu-link" to="/environment/apps" @click="closeMenu()">
-        <font-awesome-icon icon="fa-solid fa-layer-group" />
+        <font-awesome-icon icon="fa-solid fa-hexagon-nodes" />
         Aplicaciones
       </router-link>
     </li>

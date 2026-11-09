@@ -22,35 +22,51 @@
   padding: 0 1rem;
 }
 
+/* Each app is a hexagon (flat top), and those of a category fit together as a honeycomb strip:
+   every other one half a hexagon lower, each one a quarter of its width over the last. Its
+   border is a hexagon behind its face (a clip-path cuts off CSS borders). */
 .app-item {
+  --hex-w: 150px;
+  --hex-h: calc(var(--hex-w) * 0.866);
+  --hex-gap: 6px;
+  position: relative;
+  width: var(--hex-w);
+  height: var(--hex-h);
+  padding: 1.5px;
+  border: none;
+  background: rgba(255, 255, 255, 0.07);
+  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+  cursor: pointer;
+  transition: background-color 0.18s ease, transform 0.2s ease;
+}
+
+.app-face {
   position: relative;
   overflow: hidden;
-  width: 116px;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 1.1rem 0.5rem;
-  background: var(--components-background);
-  border: 1.5px solid transparent;
-  border-radius: 14px;
-  cursor: pointer;
-  transition: border-color 0.18s ease, transform 0.2s ease;
+  gap: 0.35rem;
+  padding: 0 22%;
+  box-sizing: border-box;
+  background: var(--components-background-solid);
+  clip-path: inherit;
 }
 
-.app-item::before {
+.app-face::before {
   content: '';
   position: absolute;
   inset: 0;
   background: var(--app-color);
   opacity: 0;
-  border-radius: inherit;
   pointer-events: none;
   transition: opacity 0.18s ease;
 }
 
-.app-item::after {
+.app-face::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -62,15 +78,15 @@
 }
 
 .app-item:hover {
-  border-color: var(--app-color);
+  background: var(--app-color);
   transform: translateY(-4px);
 }
 
-.app-item:hover::before {
+.app-item:hover .app-face::before {
   opacity: 0.12;
 }
 
-.app-item:hover::after {
+.app-item:hover .app-face::after {
   opacity: 1;
   animation: appShine 0.5s ease-out forwards;
 }
@@ -80,10 +96,10 @@
 }
 
 .app-item.current {
-  border-color: var(--app-color);
+  background: var(--app-color);
 }
 
-.app-item.current::before {
+.app-item.current .app-face::before {
   opacity: 0.10;
 }
 
@@ -93,8 +109,8 @@
 }
 
 .app-icon {
-  width: 56px;
-  height: 56px;
+  width: 44px;
+  height: 44px;
   object-fit: contain;
   position: relative;
   z-index: 1;
@@ -107,7 +123,7 @@
 }
 
 .app-icon-fa {
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: #73a5cc;
   position: relative;
   z-index: 1;
@@ -133,8 +149,13 @@
   position: relative;
   z-index: 1;
   font-size: 9px;
+  line-height: 1.25;
   color: rgba(255, 255, 255, 0.45);
   text-align: center;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .category {
@@ -153,30 +174,56 @@
   text-transform: uppercase;
 }
 
-.category-apps {
+/* The honeycomb strip: the hexagons interlock, every other one half a hexagon lower. */
+.category-apps,
+.app-launcher.loading {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1.25rem;
+  gap: 0;
+  padding: 0 0 calc(150px * 0.866 / 2) calc(150px * 0.25);
+}
+
+.category-apps > *,
+.app-launcher.loading > * {
+  margin-left: calc(var(--hex-w) * -0.25 + var(--hex-gap));
+}
+
+.category-apps > :nth-child(even),
+.app-launcher.loading > :nth-child(even) {
+  margin-top: calc(var(--hex-h) / 2 + var(--hex-gap) / 2);
 }
 
 .app-item-skeleton {
-  width: 116px;
-  height: 130px;
-  border-radius: 14px;
+  --hex-w: 150px;
+  --hex-h: calc(var(--hex-w) * 0.866);
+  --hex-gap: 6px;
+  width: var(--hex-w);
+  height: var(--hex-h);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.6rem;
-  padding: 1.1rem 0.5rem;
+  gap: 0.5rem;
   background: var(--components-background);
-  border: 1.5px solid rgba(255, 255, 255, 0.06);
+  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+}
+
+@media (max-width: 600px) {
+  .app-item,
+  .app-item-skeleton {
+    --hex-w: 118px;
+  }
+
+  .category-apps,
+  .app-launcher.loading {
+    padding: 0 0 calc(118px * 0.866 / 2) calc(118px * 0.25);
+  }
 }
 
 .skeleton-icon {
-  width: 56px;
-  height: 56px;
+  width: 44px;
+  height: 44px;
   border-radius: 12px;
   background: linear-gradient(90deg, #5b5b5bfd, var(--components-background), #5b5b5bfd);
   background-size: 200% 100%;
@@ -260,7 +307,7 @@ function select(app: any) {
   <Transition name="desktop" appear>
     <div class="app-desktop" @click.self="emit('close')">
       <DesktopDock @close="emit('close')" />
-      <div class="app-launcher">
+      <div class="app-launcher" :class="{ loading: !loaded }">
         <template v-if="loaded">
           <div v-for="cat in categories" :key="cat.id" class="category">
             <span class="category-label">{{ cat.name.toUpperCase() }}</span>
@@ -274,10 +321,12 @@ function select(app: any) {
                 :style="{ '--app-color': '#73a5cc' }"
                 @click="select(app)"
               >
-                <img v-if="app.icon" :src="app.icon" :alt="app.label" class="app-icon" />
-                <font-awesome-icon v-else :icon="['fas', 'grid-2']" class="app-icon-fa" />
-                <span class="app-label">{{ app.label.toUpperCase() }}</span>
-                <span class="app-description">{{ app.description }}</span>
+                <span class="app-face">
+                  <img v-if="app.icon" :src="app.icon" :alt="app.label" class="app-icon" />
+                  <font-awesome-icon v-else :icon="['fas', 'table-cells-large']" class="app-icon-fa" />
+                  <span class="app-label">{{ app.label.toUpperCase() }}</span>
+                  <span class="app-description">{{ app.description }}</span>
+                </span>
               </button>
             </div>
           </div>

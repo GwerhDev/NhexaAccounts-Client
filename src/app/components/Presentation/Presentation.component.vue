@@ -65,7 +65,7 @@ const roleLabel: any = computed(() => {
       <h2>Aquí encontrarás:</h2>
       <div class="services">
         <div class="section">
-          <font-awesome-icon icon="fa-solid fa-layer-group" class="service-icon" />
+          <font-awesome-icon icon="fa-solid fa-hexagon-nodes" class="service-icon" />
           <div class="vertical-separator"></div>
         </div>
         <ul>

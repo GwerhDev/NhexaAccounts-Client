@@ -65,7 +65,7 @@ const confirmRemoval = async () => {
           <p>No se pudieron cargar las aplicaciones de Nhexa.</p>
         </div>
         <div v-else-if="!nhexaApps.length" class="apps-state">
-          <font-awesome-icon icon="fa-solid fa-layer-group" class="apps-empty-icon" />
+          <font-awesome-icon icon="fa-solid fa-hexagon-nodes" class="apps-empty-icon" />
           <p>No hay aplicaciones disponibles por el momento.</p>
         </div>
         <ul v-else class="apps-grid">
@@ -73,7 +73,7 @@ const confirmRemoval = async () => {
             <a class="app-card" :href="item.url" target="_blank" :style="{ '--accent': item.color }">
               <span class="app-icon">
                 <img v-if="item.icon" :src="item.icon" :alt="item.label" />
-                <font-awesome-icon v-else icon="fa-solid fa-layer-group" />
+                <font-awesome-icon v-else icon="fa-solid fa-hexagon-nodes" />
               </span>
               <div class="app-info">
                 <span class="app-name">{{ item.label }}</span>

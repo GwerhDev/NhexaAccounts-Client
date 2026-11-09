@@ -40,7 +40,9 @@ onMounted(() => {
 
   // Only a destination a login may send the user to is kept: any other is dropped.
   callback.value = allowedCallback(rawCallback);
-  appLogo.value = typeof rawAppId === 'string' ? "https://streamby.s3.amazonaws.com/" + rawAppId + "/project-image" : '';
+  // The app's logo is its StreamBy project's image, served by StreamBy's image route (a redirect
+  // to a signed URL): the bucket is private.
+  appLogo.value = typeof rawAppId === 'string' ? `https://api.nhexa.cl/streamby/${encodeURIComponent(rawAppId)}/image` : '';
 
   apiUrl.value = callback.value
     ? `${API_URL}/login-google?callback=${encodeURIComponent(callback.value)}`

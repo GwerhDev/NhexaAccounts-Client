@@ -228,6 +228,13 @@
   }
 }
 
+/* Launching an app: the others fade away as the page comes undone (see AppLaunch). */
+.app-launcher[data-launching] .app-item:not([data-launching]),
+.app-launcher[data-launching] .category-label {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
 @keyframes appShine {
   from { background-position: 200% center; }
   to   { background-position: -100% center; }
@@ -401,9 +408,11 @@
 </style>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useStore } from '../../../middlewares/store';
 import DesktopDock from './DesktopDock.component.vue';
+import AppLaunch from './AppLaunch.component.vue';
+import { splashOf, type SplashKind } from './appLaunch';
 
 const emit = defineEmits<{ close: [] }>();
 
@@ -420,12 +429,24 @@ function isCurrent(app: any): boolean {
   }
 }
 
-function select(app: any) {
+// Choosing another app: one whose splash is known: the page comes undone into its splash's
+// background first (see AppLaunch), the rest are opened at once.
+const launch = ref<{ app: any; kind: SplashKind; from: { x: number; y: number } } | null>(null);
+
+function select(app: any, e: MouseEvent) {
+  if (launch.value) return;
   if (isCurrent(app)) {
     emit('close');
-  } else {
-    window.location.href = app.url;
+    return;
   }
+  const kind = splashOf(app.label ?? '');
+  if (!kind) { window.location.href = app.url; return; }
+  const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
+  launch.value = { app, kind, from: { x: r.left + r.width / 2, y: r.top + r.height / 2 } };
+}
+
+function open() {
+  if (launch.value) window.location.href = launch.value.app.url;
 }
 </script>
 
@@ -433,7 +454,7 @@ function select(app: any) {
   <Transition name="desktop" appear>
     <div class="app-desktop" @click.self="emit('close')">
       <DesktopDock @close="emit('close')" />
-      <div class="app-launcher" :class="{ loading: !loaded }">
+      <div class="app-launcher" :class="{ loading: !loaded }" :data-launching="launch ? true : undefined">
         <template v-if="loaded">
           <div v-for="cat in categories" :key="cat.id" class="category">
             <span class="category-label">{{ cat.name.toUpperCase() }}</span>
@@ -445,7 +466,8 @@ function select(app: any) {
                 class="app-item"
                 :class="{ current: isCurrent(app) }"
                 :style="{ '--app-color': '#73a5cc' }"
-                @click="select(app)"
+                :data-launching="launch?.app === app ? true : undefined"
+                @click="select(app, $event)"
               >
                 <span class="app-face">
                   <img v-if="app.icon" :src="app.icon" :alt="app.label" class="app-icon" />
@@ -467,4 +489,5 @@ function select(app: any) {
       </div>
     </div>
   </Transition>
+  <AppLaunch v-if="launch" :kind="launch.kind" :from="launch.from" @done="open" />
 </template>

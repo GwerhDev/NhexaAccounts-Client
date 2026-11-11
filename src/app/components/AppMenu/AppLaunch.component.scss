@@ -1,0 +1,20 @@
+// A launch: over the whole page, where what's on screen comes undone into the background the
+// chosen app's splash starts with (drawn on it bit by bit: see appLaunch.ts).
+.app-launch {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  pointer-events: none;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+// The bits about to come undone glow (a filter: the GPU's, not the canvas's own blur).
+.sparks {
+  filter: drop-shadow(0 0 5px rgba(115, 165, 204, 0.85));
+}

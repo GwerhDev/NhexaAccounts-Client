@@ -148,7 +148,7 @@ const copyBackupCodes = async () => {
           <li class="card-column">
             <LabeledForm title="Contraseña" accordion initial-open>
               <template #actions>
-                <button v-if="!editPassword" class="edit-button" @click="editPassword = true">
+                <button v-if="!editPassword" class="edit-button hex-button hex-button--sm" @click="editPassword = true">
                   <font-awesome-icon icon="fa-solid fa-edit" />
                   {{ status.passwordSetAt ? 'Actualizar' : 'Configurar' }}
                 </button>
@@ -174,11 +174,11 @@ const copyBackupCodes = async () => {
                   </div>
                   <p class="password-hint">Mínimo 8 caracteres.</p>
                   <div class="edit-buttons-container">
-                    <button type="submit" :disabled="!canSubmit || savingPassword" data-testid="save-password">
+                    <button type="submit" class="hex-button hex-button--primary hex-button--sm" :disabled="!canSubmit || savingPassword" data-testid="save-password">
                       <font-awesome-icon v-if="savingPassword" icon="fa-solid fa-spinner" spin />
                       {{ savingPassword ? 'Guardando…' : 'Guardar cambios' }}
                     </button>
-                    <button type="button" class="cancel-button" :disabled="savingPassword" @click="cancelPassword">Cancelar</button>
+                    <button type="button" class="cancel-button hex-button hex-button--sm" :disabled="savingPassword" @click="cancelPassword">Cancelar</button>
                   </div>
                 </template>
               </form>
@@ -192,7 +192,7 @@ const copyBackupCodes = async () => {
               <template #actions>
                 <button
                   v-if="tfaStep === 'idle' && !status.twoFactorEnabled"
-                  class="edit-button"
+                  class="edit-button hex-button hex-button--sm"
                   @click="startSetup2FA"
                 >
                   <font-awesome-icon icon="fa-solid fa-shield-halved" />
@@ -200,7 +200,7 @@ const copyBackupCodes = async () => {
                 </button>
                 <button
                   v-if="tfaStep === 'idle' && status.twoFactorEnabled"
-                  class="edit-button edit-button--danger"
+                  class="edit-button edit-button--danger hex-button hex-button--sm"
                   @click="tfaStep = 'disable-confirm'"
                 >
                   <font-awesome-icon icon="fa-solid fa-shield-halved" />
@@ -229,7 +229,7 @@ const copyBackupCodes = async () => {
                   <OtpInput ref="otpEnableRef" @complete="confirmEnable2FA" />
                   <span v-if="tfaError" class="field-error">{{ tfaError }}</span>
                 </div>
-                <button type="button" class="cancel-button" style="align-self: flex-start" @click="cancelTfa">Cancelar</button>
+                <button type="button" class="cancel-button hex-button hex-button--sm" style="align-self: flex-start" @click="cancelTfa">Cancelar</button>
               </div>
 
               <div v-else-if="tfaStep === 'backup-codes'" class="ul-form tfa-setup">
@@ -238,10 +238,10 @@ const copyBackupCodes = async () => {
                   <li v-for="code in tfaBackupCodes" :key="code" class="backup-code">{{ code }}</li>
                 </ul>
                 <div class="edit-buttons-container">
-                  <button type="button" class="edit-button" @click="copyBackupCodes">
+                  <button type="button" class="edit-button hex-button hex-button--sm" @click="copyBackupCodes">
                     <font-awesome-icon icon="fa-solid fa-copy" /> Copiar todos
                   </button>
-                  <button type="button" @click="finishSetup2FA">Listo</button>
+                  <button type="button" class="hex-button hex-button--primary hex-button--sm" @click="finishSetup2FA">Listo</button>
                 </div>
               </div>
 
@@ -251,7 +251,7 @@ const copyBackupCodes = async () => {
                   <OtpInput ref="otpDisableRef" @complete="confirmDisable2FA" />
                   <span v-if="tfaError" class="field-error">{{ tfaError }}</span>
                 </div>
-                <button type="button" class="cancel-button" style="align-self: flex-start" @click="cancelTfa">Cancelar</button>
+                <button type="button" class="cancel-button hex-button hex-button--sm" style="align-self: flex-start" @click="cancelTfa">Cancelar</button>
               </div>
             </LabeledForm>
           </li>
@@ -283,10 +283,8 @@ const copyBackupCodes = async () => {
 }
 
 .edit-button--danger {
-  &:hover { 
-    background: var(--danger-color);
-    color: var(--nhexa-white);
-  }
+  // A hex button (style.css), in the danger color.
+  --hex-color: var(--danger-color-accent);
 }
 
 .tfa-setup {

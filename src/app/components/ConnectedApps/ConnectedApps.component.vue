@@ -114,7 +114,7 @@ const confirmRemoval = async () => {
                 <template v-if="app.lastUsedAt"> · Último uso: {{ formatDate(app.lastUsedAt) }}</template>
               </span>
             </div>
-            <button class="revoke-button" data-testid="remove-app" @click="pendingRemoval = app">Quitar acceso</button>
+            <button class="revoke-button hex-button hex-button--sm" data-testid="remove-app" @click="pendingRemoval = app">Quitar acceso</button>
           </li>
         </ul>
       </LabeledForm>

@@ -52,7 +52,7 @@ const submit = async () => {
       </li>
       <p v-if="errorMsg" class="error-msg">{{ errorMsg }}</p>
       <div class="edit-buttons-container">
-        <button type="submit" :disabled="status === 'loading'">
+        <button type="submit" class="hex-button hex-button--primary" :disabled="status === 'loading'">
           {{ status === 'loading' ? 'Guardando...' : 'Establecer contraseña' }}
         </button>
       </div>

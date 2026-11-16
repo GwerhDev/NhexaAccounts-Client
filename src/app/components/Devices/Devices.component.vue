@@ -65,7 +65,7 @@ onMounted(load);
 <template>
   <LabeledForm title="Dispositivos activos" accordion initial-open>
     <template #actions>
-      <button v-if="sessions.length > 1" class="edit-button" @click="showRevokeAllModal = true">
+      <button v-if="sessions.length > 1" class="edit-button hex-button hex-button--sm" @click="showRevokeAllModal = true">
         Cerrar otras sesiones
       </button>
     </template>
@@ -89,7 +89,7 @@ onMounted(load);
           </span>
         </div>
         <div class="button-container">
-          <button v-if="!session.isCurrent" class="revoke-button" @click="pendingRevokeId = session.id">Cerrar</button>
+          <button v-if="!session.isCurrent" class="revoke-button hex-button hex-button--sm" @click="pendingRevokeId = session.id">Cerrar</button>
         </div>
       </li>
     </ul>

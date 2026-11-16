@@ -16,7 +16,7 @@ const googleLoginUrl = ref(`${API_URL}/login-google`);
         <strong>Google</strong>.
       </p>
       <a :href="googleLoginUrl">
-        <button class="principal-button mt-1">
+        <button class="hex-button hex-button--primary mt-1">
           <font-awesome-icon icon="fa-brands fa-google" />
           Vincular con Google
         </button>

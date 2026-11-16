@@ -124,7 +124,7 @@ async function handleMfa(code: string) {
           <label>Contraseña</label>
           <PasswordInput v-model="password" name="password" autocomplete="current-password" :disabled="submitting" />
         </li>
-        <button :disabled="isDisabled || submitting" class="submit-button" data-testid="login-submit" @click="handleLogin">
+        <button :disabled="isDisabled || submitting" class="submit-button hex-button hex-button--primary" data-testid="login-submit" @click="handleLogin">
           <font-awesome-icon v-if="submitting" icon="fa-solid fa-spinner" spin />
           {{ submitting ? 'Iniciando sesión…' : 'Iniciar Sesión' }}
         </button>
@@ -153,7 +153,7 @@ async function handleMfa(code: string) {
           <span v-if="mfaError" class="field-error">{{ mfaError }}</span>
         </li>
       </div>
-      <button class="cancel-button" style="margin-top: 0.75rem" @click="step = 'credentials'; mfaError = ''">
+      <button class="cancel-button hex-button hex-button--sm" style="margin-top: 0.75rem" @click="step = 'credentials'; mfaError = ''">
         Volver
       </button>
     </template>

@@ -87,7 +87,7 @@ const handleRegister = async (e: Event) => {
         <label>Contraseña</label>
         <PasswordInput v-model="password" name="password" autocomplete="new-password" :disabled="submitting" />
       </li>
-      <button :disabled="isDisabled || submitting" class="submit-button" data-testid="register-submit" @click="handleRegister">
+      <button :disabled="isDisabled || submitting" class="submit-button hex-button hex-button--primary" data-testid="register-submit" @click="handleRegister">
         <font-awesome-icon v-if="submitting" icon="fa-solid fa-spinner" spin />
         {{ submitting ? 'Creando cuenta…' : 'Registrarse' }}
       </button>

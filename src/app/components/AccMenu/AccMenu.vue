@@ -63,12 +63,12 @@ onUnmounted(() => {
         </li>
         <div class="separator" v-if="!logged"></div>
         <li v-if="!logged">
-          <a class="menu-text principal-button" :href="loginRoute" @click="select()">
+          <a class="menu-text hex-button hex-button--primary hex-button--sm" :href="loginRoute" @click="select()">
             Iniciar sesión
           </a>
         </li>
         <li v-if="!logged">
-          <a class="menu-text secondary-button" :href="signupRoute" @click="select()">
+          <a class="menu-text hex-button hex-button--sm" :href="signupRoute" @click="select()">
             Registrarse
           </a>
         </li>
@@ -79,12 +79,12 @@ onUnmounted(() => {
         </li>
         <div class="separator" v-if="logged"></div>
         <li v-if="logged">
-          <a class="menu-text principal-button" :href="pathAccount" @click="select()">
+          <a class="menu-text hex-button hex-button--primary hex-button--sm" :href="pathAccount" @click="select()">
             Centro de cuentas
           </a>
         </li>
         <li v-if="logged">
-          <router-link class="menu-text secondary-button" to='/' @click="logout()">
+          <router-link class="menu-text hex-button hex-button--sm" to='/' @click="logout()">
             Cerrar sesión
           </router-link>
         </li>

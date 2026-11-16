@@ -5,6 +5,11 @@
   padding: 0.75rem 1rem 0;
 }
 
+// Loading, or no sessions: inside the card's padding, as its list is (and as Connected apps' are).
+.status-msg {
+  margin: 1rem;
+}
+
 
 .device-list {
   gap: 0.5rem;
@@ -70,16 +75,6 @@
 }
 
 .revoke-button {
-  font-size: 0.8rem;
-  padding: 0.3rem 0.75rem;
-  border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
-
-  &:hover {
-    border-color: var(--danger-color-accent);
-    color: var(--danger-color-accent);
-  }
+  // A hex button (style.css), in the danger color.
+  --hex-color: var(--danger-color-accent);
 }

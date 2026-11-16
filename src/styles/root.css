@@ -44,6 +44,7 @@
   --button-primary-hover-color: #699fb8;
   --components-background: #2d3337ba;
   --components-background-solid: #2d3337;
+  --accent: #73a5cc;
 
   /* ── NHEXA desktop chrome ── shared token names+values across every NHEXA front (see
      Spellcast-Client's root.css): keep them identical when changing any. */

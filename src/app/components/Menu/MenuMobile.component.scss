@@ -22,14 +22,7 @@
         text-wrap: nowrap;
         align-items: center;
         justify-content: start;
-
-        &:hover {
-          background-color: var(--primary-hover-color);
-        }
-
-        &.router-link-exact-active {
-          background-color: var(--menu-hover-color);
-        }
+        // Its hover and the open page's look: a quiet glow surface (style.css).
       }
     }
   }

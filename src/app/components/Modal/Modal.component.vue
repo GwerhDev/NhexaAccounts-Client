@@ -26,11 +26,11 @@ const emit = defineEmits<{
           <slot />
         </div>
         <div class="modal-footer">
-          <button class="modal-btn modal-btn--cancel" @click="emit('cancel')">
+          <button class="modal-btn modal-btn--cancel hex-button hex-button--sm" @click="emit('cancel')">
             {{ cancelLabel ?? 'Cancelar' }}
           </button>
           <button
-            class="modal-btn modal-btn--confirm"
+            class="modal-btn modal-btn--confirm hex-button hex-button--primary hex-button--sm"
             :class="{ 'modal-btn--danger': danger }"
             @click="emit('confirm')"
           >
@@ -110,32 +110,9 @@ const emit = defineEmits<{
   border-top: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-.modal-btn {
-  padding: 0.45rem 1.1rem;
-  font-size: 0.85rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  border: 1px solid transparent;
-  transition: background 0.15s, border-color 0.15s;
-
-  &--cancel {
-    background: rgba(255, 255, 255, 0.07);
-    color: rgba(229, 229, 229, 0.75);
-    &:hover { background: rgba(255, 255, 255, 0.12); border-color: transparent; }
-  }
-
-  &--confirm {
-    background: var(--primary-color);
-    color: var(--nhexa-white);
-    &:hover { background: var(--primary-hover-color); border-color: transparent; }
-  }
-
-  &--danger {
-    background: var(--danger-color);
-    color: var(--nhexa-white);
-    &:hover { background: var(--danger-color-accent); filter: brightness(0.85); border-color: transparent; }
-  }
+// Hex buttons (style.css); a dangerous one in the danger color.
+.modal-btn--danger {
+  --hex-color: var(--danger-color-accent);
 }
 
 @keyframes fade-in {

@@ -81,7 +81,7 @@ const cancelDetail = () => {
           <li>
             <LabeledForm title="Datos de la cuenta" accordion initial-open>
               <template #actions>
-                <button v-if="!editAccount" class="edit-button" @click="editAccount = true">
+                <button v-if="!editAccount" class="edit-button hex-button hex-button--sm" @click="editAccount = true">
                   <font-awesome-icon icon="fa-solid fa-edit" /> Actualizar
                 </button>
               </template>
@@ -106,8 +106,8 @@ const cancelDetail = () => {
                   </div>
                 </div>
                 <div v-show="editAccount" class="edit-buttons-container">
-                  <button type="submit">Guardar cambios</button>
-                  <button type="button" class="cancel-button" @click="cancelAccount">Cancelar</button>
+                  <button type="submit" class="hex-button hex-button--primary hex-button--sm">Guardar cambios</button>
+                  <button type="button" class="cancel-button hex-button hex-button--sm" @click="cancelAccount">Cancelar</button>
                 </div>
               </form>
             </LabeledForm>
@@ -116,7 +116,7 @@ const cancelDetail = () => {
           <li>
             <LabeledForm title="Información personal" accordion initial-open>
               <template #actions>
-                <button v-if="!editDetail" class="edit-button" @click="editDetail = true">
+                <button v-if="!editDetail" class="edit-button hex-button hex-button--sm" @click="editDetail = true">
                   <font-awesome-icon icon="fa-solid fa-edit" /> Actualizar
                 </button>
               </template>
@@ -153,8 +153,8 @@ const cancelDetail = () => {
                   </div>
                 </div>
                 <div v-show="editDetail" class="edit-buttons-container">
-                  <button type="submit">Guardar cambios</button>
-                  <button type="button" class="cancel-button" @click="cancelDetail">Cancelar</button>
+                  <button type="submit" class="hex-button hex-button--primary hex-button--sm">Guardar cambios</button>
+                  <button type="button" class="cancel-button hex-button hex-button--sm" @click="cancelDetail">Cancelar</button>
                 </div>
               </form>
             </LabeledForm>

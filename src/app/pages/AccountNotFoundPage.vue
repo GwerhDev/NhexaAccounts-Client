@@ -9,11 +9,11 @@
       <font-awesome-icon icon="fa-solid fa-server" size="10x" color="var(--primary-color)" />
       <p><i>Si quieres, puedes ingresar con otra cuenta o crear una:</i></p>
       <span class="flex gap-1">
-        <router-link class="principal-button gap-1 items-center" to="/login">
+        <router-link class="hex-button hex-button--primary gap-1 items-center" to="/login">
           <font-awesome-icon icon="fa-solid fa-user" />
           Ingresar
         </router-link>
-        <router-link class="secondary-button gap-1 items-center" to="/register">
+        <router-link class="hex-button gap-1 items-center" to="/register">
           <font-awesome-icon icon="fa-solid fa-user-plus" />
           Registrarse
         </router-link>

@@ -155,12 +155,5 @@ const open = ref(props.initialOpen ?? !props.accordion);
   justify-content: space-between;
 }
 
-.cancel-button {
-  background: rgb(71, 71, 71);
 
-  &:hover {
-    background: rgb(90, 90, 90);
-    border-color: transparent;
-  }
-}
 </style>

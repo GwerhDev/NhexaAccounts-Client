@@ -52,12 +52,12 @@ const roleLabel: any = computed(() => {
       <LogoHeader />
       <span class="buttons-container w-full mt-1 mb-1">
         <router-link class="w-full" to='/login'>
-          <button class="w-full principal-button">
+          <button class="w-full hex-button hex-button--primary">
             Iniciar sesión
           </button>
         </router-link>
         <router-link class="w-full" to='/register'>
-          <button class="w-full secondary-button">
+          <button class="w-full hex-button">
             Registrarse
           </button>
         </router-link>

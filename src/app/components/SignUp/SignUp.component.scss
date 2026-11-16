@@ -45,12 +45,8 @@
 }
 
 .submit-button {
+  // A hex button (style.css), as wide as the form.
   width: 100%;
-  background-color: var(--button-primary-color);
-
-  &:hover {
-    background-color: var(--button-primary-hover-color);
-  }
 }
 
 .google-button {

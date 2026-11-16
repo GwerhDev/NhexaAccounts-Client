@@ -60,7 +60,7 @@ onMounted(async () => {
     <h3>{{ errorMessage }}</h3>
     <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="10x" color="var(--primary-color)" />
     <p><i>Vuelve a la aplicación e inténtalo nuevamente</i></p>
-    <router-link class="principal-button" to="/">Volver al inicio</router-link>
+    <router-link class="hex-button hex-button--primary" to="/">Volver al inicio</router-link>
   </div>
 
   <div v-else class="consent-container">
@@ -98,8 +98,8 @@ onMounted(async () => {
       <p class="redirect"><small>Al responder, se te redireccionará a: {{ request.redirectUri }}</small></p>
 
       <div class="actions">
-        <button class="secondary-button" :disabled="sending" @click="decide(false)">Cancelar</button>
-        <button class="principal-button" :disabled="sending" @click="decide(true)">Autorizar</button>
+        <button class="hex-button" :disabled="sending" @click="decide(false)">Cancelar</button>
+        <button class="hex-button hex-button--primary" :disabled="sending" @click="decide(true)">Autorizar</button>
       </div>
 
       <button class="another-account" :disabled="sending" @click="useAnotherAccount">

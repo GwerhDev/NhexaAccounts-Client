@@ -588,41 +588,302 @@ input:focus {
   background-repeat: no-repeat;
 }
 
-.principal-button {
-  background-color: var(--button-primary-color);
-  padding-top: .3rem;
-  padding-bottom: .3rem;
-  text-align: center;
-  color: var(--nhexa-white);
-  padding-inline: 2rem;
-  border-radius: .5rem;
-  display: flex;
+/* ── Hexagon buttons ── the apps desktop's hexagons (AppDesktop) as a button, the same as Nhexa-Client's (keep both identical), with their own
+   styles: the same rounded hexagon (the polygon and rounding of --nhexa-desktop-hex-flat),
+   stretched in the middle so a wide button keeps its corners as they are (an end cap each side,
+   kept in proportion, and a straight run between them). Its border is that shape behind its face; the button itself isn't masked,
+   so its glow (drop shadows of what it draws) isn't cut off. Its tips are half as deep as the
+   desktop hexagon's, its face glass, its label uppercase. As on the desktop: at rest a soft
+   border; hovered or focused, its border and a tint take its color (--hex-color) (its label
+   stays white, readable over the tint), a
+   shine sweeps its face and the desktop's glow rises (it doesn't lift, unlike the desktop's
+   hexagons); pressed, it shrinks and brightens.
+   --primary is the desktop's open app: its border in its color, a steady tint and glow.
+   --sm and --lg are shorter and taller. */
+:root {
+  --nhexa-hex-cap-left: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 86.6'%3E%3Cpolygon points='6,43.3 16,5.2 300,5.2 300,81.41 16,81.41' fill='black' stroke='black' stroke-width='10.39' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --nhexa-hex-cap-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 86.6'%3E%3Cpolygon points='24,43.3 14,5.2 -270,5.2 -270,81.41 14,81.41' fill='black' stroke='black' stroke-width='10.39' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.hex-button {
+  --hex-h: 2.75rem;
+  --hex-border: 1.5px;
+  /* Its ends: the desktop hexagon's rounded corners, its tips half as deep (each as wide as
+     0.3464 of its height). */
+  --hex-cap-left: var(--nhexa-hex-cap-left);
+  --hex-cap-right: var(--nhexa-hex-cap-right);
+  --hex-cap-ratio: 0.3464;
+  --hex-color: var(--accent);
+  /* Glass: what's behind it shows through, blurred. */
+  --hex-face-color: rgba(18, 26, 32, 0.42);
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  height: var(--hex-h);
+  min-width: calc(var(--hex-h) * 2 * var(--hex-cap-ratio));
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.55rem;
+  /* Clear of its tips (each as wide as 0.577 of its height), never squeezed into them. */
+  flex-shrink: 0;
+  padding: 0 calc(var(--hex-h) * var(--hex-cap-ratio) + 0.6rem);
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: var(--nhexa-white);
+  /* Its label as the desktop's: uppercase, spaced out. */
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  outline: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  /* At rest: no glow (the same filters, nothing in them, so the glow can grow out of it). */
+  filter: drop-shadow(0 0 0 transparent) drop-shadow(0 0 0 transparent) brightness(1);
+  transition:
+    filter var(--nhexa-desktop-glow-duration) var(--nhexa-desktop-glow-ease),
+    transform var(--nhexa-desktop-glow-duration) var(--nhexa-desktop-glow-ease),
+    color var(--nhexa-desktop-glow-duration) var(--nhexa-desktop-glow-ease);
 }
 
-.principal-button:hover {
-  background-color: var(--button-primary-hover-color);
-  text-align: center;
+/* Its border (::before, the whole shape) and its face (::after, the shape inside the border). */
+.hex-button::before,
+.hex-button::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.hex-button::before {
+  inset: 0;
+  background: rgba(115, 165, 204, 0.35);
+  -webkit-mask:
+    var(--hex-cap-left) left center / auto 100% no-repeat,
+    var(--hex-cap-right) right center / auto 100% no-repeat,
+    linear-gradient(#000 0 0) center / calc(100% - var(--hex-h) * 2 * var(--hex-cap-ratio) + 2px) 100% no-repeat;
+  mask:
+    var(--hex-cap-left) left center / auto 100% no-repeat,
+    var(--hex-cap-right) right center / auto 100% no-repeat,
+    linear-gradient(#000 0 0) center / calc(100% - var(--hex-h) * 2 * var(--hex-cap-ratio) + 2px) 100% no-repeat;
+  transition: background-color var(--nhexa-desktop-glow-duration) var(--nhexa-desktop-glow-ease);
+}
+
+.hex-button::after {
+  inset: var(--hex-border);
+  /* The desktop face: a faint sheen across it; a tint of its color (none at rest); and the shine
+     that sweeps it, off to the right until it's hovered. */
+  background:
+    linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.18) 50%, transparent 65%) 200% center / 300% 100% no-repeat,
+    linear-gradient(color-mix(in srgb, var(--hex-color) var(--hex-tint, 0%), transparent), color-mix(in srgb, var(--hex-color) var(--hex-tint, 0%), transparent)),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.06), transparent 45%),
+    var(--hex-face-color);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  -webkit-mask:
+    var(--hex-cap-left) left center / auto 100% no-repeat,
+    var(--hex-cap-right) right center / auto 100% no-repeat,
+    linear-gradient(#000 0 0) center / calc(100% - (var(--hex-h) - 2 * var(--hex-border)) * 2 * var(--hex-cap-ratio) + 2px) 100% no-repeat;
+  mask:
+    var(--hex-cap-left) left center / auto 100% no-repeat,
+    var(--hex-cap-right) right center / auto 100% no-repeat,
+    linear-gradient(#000 0 0) center / calc(100% - (var(--hex-h) - 2 * var(--hex-border)) * 2 * var(--hex-cap-ratio) + 2px) 100% no-repeat;
+}
+
+/* The button itself never takes a fill (the global button:hover would paint its whole box). */
+.hex-button:hover,
+.hex-button:focus-visible,
+.hex-button:active {
+  background: transparent;
+  border: none;
+}
+
+/* Hovered (on a pointer that hovers: a tap has no "leave"), or focused from the keyboard. */
+@media (hover: hover) and (pointer: fine) {
+  .hex-button:hover {
+    --hex-tint: 12%;
+    color: #fff;
+    text-shadow: 0 0 8px color-mix(in srgb, var(--hex-color) 70%, transparent);
+    filter:
+      drop-shadow(0 0 var(--nhexa-desktop-glow-wide) var(--nhexa-desktop-glow-soft))
+      drop-shadow(0 0 var(--nhexa-desktop-glow-tight) var(--nhexa-desktop-glow))
+      brightness(1);
+  }
+
+  .hex-button:hover::before {
+    background: var(--hex-color);
+  }
+
+  .hex-button:hover::after {
+    animation: hexButtonShine 0.5s ease-out forwards;
+  }
+}
+
+.hex-button:focus-visible {
+  --hex-tint: 12%;
+  color: #fff;
+  text-shadow: 0 0 8px color-mix(in srgb, var(--hex-color) 70%, transparent);
+  filter:
+    drop-shadow(0 0 var(--nhexa-desktop-glow-wide) var(--nhexa-desktop-glow-soft))
+    drop-shadow(0 0 var(--nhexa-desktop-glow-tight) var(--nhexa-desktop-glow))
+    brightness(1);
+}
+
+.hex-button:focus-visible::before {
+  background: var(--hex-color);
+}
+
+/* Pressed: briefly a little smaller, and brighter. */
+.hex-button:active {
+  transform: scale(0.96);
+  filter:
+    drop-shadow(0 0 var(--nhexa-desktop-glow-wide) var(--nhexa-desktop-glow))
+    drop-shadow(0 0 var(--nhexa-desktop-glow-tight) var(--nhexa-desktop-glow))
+    brightness(1.15);
+  transition-duration: var(--nhexa-desktop-press-duration);
+}
+
+@keyframes hexButtonShine {
+  from { background-position: 200% center, 0 0, 0 0, 0 0; }
+  to { background-position: -100% center, 0 0, 0 0, 0 0; }
+}
+
+/* The main action: as the desktop's open app, its border in its color, a steady tint and glow. */
+.hex-button--primary {
+  --hex-tint: 18%;
+  filter:
+    drop-shadow(0 0 calc(var(--nhexa-desktop-glow-wide) / 2) var(--nhexa-desktop-glow-soft))
+    drop-shadow(0 0 0 transparent)
+    brightness(1);
+}
+
+.hex-button--primary::before {
+  background: var(--hex-color);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hex-button--primary:hover {
+    --hex-tint: 26%;
+    color: var(--nhexa-white);
+  }
+}
+
+.hex-button--primary:focus-visible {
+  --hex-tint: 26%;
   color: var(--nhexa-white);
 }
 
-.secondary-button {
-  border: solid grey 1px;
-  padding-top: .3rem;
-  padding-bottom: .3rem;
-  background-color: transparent;
-  text-align: center;
-  color: var(--nhexa-white);
-  padding-inline: 2rem;
-  border-radius: .5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.hex-button--sm {
+  --hex-h: 2.25rem;
+  font-size: 0.75rem;
 }
 
-.secondary-button:hover {
-  background-color: grey;
-  text-align: center;
-  color: var(--nhexa-white);
+.hex-button--lg {
+  --hex-h: 3.25rem;
+  font-size: 0.95rem;
+}
+
+/* Without motion: the states change at once, nothing moves or scales, no shine. */
+@media (prefers-reduced-motion: reduce) {
+  .hex-button,
+  .hex-button::before {
+    transition: none;
+  }
+
+  .hex-button:hover,
+  .hex-button:focus-visible,
+  .hex-button:active {
+    transform: none;
+  }
+
+  .hex-button:hover::after {
+    animation: none;
+  }
+}
+
+/* ── Glow surfaces ── the hex buttons' effects without their shape, for what keeps its own (the
+   mobile menus' items: their own shape, no border): the same glass face, the tint of its
+   color (--hex-color), the shine that sweeps it and the desktop's glow (here a box shadow, the
+   shape being a box), on hover and keyboard focus; the page open now as --primary, a steady
+   tint and glow. --quiet shows nothing at rest, only hovered or open (a menu's tabs). The same
+   in Nhexa-Client and NhexaAccounts-Client (keep both identical). */
+.glow-surface {
+  --hex-color: var(--accent);
+  --hex-tint: 0%;
+  --glow-face: rgba(18, 26, 32, 0.42);
+  --glow-sheen: rgba(255, 255, 255, 0.06);
+  border: none;
+  background:
+    linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.18) 50%, transparent 65%) 200% center / 300% 100% no-repeat,
+    linear-gradient(color-mix(in srgb, var(--hex-color) var(--hex-tint), transparent), color-mix(in srgb, var(--hex-color) var(--hex-tint), transparent)),
+    linear-gradient(160deg, var(--glow-sheen), transparent 45%),
+    var(--glow-face);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 0 0 transparent, 0 0 0 transparent;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    box-shadow var(--nhexa-desktop-glow-duration) var(--nhexa-desktop-glow-ease),
+    filter var(--nhexa-desktop-press-duration) var(--nhexa-desktop-glow-ease);
+}
+
+.glow-surface--quiet {
+  --glow-face: transparent;
+  --glow-sheen: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* Open now: the hex buttons' --primary. */
+.glow-surface.router-link-exact-active,
+.glow-surface.is-current {
+  --hex-tint: 18%;
+  --glow-face: rgba(18, 26, 32, 0.42);
+  --glow-sheen: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 calc(var(--nhexa-desktop-glow-wide) / 2) var(--nhexa-desktop-glow-soft), 0 0 0 transparent;
+}
+
+.glow-surface:focus-visible {
+  outline: none;
+  --hex-tint: 12%;
+  --glow-face: rgba(18, 26, 32, 0.42);
+  --glow-sheen: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  box-shadow: 0 0 var(--nhexa-desktop-glow-wide) var(--nhexa-desktop-glow-soft), 0 0 var(--nhexa-desktop-glow-tight) var(--nhexa-desktop-glow);
+}
+
+/* Hover only on a pointer that hovers: a tap has no "leave", it'd stay lit. */
+@media (hover: hover) and (pointer: fine) {
+  .glow-surface:hover {
+    --hex-tint: 12%;
+    --glow-face: rgba(18, 26, 32, 0.42);
+    --glow-sheen: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    box-shadow: 0 0 var(--nhexa-desktop-glow-wide) var(--nhexa-desktop-glow-soft), 0 0 var(--nhexa-desktop-glow-tight) var(--nhexa-desktop-glow);
+    animation: hexButtonShine 0.5s ease-out forwards;
+  }
+
+  .glow-surface.router-link-exact-active:hover,
+  .glow-surface.is-current:hover {
+    --hex-tint: 26%;
+  }
+}
+
+/* Pressed: briefly brighter. */
+.glow-surface:active {
+  filter: brightness(1.15);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow-surface {
+    transition: none;
+  }
+
+  .glow-surface:hover {
+    animation: none;
+  }
 }

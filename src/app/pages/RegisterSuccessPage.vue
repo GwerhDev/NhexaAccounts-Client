@@ -8,7 +8,7 @@
       <h3>Gracias por registrarte. Tu cuenta ha sido creada con éxito.</h3>
       <font-awesome-icon icon="fa-solid fa-user-check" size="10x" color="var(--primary-color)" />
       <p><i>Ahora puedes iniciar sesión y completar el registro</i></p>
-      <router-link class="principal-button" to="/login">Iniciar sesión</router-link>
+      <router-link class="hex-button hex-button--primary" to="/login">Iniciar sesión</router-link>
     </div>
   </main>
 </template>

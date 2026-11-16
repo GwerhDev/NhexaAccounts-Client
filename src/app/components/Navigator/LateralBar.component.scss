@@ -14,6 +14,7 @@
 @media (max-height: 700px) {
   .lateral-container {
     overflow-y: auto;
+    padding-top: calc(var(--nhexa-desktop-glow-wide) * 2);
     padding-right: calc(var(--nhexa-desktop-glow-wide) * 1.75);
   }
 }

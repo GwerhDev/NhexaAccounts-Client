@@ -373,7 +373,11 @@ button:disabled:hover {
   flex: 1;
   min-height: 0;
   display: flex;
-  overflow: hidden;
+  /* Bounded (what's in it scrolls on its own), but what it draws may reach a little past its
+     edges: the side menu's first tab sits 2rem below its top, and that tab's glow reaches
+     further, cut off there by a plain overflow: hidden. */
+  overflow: clip;
+  overflow-clip-margin: 44px; /* twice --nhexa-desktop-glow-wide: a var() in it isn't taken */
 }
 
 .section-container {

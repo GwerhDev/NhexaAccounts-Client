@@ -8,4 +8,7 @@
   overflow-y: auto;
   padding-top: 2rem;
   padding-bottom: 2rem;
+  // A scroller cuts off whatever it draws outside it: room at its right for the tabs' glow
+  // (as wide as it reaches), so the open page's isn't cut off at its edge.
+  padding-right: var(--nhexa-desktop-glow-wide);
 }

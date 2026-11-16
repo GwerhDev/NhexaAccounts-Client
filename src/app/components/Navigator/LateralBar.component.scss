@@ -5,10 +5,15 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  overflow-y: auto;
   padding-top: 2rem;
   padding-bottom: 2rem;
-  // A scroller cuts off whatever it draws outside it: room at its right for the tabs' glow
-  // (as wide as it reaches), so the open page's isn't cut off at its edge.
-  padding-right: var(--nhexa-desktop-glow-wide);
+}
+
+// Not a scroller where it fits (a scroller cuts off whatever it draws outside it, the tabs'
+// glow too); one only on a screen too short for it, with room at its right for that glow.
+@media (max-height: 700px) {
+  .lateral-container {
+    overflow-y: auto;
+    padding-right: calc(var(--nhexa-desktop-glow-wide) * 1.75);
+  }
 }

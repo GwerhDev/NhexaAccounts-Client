@@ -414,9 +414,20 @@ button:disabled:hover {
 
 .view-lateral-bar {
   flex-shrink: 0;
-  overflow-y: auto;
   padding: 0;
   padding-right: .5rem;
+  /* Over the page's column: its tabs' glow reaches into it, and the column (after it, its
+     cards with their own background) would paint over that glow, cutting it off. */
+  position: relative;
+  z-index: 2;
+}
+
+/* Its menu scrolls on a screen too short for it (see LateralBar); elsewhere neither cuts off
+   the tabs' glow. */
+@media (max-height: 700px) {
+  .view-lateral-bar {
+    overflow-y: auto;
+  }
 }
 
 @media (max-width: 1080px) {

@@ -83,7 +83,7 @@ input {
       padding-inline: 1rem;
     }
 
-    // Its row 1rem from each edge, as Nhexa-Client's: only its insides' padding counts (the
+    // Its row 1rem from each edge, as NhexaWeb-Client's: only its insides' padding counts (the
     // row's own would add another 1rem). Not the menu's list, a container of its own.
     .logo-container {
       padding-inline: 0;

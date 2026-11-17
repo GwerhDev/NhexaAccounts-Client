@@ -626,7 +626,7 @@ input:focus {
   background-repeat: no-repeat;
 }
 
-/* ── Hexagon buttons ── the apps desktop's hexagons (AppDesktop) as a button, the same as Nhexa-Client's (keep both identical), with their own
+/* ── Hexagon buttons ── the apps desktop's hexagons (AppDesktop) as a button, the same as NhexaWeb-Client's (keep both identical), with their own
    styles: the same rounded hexagon (the polygon and rounding of --nhexa-desktop-hex-flat),
    stretched in the middle so a wide button keeps its corners as they are (an end cap each side,
    kept in proportion, and a straight run between them). Its border is that shape behind its face; the button itself isn't masked,

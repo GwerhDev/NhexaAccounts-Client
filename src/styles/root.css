@@ -80,3 +80,14 @@ ul {
     padding: 0;
   }
 }
+
+/* On a phone the document scrolls (see style.css): <html> as tall as its page, not the
+   screen's height with its overflow hidden. Here, after :root's own rule, so it wins. */
+@media (max-width: 1080px) {
+  :root {
+    height: auto;
+    min-height: 100%;
+    overflow: visible;
+    overflow-x: clip;
+  }
+}

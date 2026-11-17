@@ -461,6 +461,29 @@ button:disabled:hover {
   }
 }
 
+/* On a phone the document scrolls, as on any site: not .router-view inside boxes as tall as
+   the screen, which the browser takes for a box inside the page (its bars don't fold away,
+   its overscroll and pull-to-refresh don't work). The shell grows with its page, at least the
+   screen's height (a short page, the login, still fills it); never sideways (clip makes no
+   scroller of its own). The bar is fixed at the top (NavBar). */
+@media (max-width: 1080px) {
+  /* (:root's part is in root.css, after its own :root: loaded after this file, it'd win.) */
+  body {
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+
+  #app,
+  .viewport-container,
+  .app-container,
+  .router-view {
+    flex: 1 0 auto;
+    min-height: auto;
+    overflow: visible;
+  }
+}
+
 .d-flex {
   display: flex;
 }
@@ -820,85 +843,139 @@ input:focus {
   }
 }
 
-/* ── Glow surfaces ── the hex buttons' effects without their shape, for what keeps its own (the
-   mobile menus' items: their own shape, no border): the same glass face, the tint of its
-   color (--hex-color), the shine that sweeps it and the desktop's glow (here a box shadow, the
-   shape being a box), on hover and keyboard focus; the page open now as --primary, a steady
-   tint and glow. --quiet shows nothing at rest, only hovered or open (a menu's tabs). The same
-   in Nhexa-Client and NhexaAccounts-Client (keep both identical). */
-.glow-surface {
-  --hex-color: var(--accent);
+/* ── Hexagon tabs ── a menu's tabs as the hex buttons: flush with the menu's left edge, their
+   right end the desktop hexagon's rounded tip. Its border (::before) and glass face (::after)
+   are cut to that shape; the link itself isn't, so its glow isn't cut off. At rest only its
+   label; hovered or focused, its face, border and the shine show and the desktop's glow rises;
+   the page open now is the hex buttons' --primary: its border in the accent, a steady tint and
+   glow. Each menu sets its own layout (padding, alignment); --tab-h is its height. */
+.hex-tab {
+  --tab-h: 3.5rem;
+  --tab-border: 1.5px;
+  --tab-cap: calc(var(--tab-h) * 0.3464);
   --hex-tint: 0%;
-  --glow-face: rgba(18, 26, 32, 0.42);
-  --glow-sheen: rgba(255, 255, 255, 0.06);
-  border: none;
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  height: var(--tab-h);
+  outline: none;
+  filter: drop-shadow(0 0 0 transparent) drop-shadow(0 0 0 transparent) brightness(1);
+  transition:
+    filter var(--nhexa-desktop-glow-duration) var(--nhexa-desktop-glow-ease),
+    transform var(--nhexa-desktop-press-duration) var(--nhexa-desktop-glow-ease);
+}
+
+.hex-tab::before,
+.hex-tab::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--nhexa-desktop-glow-duration) var(--nhexa-desktop-glow-ease);
+}
+
+/* Its border: the whole shape. */
+.hex-tab::before {
+  inset: 0;
+  background: var(--accent);
+  -webkit-mask:
+    var(--nhexa-hex-cap-right) right center / auto 100% no-repeat,
+    linear-gradient(#000 0 0) left center / calc(100% - var(--tab-cap) + 2px) 100% no-repeat;
+  mask:
+    var(--nhexa-hex-cap-right) right center / auto 100% no-repeat,
+    linear-gradient(#000 0 0) left center / calc(100% - var(--tab-cap) + 2px) 100% no-repeat;
+}
+
+/* Its face: inside the border (none on its left, the menu's edge). */
+.hex-tab::after {
+  inset: var(--tab-border) var(--tab-border) var(--tab-border) 0;
   background:
     linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.18) 50%, transparent 65%) 200% center / 300% 100% no-repeat,
-    linear-gradient(color-mix(in srgb, var(--hex-color) var(--hex-tint), transparent), color-mix(in srgb, var(--hex-color) var(--hex-tint), transparent)),
-    linear-gradient(160deg, var(--glow-sheen), transparent 45%),
-    var(--glow-face);
+    linear-gradient(color-mix(in srgb, var(--accent) var(--hex-tint), transparent), color-mix(in srgb, var(--accent) var(--hex-tint), transparent)),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.06), transparent 45%),
+    rgba(18, 26, 32, 0.42);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
-  box-shadow: 0 0 0 transparent, 0 0 0 transparent;
-  -webkit-tap-highlight-color: transparent;
-  transition:
-    box-shadow var(--nhexa-desktop-glow-duration) var(--nhexa-desktop-glow-ease),
-    filter var(--nhexa-desktop-press-duration) var(--nhexa-desktop-glow-ease);
+  -webkit-mask:
+    var(--nhexa-hex-cap-right) right center / auto 100% no-repeat,
+    linear-gradient(#000 0 0) left center / calc(100% - (var(--tab-h) - 2 * var(--tab-border)) * 0.3464 + 2px) 100% no-repeat;
+  mask:
+    var(--nhexa-hex-cap-right) right center / auto 100% no-repeat,
+    linear-gradient(#000 0 0) left center / calc(100% - (var(--tab-h) - 2 * var(--tab-border)) * 0.3464 + 2px) 100% no-repeat;
 }
 
-.glow-surface--quiet {
-  --glow-face: transparent;
-  --glow-sheen: transparent;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-}
-
-/* Open now: the hex buttons' --primary. */
-.glow-surface.router-link-exact-active,
-.glow-surface.is-current {
+/* The page open now: as a --primary hex button. */
+.hex-tab.router-link-exact-active {
   --hex-tint: 18%;
-  --glow-face: rgba(18, 26, 32, 0.42);
-  --glow-sheen: rgba(255, 255, 255, 0.06);
-  box-shadow: 0 0 calc(var(--nhexa-desktop-glow-wide) / 2) var(--nhexa-desktop-glow-soft), 0 0 0 transparent;
+  filter:
+    drop-shadow(0 0 calc(var(--nhexa-desktop-glow-wide) / 2) var(--nhexa-desktop-glow-soft))
+    drop-shadow(0 0 0 transparent)
+    brightness(1);
 }
 
-.glow-surface:focus-visible {
-  outline: none;
+.hex-tab.router-link-exact-active::before,
+.hex-tab.router-link-exact-active::after,
+.hex-tab:focus-visible::before,
+.hex-tab:focus-visible::after {
+  opacity: 1;
+}
+
+.hex-tab:focus-visible {
   --hex-tint: 12%;
-  --glow-face: rgba(18, 26, 32, 0.42);
-  --glow-sheen: rgba(255, 255, 255, 0.06);
   color: #fff;
-  box-shadow: 0 0 var(--nhexa-desktop-glow-wide) var(--nhexa-desktop-glow-soft), 0 0 var(--nhexa-desktop-glow-tight) var(--nhexa-desktop-glow);
+  filter:
+    drop-shadow(0 0 var(--nhexa-desktop-glow-wide) var(--nhexa-desktop-glow-soft))
+    drop-shadow(0 0 var(--nhexa-desktop-glow-tight) var(--nhexa-desktop-glow))
+    brightness(1);
 }
 
 /* Hover only on a pointer that hovers: a tap has no "leave", it'd stay lit. */
 @media (hover: hover) and (pointer: fine) {
-  .glow-surface:hover {
+  .hex-tab:hover {
     --hex-tint: 12%;
-    --glow-face: rgba(18, 26, 32, 0.42);
-    --glow-sheen: rgba(255, 255, 255, 0.06);
     color: #fff;
-    box-shadow: 0 0 var(--nhexa-desktop-glow-wide) var(--nhexa-desktop-glow-soft), 0 0 var(--nhexa-desktop-glow-tight) var(--nhexa-desktop-glow);
+    filter:
+      drop-shadow(0 0 var(--nhexa-desktop-glow-wide) var(--nhexa-desktop-glow-soft))
+      drop-shadow(0 0 var(--nhexa-desktop-glow-tight) var(--nhexa-desktop-glow))
+      brightness(1);
+  }
+
+  .hex-tab:hover::before,
+  .hex-tab:hover::after {
+    opacity: 1;
+  }
+
+  .hex-tab:hover::after {
     animation: hexButtonShine 0.5s ease-out forwards;
   }
 
-  .glow-surface.router-link-exact-active:hover,
-  .glow-surface.is-current:hover {
+  .hex-tab.router-link-exact-active:hover {
     --hex-tint: 26%;
   }
 }
 
-/* Pressed: briefly brighter. */
-.glow-surface:active {
-  filter: brightness(1.15);
+/* Pressed: briefly a little smaller, and brighter. */
+.hex-tab:active {
+  transform: scale(0.98);
+  filter:
+    drop-shadow(0 0 var(--nhexa-desktop-glow-wide) var(--nhexa-desktop-glow))
+    drop-shadow(0 0 var(--nhexa-desktop-glow-tight) var(--nhexa-desktop-glow))
+    brightness(1.15);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .glow-surface {
+  .hex-tab,
+  .hex-tab::before,
+  .hex-tab::after {
     transition: none;
   }
 
-  .glow-surface:hover {
+  .hex-tab:active {
+    transform: none;
+  }
+
+  .hex-tab:hover::after {
     animation: none;
   }
 }

@@ -1,5 +1,7 @@
 .container-menu-mobile {
   width: 100%;
+  // Room above the first tab for its glow (this scrolls: it'd cut it off).
+  padding-top: 1rem;
   padding-bottom: 4rem;
   overflow-y: auto;
 
@@ -13,16 +15,17 @@
       width: 100%;
       display: flex;
 
+      // A hex tab (style.css), as the side menu's on a wide screen: its tip short of the
+      // screen's edge, with room for its glow.
       .menu-link {
         gap: 1rem;
-        width: 100%;
-        padding: 1rem;
+        width: calc(100% - 1.5rem);
+        padding: 0 calc(var(--tab-cap) + 1rem) 0 1rem;
         color: var(--nhexa-white);
         display: flex;
         text-wrap: nowrap;
         align-items: center;
         justify-content: start;
-        // Its hover and the open page's look: a quiet glow surface (style.css).
       }
     }
   }

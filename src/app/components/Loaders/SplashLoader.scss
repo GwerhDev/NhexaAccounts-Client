@@ -9,6 +9,15 @@
   animation: splash 5s ease-in-out infinite;
 }
 
+/* On a phone the page has no set height (the document scrolls, see style.css): 100% of it is
+   nothing, and the splash sat at the top. The screen's height, so it's centered on it. */
+@media (max-width: 1080px) {
+  .splash-container {
+    min-height: 100dvh;
+    gap: 1rem;
+  }
+}
+
 .splash-bar-track {
   width: 160px;
   height: 2px;
